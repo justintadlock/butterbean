@@ -144,7 +144,7 @@ class ButterBean_Control {
 
 		$setting = $this->manager->get_setting( $this->setting );
 
-		return $setting ? $setting->get_value( $this->manager->post_id ) : false;
+		return $setting ? $setting->get_value( $this->manager->post_id ) : '';
 	}
 
 	/**
