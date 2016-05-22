@@ -203,7 +203,7 @@ class ButterBean_Control {
 		$this->json['label']       = $this->label;
 		$this->json['type']        = $this->type;
 		$this->json['description'] = $this->description;
-		$this->json['value']       = $this->get_value( $this->manager->post_id );
+		$this->json['value']       = $this->get_value();
 		$this->json['choices']     = $this->choices;
 
 		$this->json['attr'] = '';
