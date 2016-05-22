@@ -155,10 +155,7 @@ class ButterBean_Section {
 	 * @access public
 	 * @return void
 	 */
-	public function template() { ?>
-
-		<# if ( data.description ) { #>
-			<span class="butterbean-description description">{{{ data.description }}}</span>
-		<# } #>
-	<?php }
+	public function template() {
+		butterbean_get_template( 'section', $this->type );
+	}
 }
