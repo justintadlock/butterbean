@@ -1,6 +1,7 @@
 <?php
 /**
- * Base control class for the fields manager.
+ * Base class for handling controls.  Controls are the form fields for the manager.  Each
+ * control should be tied to a section.
  *
  * @package    ButterBean
  * @subpackage Admin
@@ -97,7 +98,7 @@ class ButterBean_Control {
 	 * @access public
 	 * @var    array
 	 */
-	public $choices = '';
+	public $choices = array();
 
 	/**
 	 * Stores the JSON data for the control.
@@ -140,11 +141,11 @@ class ButterBean_Control {
 	 * @access public
 	 * @return mixed
 	 */
-	public function get_value( $post_id ) {
+	public function get_value() {
 
 		$setting = $this->manager->get_setting( $this->setting );
 
-		return $setting ? $setting->get_value( $post_id ) : false;
+		return $setting ? $setting->get_value( $this->manager->post_id ) : false;
 	}
 
 	/**
@@ -181,8 +182,9 @@ class ButterBean_Control {
 	 * @access public
 	 * @return array
 	 */
-	public function json() {
+	public function get_json() {
 		$this->to_json();
+
 		return $this->json;
 	}
 
@@ -210,9 +212,15 @@ class ButterBean_Control {
 		foreach ( $this->get_attr() as $attr => $value ) {
 			$this->json['attr'] .= sprintf( '%s="%s" ', esc_html( $attr ), esc_attr( $value ) );
 		}
-
 	}
 
+	/**
+	 * Prints Underscore.js template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
 	public function print_template() { ?>
 
 		<div id="butterbean-control-{{ data.name }}" class="butterbean-control butterbean-control-{{ data.type }}">
@@ -220,6 +228,13 @@ class ButterBean_Control {
 		</div>
 	<?php }
 
+	/**
+	 * Gets the Underscore.js template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
 	public function template() {
 		butterbean_get_template( 'control' );
 	}

@@ -343,7 +343,7 @@ class ButterBean_Manager {
 		}
 
 		foreach ( $this->controls as $control )
-			$this->json['controls'][] = $control->json();
+			$this->json['controls'][] = $control->get_json();
 	}
 
 	/**
