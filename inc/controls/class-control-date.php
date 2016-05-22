@@ -1,6 +1,6 @@
 <?php
 /**
- * Date control class for the fields manager.
+ * Date control class.
  *
  * @package    ButterBean
  * @subpackage Admin
@@ -18,9 +18,25 @@
  */
 class ButterBean_Control_Date extends ButterBean_Control {
 
+	/**
+	 * The type of control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
 	public $type = 'date';
 
+	/**
+	 * Adds custom data to the json array. This data is passed to the Underscore template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @globl  object  $wp_locale
+	 * @return void
+	 */
 	public function to_json() {
+		global $wp_locale;
 
 		parent::to_json();
 
@@ -31,8 +47,6 @@ class ButterBean_Control_Date extends ButterBean_Control {
 		$year  = $date ? mysql2date( 'Y', $date, false ) : '';
 		$month = $date ? mysql2date( 'm', $date, false ) : '';
 		$day   = $date ? mysql2date( 'd', $date, false ) : '';
-
-		global $wp_locale;
 
 		// Year
 		$this->json['year'] = array(
@@ -75,35 +89,14 @@ class ButterBean_Control_Date extends ButterBean_Control {
 		);
 	}
 
-	public function template() { ?>
-
-		<# if ( data.label ) { #>
-			<span class="butterbean-label">{{ data.label }}</span>
-			<br />
-		<# } #>
-
-		<label>
-			<span class="screen-reader-text">{{ data.month.label }}</span>
-			<select name="{{ data.month.name }}">
-				<# _.each( data.month.choices, function( choice ) { #>
-					<option value="{{ choice.num }}" <# if ( choice.num === data.month.value ) { #> selected="selected" <# } #>>{{ choice.label }}</option>
-				<# } ) #>
-			</select>
-		</label>
-
-		<label>
-			<span class="screen-reader-text">{{ data.day.label }}</span>
-			<input type="text" name="{{ data.day.name }}" value="{{ data.day.value }}" {{{ data.day.attr }}} />
-		</label>
-
-		<label>
-			<span class="screen-reader-text">{{ data.year.label }}</span>
-			<input type="text" name="{{ data.year.name }}" value="{{ data.year.value }}" {{{ data.year.attr }}} />
-		</label>
-
-		<# if ( data.description ) { #>
-			<br />
-			<span class="butterbean-description">{{{ data.description }}}</span>
-		<# } #>
-	<?php }
+	/**
+	 * Gets the Underscore.js template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function template() {
+		butterbean_get_template( 'control', 'date' );
+	}
 }

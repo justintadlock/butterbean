@@ -1,9 +1,11 @@
 <?php
 /**
- * Date control class for the fields manager.
+ * Post parent control class.  This class is a specialty class meant for use in unique
+ * scenarios where you're not using the core post parent drop-down.  This is often the
+ * case with flat post types that have a parent post.  This control is not meant to be
+ * used with a setting.  Core WP will store the data in the `post.post_parent` field.
  *
  * @package    ButterBean
- * @subpackage Admin
  * @author     Justin Tadlock <justin@justintadlock.com>
  * @copyright  Copyright (c) 2015-2016, Justin Tadlock
  * @link       https://github.com/justintadlock/butterbean
@@ -11,24 +13,55 @@
  */
 
 /**
- * Date control class.
+ * Post parent control class.
  *
  * @since  1.0.0
  * @access public
  */
 class ButterBean_Control_Parent extends ButterBean_Control {
 
+	/**
+	 * The type of control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
 	public $type = 'parent';
 
+	/**
+	 * The post type to select posts from.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
 	public $post_type = '';
 
+	/**
+	 * Creates a new control object.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  object  $manager
+	 * @param  string  $name
+	 * @param  array   $args
+	 * @return void
+	 */
 	public function __construct( $manager, $name, $args = array() ) {
 
 		parent::__construct( $manager, $name, $args );
 
-		$this->post_type = ! $this->post_type ? get_post_type( $this->manager->post_id ) : $this->post_type;
+		$this->post_type = isset( $args['post_type'] ) ? $args['post_type'] : get_post_type( $this->manager->post_id );
 	}
 
+	/**
+	 * Adds custom data to the json array. This data is passed to the Underscore template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
 	public function to_json() {
 
 		parent::to_json();
@@ -54,6 +87,13 @@ class ButterBean_Control_Parent extends ButterBean_Control {
 			$this->json['choices'][] = array( 'value' => $post->ID, 'label' => $post->post_title );
 	}
 
+	/**
+	 * Gets the Underscore.js template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
 	public function template() {
 		butterbean_get_template( 'control', 'parent' );
 	}

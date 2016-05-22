@@ -1,6 +1,6 @@
 <?php
 /**
- * Date control class for the fields manager.
+ * Textarea control class.
  *
  * @package    ButterBean
  * @subpackage Admin
@@ -11,22 +11,43 @@
  */
 
 /**
- * Date control class.
+ * Textarea control class.
  *
  * @since  1.0.0
  * @access public
  */
 class ButterBean_Control_Textarea extends ButterBean_Control {
 
+	/**
+	 * The type of control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
 	public $type = 'textarea';
 
+	/**
+	 * Adds custom data to the json array. This data is passed to the Underscore template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
 	public function to_json() {
 		parent::to_json();
 
 		$this->json['value'] = esc_textarea( $this->get_value( $this->manager->post_id ) );
 	}
 
+	/**
+	 * Gets the Underscore.js template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
 	public function template() {
-		butterbean_get_template( 'control', 'textarea' ); 
+		butterbean_get_template( 'control', 'textarea' );
 	}
 }

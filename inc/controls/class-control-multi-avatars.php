@@ -1,9 +1,10 @@
 <?php
 /**
- * Date control class for the fields manager.
+ * Multi-avatars control.  This control is for outputting multiple users who can create,
+ * edit, or publish posts of the given post type.  Multiple users can be selected.  The
+ * data is expected to be an array.  For use with the `Butterbean_Setting_Array` class.
  *
  * @package    ButterBean
- * @subpackage Admin
  * @author     Justin Tadlock <justin@justintadlock.com>
  * @copyright  Copyright (c) 2015-2016, Justin Tadlock
  * @link       https://github.com/justintadlock/butterbean
@@ -11,24 +12,37 @@
  */
 
 /**
- * Date control class.
+ * Multi-avatars control class.
  *
  * @since  1.0.0
  * @access public
  */
 class ButterBean_Control_Multi_Avatars extends ButterBean_Control {
 
+	/**
+	 * The type of control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
 	public $type = 'multi-avatars';
 
+	/**
+	 * Adds custom data to the json array. This data is passed to the Underscore template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
 	public function to_json() {
 		parent::to_json();
 
-		$name = "butterbean_{$this->manager->name}_setting_{$this->setting}[]";
-
-		$users = get_users( array( 'role__in' => $this->get_roles( get_post_type( $this->manager->post_id ) ) ) );
-
-		$this->json['value'] = (array) $this->get_value( $this->manager->post_id );
+		$this->json['name']    = "butterbean_{$this->manager->name}_setting_{$this->setting}[]";
+		$this->json['value']   = (array) $this->get_value();
 		$this->json['choices'] = array();
+
+		$users = get_users( array( 'role__in' => $this->get_roles() ) );
 
 		foreach ( $users as $user ) {
 			$this->json['choices'][] = array(
@@ -39,6 +53,13 @@ class ButterBean_Control_Multi_Avatars extends ButterBean_Control {
 		}
 	}
 
+	/**
+	 * Gets the Underscore.js template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
 	public function template() {
 		butterbean_get_template( 'control', 'multi-avatars' );
 	}
@@ -52,11 +73,11 @@ class ButterBean_Control_Multi_Avatars extends ButterBean_Control {
 	 * @global object  $wp_roles
 	 * @return array
 	 */
-	public function get_roles( $post_type ) {
+	public function get_roles() {
 		global $wp_roles;
 
 		$roles = array();
-		$type  = get_post_type_object( $post_type );
+		$type  = get_post_type_object( get_post_type( $this->manager->post_id ) );
 
 		// Get the post type object caps.
 		$caps = array( $type->cap->edit_posts, $type->cap->publish_posts, $type->cap->create_posts );

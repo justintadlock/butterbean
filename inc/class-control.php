@@ -4,7 +4,6 @@
  * control should be tied to a section.
  *
  * @package    ButterBean
- * @subpackage Admin
  * @author     Justin Tadlock <justin@justintadlock.com>
  * @copyright  Copyright (c) 2015-2016, Justin Tadlock
  * @link       https://github.com/justintadlock/butterbean
@@ -74,7 +73,7 @@ class ButterBean_Control {
 	public $setting = '';
 
 	/**
-	 * The type of setting.
+	 * The type of control.
 	 *
 	 * @since  1.0.0
 	 * @access public
