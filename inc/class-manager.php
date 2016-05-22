@@ -1,9 +1,10 @@
 <?php
 /**
- * Base class for the manager.
+ * Base class for handling managers.  Managers are groups of sections, which are groups of
+ * controls + settings.  Managers are output as a metabox.  This essentially allows
+ * developers to output multiple post meta fields within a single metabox.
  *
  * @package    ButterBean
- * @subpackage Admin
  * @author     Justin Tadlock <justin@justintadlock.com>
  * @copyright  Copyright (c) 2015-2016, Justin Tadlock
  * @link       https://github.com/justintadlock/butterbean
@@ -11,7 +12,7 @@
  */
 
 /**
- * Handles building the fields manager.
+ * Base manager class.
  *
  * @since  1.0.0
  * @access public
@@ -319,7 +320,7 @@ class ButterBean_Manager {
 	}
 
 	/**
-	 * Adds custom data to the json array. This data is passed to the Underscore template.
+	 * Adds custom data to the JSON array. This data is passed to the Underscore template.
 	 *
 	 * @since  1.0.0
 	 * @access public
@@ -331,17 +332,20 @@ class ButterBean_Manager {
 
 		$this->json['name'] = $this->name;
 
+		// Get all sections that have controls.
 		foreach ( $this->controls as $control ) {
 			$sections_with_controls[] = $control->section;
 		}
 
 		$sections_with_controls = array_unique( $sections_with_controls );
 
+		// Get the JSON data for each section.
 		foreach ( $this->sections as $section ) {
 			if ( in_array( $section->name, $sections_with_controls ) )
 				$this->json['sections'][] = $section->get_json();
 		}
 
+		// Get the JSON data for each control.
 		foreach ( $this->controls as $control )
 			$this->json['controls'][] = $control->get_json();
 	}
@@ -358,9 +362,11 @@ class ButterBean_Manager {
 		if ( ! $this->post_id )
 			$this->post_id = $post_id;
 
+		// Verify the nonce for this manager.
 		if ( ! isset( $_POST["butterbean_{$this->name}"] ) || ! wp_verify_nonce( $_POST["butterbean_{$this->name}"], "butterbean_{$this->name}_nonce" ) )
 			return;
 
+		// Loop through each setting and save it.
 		foreach ( $this->settings as $setting )
 			$setting->save( $this->post_id );
 	}
