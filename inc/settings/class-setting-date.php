@@ -1,6 +1,7 @@
 <?php
 /**
- * Date setting class for the fields manager.
+ * Date setting class.  This is meant to be used in conjunction with the built-in 
+ * `ButterBean_Date_Control` or a sub-class that passes the appropriate values.
  *
  * @package    ButterBean
  * @subpackage Admin
