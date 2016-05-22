@@ -37,7 +37,7 @@ class ButterBean_Control_Parent extends ButterBean_Control {
 
 		$posts = get_posts(
 			array(
-				'post_type'      => pdev_get_plugin_post_type(),
+				'post_type'      => $this->post_type,
 				'post_status'    => 'any',
 				'post__not_in'   => array( $post_id ),
 				'posts_per_page' => -1,

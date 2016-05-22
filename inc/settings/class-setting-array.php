@@ -46,7 +46,7 @@ class ButterBean_Setting_Array extends ButterBean_Setting {
 
 	public function map( $value ) {
 
-		return apply_filters( "pdev_{$this->manager->name}_sanitize_{$this->name}", $value, $this );
+		return apply_filters( "butterbean_{$this->manager->name}_sanitize_{$this->name}", $value, $this );
 	}
 
 	/**
