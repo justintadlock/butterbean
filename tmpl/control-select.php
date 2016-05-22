@@ -12,7 +12,7 @@
 
 	<select {{{ data.attr }}}>
 
-		<# _.each( data.choices, function( choice, label ) { #>
+		<# _.each( data.choices, function( label, choice ) { #>
 
 			<option value="{{ choice }}" <# if ( data.value === choice ) { #> selected="selected" <# } #>>{{ label }}</option>
 

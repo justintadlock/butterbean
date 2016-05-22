@@ -10,7 +10,7 @@
 
 <ul class="butterbean-radio-list">
 
-	<# _.each( data.choices, function( choice, label ) { #>
+	<# _.each( data.choices, function( label, choice ) { #>
 
 		<li>
 			<label>
