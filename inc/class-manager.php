@@ -339,7 +339,7 @@ class ButterBean_Manager {
 
 		foreach ( $this->sections as $section ) {
 			if ( in_array( $section->name, $sections_with_controls ) )
-				$this->json['sections'][] = $section->json();
+				$this->json['sections'][] = $section->get_json();
 		}
 
 		foreach ( $this->controls as $control )

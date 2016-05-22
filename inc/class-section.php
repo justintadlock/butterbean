@@ -1,6 +1,7 @@
 <?php
 /**
- * Base section class for the fields manager.
+ * Base class for handling sections. Sections house groups of controls.  Multiple sections can
+ * be added to a manager.
  *
  * @package    ButterBean
  * @subpackage Admin
@@ -28,8 +29,6 @@ class ButterBean_Section {
 	 */
 	public $manager;
 
-	public $type = 'default';
-
 	/**
 	 * Name/ID of the section.
 	 *
@@ -38,6 +37,15 @@ class ButterBean_Section {
 	 * @var    string
 	 */
 	public $name = '';
+
+	/**
+	 * The type of section.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
+	public $type = 'default';
 
 	/**
 	 * Dashicons icon for the section.
@@ -96,6 +104,7 @@ class ButterBean_Section {
 		$this->manager = $manager;
 		$this->name    = $name;
 	}
+
 	/**
 	 * Returns the json array.
 	 *
@@ -103,8 +112,9 @@ class ButterBean_Section {
 	 * @access public
 	 * @return array
 	 */
-	public function json() {
+	public function get_json() {
 		$this->to_json();
+
 		return $this->json;
 	}
 
@@ -124,6 +134,13 @@ class ButterBean_Section {
 		$this->json['description'] = $this->description;
 	}
 
+	/**
+	 * Prints Underscore.js template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
 	public function print_template() { ?>
 
 		<div id="butterbean-section-{{ data.name }}" class="butterbean-section butterbean-section-{{ data.type }}">
@@ -131,6 +148,13 @@ class ButterBean_Section {
 		</div>
 	<?php }
 
+	/**
+	 * Gets the Underscore.js template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
 	public function template() { ?>
 
 		<# if ( data.description ) { #>
