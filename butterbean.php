@@ -14,7 +14,7 @@
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
-if ( ! class_exists( 'Butterbean' ) ) {
+if ( ! class_exists( 'ButterBean' ) ) {
 
 	/**
 	 * Main ButterBean class.  Runs the show.
