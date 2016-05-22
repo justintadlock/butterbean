@@ -1,0 +1,37 @@
+<?php
+/**
+ * Helper functions.
+ *
+ * @package    ButterBean
+ * @subpackage Admin
+ * @author     Justin Tadlock <justin@justintadlock.com>
+ * @copyright  Copyright (c) 2015-2016, Justin Tadlock
+ * @link       https://github.com/justintadlock/butterbean
+ * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ */
+
+/**
+ * Helper function for getting Underscore.js templates.
+ *
+ * @since  1.0.0
+ * @param  string  $name
+ * @param  string  $slug
+ * @return void
+ */
+function butterbean_get_template( $name, $slug = '' ) {
+
+	$templates = array();
+
+	$templates[] = "{$name}.php";
+
+	if ( $slug )
+		$templates[] = "{$name}-{$slug}.php";
+
+	foreach ( $templates as $template ) {
+
+		if ( file_exists( butterbean()->dir_path . "tmpl/{$template}" ) ) {
+			require_once( butterbean()->dir_path . "tmpl/{$template}" );
+			break;
+		}
+	}
+}
