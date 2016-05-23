@@ -39,7 +39,7 @@ class ButterBean_Setting_Array extends ButterBean_Setting {
 	 */
 	public function sanitize( $values ) {
 
-		$multi_values = ! is_array( $values ) ? explode( ',', $values ) : $values;
+		$multi_values = $values && ! is_array( $values ) ? explode( ',', $values ) : $values;
 
 		return $multi_values ? array_map( array( $this, 'map' ), $multi_values ) : array();
 	}
