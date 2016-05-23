@@ -1,0 +1,55 @@
+<?php
+/**
+ * Multiple checkbox control class.  This is for array-type settings, so you'll need to
+ * use it with either the `ButterBean_Setting_Array` class or a class that handles
+ * arrays.
+ *
+ * @package    ButterBean
+ * @author     Justin Tadlock <justin@justintadlock.com>
+ * @copyright  Copyright (c) 2015-2016, Justin Tadlock
+ * @link       https://github.com/justintadlock/butterbean
+ * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ */
+
+/**
+ * Multiple checkboxes control class.
+ *
+ * @since  1.0.0
+ * @access public
+ */
+class ButterBean_Control_CheckBoxes extends ButterBean_Control {
+
+	/**
+	 * The type of control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
+	public $type = 'checkboxes';
+
+	/**
+	 * Adds custom data to the json array. This data is passed to the Underscore template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function to_json() {
+		parent::to_json();
+
+		$this->json['name']    = "butterbean_{$this->manager->name}_setting_{$this->setting}[]";
+		$this->json['value']   = (array) $this->get_value();
+	}
+
+	/**
+	 * Gets the Underscore.js template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function template() {
+		butterbean_get_template( 'control', 'checkboxes' );
+	}
+}

@@ -111,6 +111,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 
 			// Load control sub-classes.
 			require_once( $this->dir_path . 'inc/controls/class-control-checkbox.php'      );
+			require_once( $this->dir_path . 'inc/controls/class-control-checkboxes.php'    );
 			require_once( $this->dir_path . 'inc/controls/class-control-date.php'          );
 			require_once( $this->dir_path . 'inc/controls/class-control-radio.php'         );
 			require_once( $this->dir_path . 'inc/controls/class-control-select.php'        );
