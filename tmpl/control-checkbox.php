@@ -1,6 +1,7 @@
 <label>
-	<input type="checkbox" value="{{ data.value }}" {{{ data.attr }}} <# if ( data.value ) { #> checked="checked" <# } #> />
+	<input type="checkbox" value="true" {{{ data.attr }}} <# if ( data.value ) { #> checked="checked" <# } #> />
 
+<# console.log( data ); #>
 	<# if ( data.label ) { #>
 		<span class="butterbean-label">{{ data.label }}</span>
 	<# } #>

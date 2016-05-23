@@ -11,6 +11,20 @@
  */
 
 /**
+ * Function for validating booleans before saving them as metadata. If the value is
+ * `true`, we'll return a `1` to be stored as the meta value.  Else, we return `false`.
+ *
+ * @since  1.0.0
+ * @access public
+ * @param  mixed
+ * @return bool|int
+ */
+function butterbean_validate_boolean( $value ) {
+
+	return wp_validate_boolean( $value ) ? 1 : false;
+}
+
+/**
  * Helper function for getting Underscore.js templates.
  *
  * @since  1.0.0
