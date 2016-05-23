@@ -39,7 +39,7 @@ class ButterBean_Control_Multi_Avatars extends ButterBean_Control {
 		parent::to_json();
 
 		$this->json['name']    = "butterbean_{$this->manager->name}_setting_{$this->setting}[]";
-		$this->json['value']   = (array) $this->get_value();
+		$this->json['value']   = is_array( $this->get_value() ) ? array_map( 'absint', $this->get_value() ) : array();
 		$this->json['choices'] = array();
 
 		$users = get_users( array( 'role__in' => $this->get_roles() ) );
