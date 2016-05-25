@@ -277,7 +277,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			foreach ( $this->managers as $manager ) {
 
 				add_meta_box(
-					$manager->name,
+					"butterbean-ui-{$manager->name}",
 					$manager->label,
 					array( $this, 'meta_box' ),
 					$manager->post_type,

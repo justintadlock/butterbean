@@ -49,7 +49,7 @@
 		_.each( butterbean_data.managers, function( manager ) {
 
 			// Set the container ID for this manager.
-			var container = '#' + manager.name;
+			var container = '#butterbean-ui-' + manager.name;
 
 			// Only add a new manager template if we have a different manager type.
 			if ( 'undefined' === typeof templates.managers[ manager.type ] ) {
