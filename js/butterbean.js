@@ -1,21 +1,10 @@
 ( function( $ ) {
 
 	// Set up our variables.
-	var manager_models      = {},
-	    manager_collection  = {},
-	    manager_views       = {},
-	    manager_models      = {},
-	    manager_collection  = {},
-	    manager_views       = {},
-	    manager_templates   = {},
-	    section_models      = {},
-	    section_collections = {},
-	    section_views       = {},
-	    section_templates   = {},
-	    control_models      = {},
-	    control_collections = {},
-	    control_views       = {},
-	    control_templates   = {};
+	var models      = { managers : {}, sections : {}, controls : {} },
+	    collections = { managers : {}, sections : {}, controls : {} },
+	    views       = { managers : {}, sections : {}, controls : {} },
+	    templates   = { managers : {}, sections : {}, controls : {} };
 
 	// Models.
 	var ButterBean_Model = Backbone.Model.extend( {} );
@@ -45,7 +34,7 @@
 	var Control_View = ButterBean_View.extend( {} );
 
 	// Create new manager collection.
-	manager_collection = new Manager_Collection();
+	collections.managers = new Manager_Collection();
 
 	/* === Underscore Templates === */
 
@@ -63,25 +52,25 @@
 			var container = '#' + manager.name;
 
 			// Only add a new manager template if we have a different manager type.
-			if ( typeof manager_templates[ manager.type ] === 'undefined' ) {
+			if ( typeof templates.managers[ manager.type ] === 'undefined' ) {
 
-				manager_templates[ manager.type ] = wp.template( 'butterbean-manager-' + manager.type );
+				templates.managers[ manager.type ] = wp.template( 'butterbean-manager-' + manager.type );
 			}
 
 			// Add a new manager model.
-			manager_models[ manager.name ] = new Manager_Model( manager );
+			models.managers[ manager.name ] = new Manager_Model( manager );
 
 			// Add manager model to collection.
-			manager_collection.add( manager_models[ manager.name ] );
+			collections.managers.add( models.managers[ manager.name ] );
 
 			// Add a new manager view.
-			manager_views[ manager.name ] = new Manager_View( {
-				model    : manager_models[ manager.name ],
+			views.managers[ manager.name ] = new Manager_View( {
+				model    : models.managers[ manager.name ],
 				el       : container,
-				template : manager_templates[ manager.type ]
+				template : templates.managers[ manager.type ]
 			} );
 
-			section_collections[ manager.name ] = new Section_Collection();
+			collections.sections[ manager.name ] = new Section_Collection();
 
 			// Adds the `.butterbean-manager` class to the container (meta box).
 			$( container ).addClass( 'butterbean-manager' );
@@ -95,50 +84,54 @@
 				$( container + ' .butterbean-nav' ).append( nav_template( data ) );
 
 				// Only add a new section template if we have a different section type.
-				if ( typeof section_templates[ data.type ] === 'undefined' ) {
-					section_templates[ data.type ] = wp.template( 'butterbean-section-' + data.type );
+				if ( typeof templates.sections[ data.type ] === 'undefined' ) {
+					templates.sections[ data.type ] = wp.template( 'butterbean-section-' + data.type );
 				}
 
-				// Add a new manager model.
-				section_models[ data.name ] = new Section_Model( data );
+				// Add a new section model.
+				models.sections[ data.name ] = new Section_Model( data );
 
 				// Add section model to collection.
-				section_collections[ manager.name ].add( section_models[ data.name ] );
+				collections.sections[ manager.name ].add( models.sections[ data.name ] );
 
 				// Add a new manager view.
-				section_views[ data.name ] = new Section_View( {
-					model    : section_models[ data.name ],
+				views.sections[ data.name ] = new Section_View( {
+					model    : models.sections[ data.name ],
 					el       : container + ' .butterbean-content',
-					template : section_templates[ data.type ]
+					template : templates.sections[ data.type ]
 				} );
 
 				// Add a control collection for this section.
-				control_collections[ manager.name + '-' + data.name ] = new Control_Collection();
+				collections.controls[ manager.name + '-' + data.name ] = new Control_Collection();
 			} );
 
 			// Loop through the controls and create a template for each type.
 			_.each( manager.controls, function( data ) {
 
 				// Only add a new control template if we have a different control type.
-				if ( typeof control_templates[ data.type ] === 'undefined' ) {
-					control_templates[ data.type ] = wp.template( 'butterbean-control-' + data.type );
+				if ( typeof templates.controls[ data.type ] === 'undefined' ) {
+					templates.controls[ data.type ] = wp.template( 'butterbean-control-' + data.type );
 				}
 
-				// Add a new manager model.
-				control_models[ data.name ] = new Section_Model( data );
+				// Add a new control model.
+				models.controls[ data.name ] = new Control_Model( data );
 
 				// Add control model to collection.
-				control_collections[ data.manager + '-' + data.section ].add( control_models[ data.name ] );
+				collections.controls[ data.manager + '-' + data.section ].add( models.controls[ data.name ] );
 
 				// Add a new manager view.
-				control_views[ data.name ] = new Section_View( {
-					model    : control_models[ data.name ],
+				views.controls[ data.name ] = new Control_View( {
+					model    : models.controls[ data.name ],
 					el       : container + ' #butterbean-' + data.manager + '-section-' + data.section,
-					template : control_templates[ data.type ]
+					template : templates.controls[ data.type ]
 				} );
 			} );
 		} );
 	}
+
+	// Dev.
+	//var butterbean = { models : models, collections : collections, views : views, templates : templates };
+	//console.log( butterbean );
 
 	/* ====== Tabs ====== */
 
