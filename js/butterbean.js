@@ -1,23 +1,87 @@
 ( function( $ ) {
 
+	// Set up our variables.
+	var manager_models      = {},
+	    manager_collection  = {},
+	    manager_views       = {},
+	    manager_models      = {},
+	    manager_collection  = {},
+	    manager_views       = {},
+	    manager_templates   = {},
+	    section_models      = {},
+	    section_collections = {},
+	    section_views       = {},
+	    section_templates   = {},
+	    control_models      = {},
+	    control_collections = {},
+	    control_views       = {},
+	    control_templates   = {};
+
+	// Models.
+	var ButterBean_Model = Backbone.Model.extend( {} );
+	var Manager_Model    = ButterBean_Model.extend( {} );
+	var Section_Model    = ButterBean_Model.extend( {} );
+	var Control_Model    = ButterBean_Model.extend( {} );
+
+	// Collections.
+	var Manager_Collection = Backbone.Collection.extend( { model : Manager_Model } );
+	var Section_Collection = Backbone.Collection.extend( { model : Section_Model } );
+	var Control_Collection = Backbone.Collection.extend( { model : Control_Model } );
+
+	// Views
+	var ButterBean_View = Backbone.View.extend( {
+		initialize : function( options ) {
+			this.template = options.template;
+			this.render();
+		},
+		render: function() {
+			this.$el.append( this.template( this.model.attributes ) );
+			return this;
+	      }
+	} );
+
+	var Manager_View = ButterBean_View.extend( {} );
+	var Section_View = ButterBean_View.extend( {} );
+	var Control_View = ButterBean_View.extend( {} );
+
+	// Create new manager collection.
+	manager_collection = new Manager_Collection();
+
 	/* === Underscore Templates === */
 
 	// Make sure we have the data passed in via `wp_localize_script()`, which is the
 	// sections and controls JSON.
 	if ( 'undefined' !== typeof butterbean_data ) {
 
-		// Set up some objects for our templates.
-		var section_templates = {};
-		var control_templates = {};
-
 		// Nav template.
 		var nav_template = wp.template( 'butterbean-nav' );
 
-		// Loop through each of the managers and add handle templates.
+		// Loop through each of the managers and handle templates.
 		_.each( butterbean_data.managers, function( manager ) {
 
 			// Set the container ID for this manager.
 			var container = '#' + manager.name;
+
+			// Only add a new manager template if we have a different manager type.
+			if ( typeof manager_templates[ manager.type ] === 'undefined' ) {
+
+				manager_templates[ manager.type ] = wp.template( 'butterbean-manager-' + manager.type );
+			}
+
+			// Add a new manager model.
+			manager_models[ manager.name ] = new Manager_Model( manager );
+
+			// Add manager model to collection.
+			manager_collection.add( manager_models[ manager.name ] );
+
+			// Add a new manager view.
+			manager_views[ manager.name ] = new Manager_View( {
+				model    : manager_models[ manager.name ],
+				el       : container,
+				template : manager_templates[ manager.type ]
+			} );
+
+			section_collections[ manager.name ] = new Section_Collection();
 
 			// Adds the `.butterbean-manager` class to the container (meta box).
 			$( container ).addClass( 'butterbean-manager' );
@@ -27,46 +91,51 @@
 			// Loop through the sections and create a template for each type.
 			_.each( manager.sections, function( data ) {
 
-				var type = data.type;
+				// Append manager nav item.
+				$( container + ' .butterbean-nav' ).append( nav_template( data ) );
 
 				// Only add a new section template if we have a different section type.
-				if ( typeof section_templates.type === 'undefined' ) {
-					section_templates[ type ] = wp.template( 'butterbean-section-' + type );
+				if ( typeof section_templates[ data.type ] === 'undefined' ) {
+					section_templates[ data.type ] = wp.template( 'butterbean-section-' + data.type );
 				}
+
+				// Add a new manager model.
+				section_models[ data.name ] = new Section_Model( data );
+
+				// Add section model to collection.
+				section_collections[ manager.name ].add( section_models[ data.name ] );
+
+				// Add a new manager view.
+				section_views[ data.name ] = new Section_View( {
+					model    : section_models[ data.name ],
+					el       : container + ' .butterbean-content',
+					template : section_templates[ data.type ]
+				} );
+
+				// Add a control collection for this section.
+				control_collections[ manager.name + '-' + data.name ] = new Control_Collection();
 			} );
 
 			// Loop through the controls and create a template for each type.
 			_.each( manager.controls, function( data ) {
 
-				var type = data.type;
-
 				// Only add a new control template if we have a different control type.
-				if ( typeof control_templates.type === 'undefined' ) {
-					control_templates[ type ] = wp.template( 'butterbean-control-' + type );
+				if ( typeof control_templates[ data.type ] === 'undefined' ) {
+					control_templates[ data.type ] = wp.template( 'butterbean-control-' + data.type );
 				}
-			} );
 
-			/* === Append the templates. === */
+				// Add a new manager model.
+				control_models[ data.name ] = new Section_Model( data );
 
-			// Loop through the sections and append the template for each.
-			_.each( manager.sections, function( data ) {
+				// Add control model to collection.
+				control_collections[ data.manager + '-' + data.section ].add( control_models[ data.name ] );
 
-				// Use the section type to get the corect template.
-				var template = section_templates[ data.type ];
-
-				// Pass the section data to the nav template and section template and append.
-				$( container + ' .butterbean-nav'     ).append( nav_template( data ) );
-				$( container + ' .butterbean-content' ).append( template( data     ) );
-			} );
-
-			// Loop through the controls and append the template for each.
-			_.each( manager.controls, function( data ) {
-
-				// Use the control type to get the correct template.
-				var template = control_templates[ data.type ];
-
-				// Pass the control data to the control template and append.
-				$( container + ' #butterbean-' + data.manager + '-section-' + data.section ).append( template( data ) );
+				// Add a new manager view.
+				control_views[ data.name ] = new Section_View( {
+					model    : control_models[ data.name ],
+					el       : container + ' #butterbean-' + data.manager + '-section-' + data.section,
+					template : control_templates[ data.type ]
+				} );
 			} );
 		} );
 	}

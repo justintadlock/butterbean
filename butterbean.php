@@ -259,7 +259,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		public function enqueue() {
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-			wp_enqueue_script( 'butterbean', $this->dir_uri . "js/butterbean{$min}.js", array( 'wp-util' ), '', true );
+			wp_enqueue_script( 'butterbean', $this->dir_uri . "js/butterbean{$min}.js", array( 'backbone', 'wp-util' ), '', true );
 
 			wp_enqueue_style( 'butterbean', $this->dir_uri . "css/butterbean{$min}.css" );
 		}
@@ -306,10 +306,6 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			// Nonce field to validate on save.
 			wp_nonce_field( "butterbean_{$manager->name}_nonce", "butterbean_{$manager->name}" ); ?>
 
-			<div class="butterbean-ui">
-				<ul class="butterbean-nav"></ul>
-				<div class="butterbean-content"></div>
-			</div><!-- .butterbean-ui -->
 		<?php }
 
 		/**
@@ -338,6 +334,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 */
 		public function print_templates() {
 
+			$m_templates = array();
 			$s_templates = array();
 			$c_templates = array(); ?>
 
@@ -346,6 +343,14 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			</script>
 
 			<?php foreach ( $this->managers as $manager ) {
+
+				if ( ! in_array( $manager->type, $m_templates ) ) {
+					$m_templates[] = $manager->type; ?>
+
+					<script type="text/html" id="tmpl-butterbean-manager-<?php echo esc_attr( $manager->type ); ?>">
+						<?php $manager->print_template(); ?>
+					</script>
+				<?php }
 
 				foreach ( $manager->sections as $section ) {
 

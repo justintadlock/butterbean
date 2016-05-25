@@ -20,6 +20,15 @@
 class ButterBean_Manager {
 
 	/**
+	 * The type of manager.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
+	public $type = 'default';
+
+	/**
 	 * Name of this instance of the manager.
 	 *
 	 * @since  1.0.0
@@ -331,6 +340,7 @@ class ButterBean_Manager {
 		$sections_with_controls = array();
 
 		$this->json['name'] = $this->name;
+		$this->json['type'] = $this->type;
 
 		// Get all sections that have controls.
 		foreach ( $this->controls as $control ) {
@@ -369,5 +379,27 @@ class ButterBean_Manager {
 		// Loop through each setting and save it.
 		foreach ( $this->settings as $setting )
 			$setting->save( $this->post_id );
+	}
+
+	/**
+	 * Prints Underscore.js template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function print_template() {
+		$this->template();
+	}
+
+	/**
+	 * Gets the Underscore.js template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function template() {
+		butterbean_get_template( 'manager', $this->type );
 	}
 }
