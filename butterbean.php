@@ -339,7 +339,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			$c_templates = array(); ?>
 
 			<script type="text/html" id="tmpl-butterbean-nav">
-				<?php butterbean_get_template( 'manager', 'nav' ); ?>
+				<?php butterbean_get_template( 'nav' ); ?>
 			</script>
 
 			<?php foreach ( $this->managers as $manager ) {
