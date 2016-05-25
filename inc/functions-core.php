@@ -36,10 +36,10 @@ function butterbean_get_template( $name, $slug = '' ) {
 
 	$templates = array();
 
-	$templates[] = "{$name}.php";
-
 	if ( $slug )
 		$templates[] = "{$name}-{$slug}.php";
+
+	$templates[] = "{$name}.php";
 
 	foreach ( $templates as $template ) {
 
