@@ -66,7 +66,7 @@
 			// Add a new manager view.
 			views.managers[ manager.name ] = new Manager_View( {
 				model    : models.managers[ manager.name ],
-				el       : container,
+				el       : container + ' .inside',
 				template : templates.managers[ manager.type ]
 			} );
 
