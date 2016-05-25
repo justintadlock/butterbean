@@ -1,46 +1,46 @@
 ( function( $ ) {
 
+	/* === Backbone + Underscore === */
+
 	// Set up our variables.
 	var models      = { managers : {}, sections : {}, controls : {} },
 	    collections = { managers : {}, sections : {}, controls : {} },
 	    views       = { managers : {}, sections : {}, controls : {} },
 	    templates   = { managers : {}, sections : {}, controls : {} };
 
-	// Models.
-	var ButterBean_Model = Backbone.Model.extend( {} );
-	var Manager_Model    = ButterBean_Model.extend( {} );
-	var Section_Model    = ButterBean_Model.extend( {} );
-	var Control_Model    = ButterBean_Model.extend( {} );
-
-	// Collections.
-	var Manager_Collection = Backbone.Collection.extend( { model : Manager_Model } );
-	var Section_Collection = Backbone.Collection.extend( { model : Section_Model } );
-	var Control_Collection = Backbone.Collection.extend( { model : Control_Model } );
-
-	// Views
-	var ButterBean_View = Backbone.View.extend( {
-		initialize : function( options ) {
-			this.template = options.template;
-			this.render();
-		},
-		render: function() {
-			this.$el.append( this.template( this.model.attributes ) );
-			return this;
-	      }
-	} );
-
-	var Manager_View = ButterBean_View.extend( {} );
-	var Section_View = ButterBean_View.extend( {} );
-	var Control_View = ButterBean_View.extend( {} );
-
-	// Create new manager collection.
-	collections.managers = new Manager_Collection();
-
-	/* === Underscore Templates === */
-
 	// Make sure we have the data passed in via `wp_localize_script()`, which is the
-	// sections and controls JSON.
+	// managers, sections, and controls JSON.
 	if ( 'undefined' !== typeof butterbean_data ) {
+
+		// Models.
+		var ButterBean_Model = Backbone.Model.extend( {} );
+		var Manager_Model    = ButterBean_Model.extend( {} );
+		var Section_Model    = ButterBean_Model.extend( {} );
+		var Control_Model    = ButterBean_Model.extend( {} );
+
+		// Collections.
+		var Manager_Collection = Backbone.Collection.extend( { model : Manager_Model } );
+		var Section_Collection = Backbone.Collection.extend( { model : Section_Model } );
+		var Control_Collection = Backbone.Collection.extend( { model : Control_Model } );
+
+		// Views
+		var ButterBean_View = Backbone.View.extend( {
+			initialize : function( options ) {
+				this.template = options.template;
+				this.render();
+			},
+			render: function() {
+				this.$el.append( this.template( this.model.attributes ) );
+				return this;
+		      }
+		} );
+
+		var Manager_View = ButterBean_View.extend( {} );
+		var Section_View = ButterBean_View.extend( {} );
+		var Control_View = ButterBean_View.extend( {} );
+
+		// Create new manager collection.
+		collections.managers = new Manager_Collection();
 
 		// Nav template.
 		var nav_template = wp.template( 'butterbean-nav' );
@@ -52,7 +52,7 @@
 			var container = '#' + manager.name;
 
 			// Only add a new manager template if we have a different manager type.
-			if ( typeof templates.managers[ manager.type ] === 'undefined' ) {
+			if ( 'undefined' === typeof templates.managers[ manager.type ] ) {
 
 				templates.managers[ manager.type ] = wp.template( 'butterbean-manager-' + manager.type );
 			}
@@ -84,7 +84,7 @@
 				$( container + ' .butterbean-nav' ).append( nav_template( data ) );
 
 				// Only add a new section template if we have a different section type.
-				if ( typeof templates.sections[ data.type ] === 'undefined' ) {
+				if ( 'undefined' === typeof templates.sections[ data.type ] ) {
 					templates.sections[ data.type ] = wp.template( 'butterbean-section-' + data.type );
 				}
 
@@ -109,7 +109,7 @@
 			_.each( manager.controls, function( data ) {
 
 				// Only add a new control template if we have a different control type.
-				if ( typeof templates.controls[ data.type ] === 'undefined' ) {
+				if ( 'undefined' === typeof templates.controls[ data.type ] ) {
 					templates.controls[ data.type ] = wp.template( 'butterbean-control-' + data.type );
 				}
 
@@ -128,10 +128,6 @@
 			} );
 		} );
 	}
-
-	// Dev.
-	//var butterbean = { models : models, collections : collections, views : views, templates : templates };
-	//console.log( butterbean );
 
 	/* ====== Tabs ====== */
 
