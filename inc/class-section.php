@@ -127,6 +127,7 @@ class ButterBean_Section {
 	 */
 	public function to_json() {
 
+		$this->json['manager']     = $this->manager->name;
 		$this->json['name']        = $this->name;
 		$this->json['type']        = $this->type;
 		$this->json['icon']        = preg_match( '/dashicons-/', $this->icon ) ? sprintf( 'dashicons %s', sanitize_html_class( $this->icon ) ) : esc_attr( $this->icon );
@@ -143,7 +144,7 @@ class ButterBean_Section {
 	 */
 	public function print_template() { ?>
 
-		<div id="butterbean-section-{{ data.name }}" class="butterbean-section butterbean-section-{{ data.type }}">
+		<div id="butterbean-{{ data.manager }}-section-{{ data.name }}" class="butterbean-section butterbean-section-{{ data.type }}">
 			<?php $this->template(); ?>
 		</div>
 	<?php }

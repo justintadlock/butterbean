@@ -66,7 +66,7 @@
 				var template = control_templates[ data.type ];
 
 				// Pass the control data to the control template and append.
-				$( container + ' #butterbean-section-' + data.section ).append( template( data ) );
+				$( container + ' #butterbean-' + data.manager + '-section-' + data.section ).append( template( data ) );
 			} );
 		} );
 	}
@@ -90,7 +90,13 @@
 
 	// Copies the current tab item title to the box header.
 	$( '.butterbean-title' ).append( ' <span class="butterbean-which-tab" />' );
-	$( '.butterbean-which-tab' ).text( $( '.butterbean-nav :first-child a' ).text() );
+
+	$( '.butterbean-which-tab' ).each( function() {
+
+		var text = $( this ).parents( '.butterbean-manager' ).find( '.butterbean-nav :first-child a' ).text();
+
+		$( this ).text( text );
+	} );
 
 	// When a tab nav item is clicked.
 	$( '.butterbean-nav li a' ).click(
@@ -99,23 +105,23 @@
 			// Prevent the default browser action when a link is clicked.
 			j.preventDefault();
 
-			// Get the `href` attribute of the item.
-			var href = $( this ).attr( 'href' );
+			// Get the manager.
+			var manager = $( this ).parents( '.butterbean-manager' );
 
 			// Hide all tab content.
-			$( this ).parents( '.butterbean-ui' ).find( '.butterbean-section' ).hide();
+			$( manager ).find( '.butterbean-section' ).hide();
 
 			// Find the tab content that matches the tab nav item and show it.
-			$( this ).parents( '.butterbean-ui' ).find( href ).show();
+			$( manager ).find( $( this ).attr( 'href' ) ).show();
 
 			// Set the `aria-selected` attribute to false for all tab nav items.
-			$( this ).parents( '.butterbean-ui' ).find( '.butterbean-nav li' ).attr( 'aria-selected', 'false' );
+			$( manager ).find( '.butterbean-nav li' ).attr( 'aria-selected', 'false' );
 
 			// Set the `aria-selected` attribute to true for this tab nav item.
 			$( this ).parent().attr( 'aria-selected', 'true' );
 
 			// Copy the current tab item title to the box header.
-			$( '.butterbean-which-tab' ).text( $( this ).text() );
+			$( manager ).find( '.butterbean-which-tab' ).text( $( this ).text() );
 		}
 	); // click()
 
