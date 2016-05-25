@@ -72,8 +72,8 @@
 
 			collections.sections[ manager.name ] = new Section_Collection();
 
-			// Adds the `.butterbean-manager` class to the container (meta box).
-			$( container ).addClass( 'butterbean-manager' );
+			// Adds the `.butterbean-ui` class to the container (meta box).
+			$( container ).addClass( 'butterbean-ui' );
 
 			/* === Create templates. === */
 
@@ -136,7 +136,7 @@
 	/* ====== Tabs ====== */
 
 	// Looks for `.hndle` and adds the `.butterbean-title` class.
-	$( '.butterbean-manager .hndle' ).addClass( 'butterbean-title' );
+	$( '.butterbean-ui .hndle' ).addClass( 'butterbean-title' );
 
 	// Adds the core WP `.description` class to any `.butterbean-description` elements.
 	$( '.butterbean-ui .butterbean-description' ).addClass( 'description' );
@@ -155,7 +155,7 @@
 
 	$( '.butterbean-which-tab' ).each( function() {
 
-		var text = $( this ).parents( '.butterbean-manager' ).find( '.butterbean-nav :first-child a' ).text();
+		var text = $( this ).parents( '.butterbean-ui' ).find( '.butterbean-nav :first-child a' ).text();
 
 		$( this ).text( text );
 	} );
@@ -168,7 +168,7 @@
 			j.preventDefault();
 
 			// Get the manager.
-			var manager = $( this ).parents( '.butterbean-manager' );
+			var manager = $( this ).parents( '.butterbean-ui' );
 
 			// Hide all tab content.
 			$( manager ).find( '.butterbean-section' ).hide();

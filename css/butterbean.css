@@ -1,21 +1,21 @@
 
 /* Wrapper box */
 
-.butterbean-manager { }
+.butterbean-ui { }
 
-	.butterbean-manager > .hndle {
+	.butterbean-ui > .hndle {
 		padding:       10px !important;
 		border-bottom: 1px solid #eee;
 	}
 
-	.butterbean-manager .inside {
+	.butterbean-ui .inside {
 		margin:  0 !important;
 		padding: 0;
 	}
 
 /* Tabs wrapper. */
 
-.butterbean-ui {
+.butterbean-manager {
 	overflow:   hidden;
 	background: #fff;
 	background: linear-gradient( 90deg, #fafafa 0%, #fafafa 20%, #fff 20%, #fff 100% );
@@ -23,7 +23,7 @@
 
 	@media only screen and ( max-width: 782px ) {
 
-		.butterbean-manager {
+		.butterbean-ui {
 			background: linear-gradient( 90deg, #fafafa 0%, #fafafa 48px, #fff 48px, #fff 100% );
 		}
 	}
