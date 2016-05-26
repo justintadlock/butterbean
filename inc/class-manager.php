@@ -51,7 +51,7 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @var    string
+	 * @var    string|array
 	 */
 	public $post_type = 'post';
 
@@ -136,6 +136,9 @@ class ButterBean_Manager {
 			if ( isset( $args[ $key ] ) )
 				$this->$key = $args[ $key ];
 		}
+
+		// Make sure the post type is an array.
+		$this->post_type = (array) $this->post_type;
 
 		// Set the manager name.
 		$this->name = sanitize_key( $name );

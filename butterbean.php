@@ -168,7 +168,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			foreach ( $this->managers as $manager ) {
 
 				// If we found a matching post type, add our actions/filters.
-				if ( $post_type === $manager->post_type ) {
+				if ( in_array( $post_type, (array) $manager->post_type ) ) {
 
 					// Add meta boxes.
 					add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
@@ -276,15 +276,18 @@ if ( ! class_exists( 'ButterBean' ) ) {
 
 			foreach ( $this->managers as $manager ) {
 
-				add_meta_box(
-					"butterbean-ui-{$manager->name}",
-					$manager->label,
-					array( $this, 'meta_box' ),
-					$manager->post_type,
-					$manager->context,
-					$manager->priority,
-					array( 'manager' => $manager )
-				);
+				foreach ( (array) $manager->post_type as $type ) {
+
+					add_meta_box(
+						"butterbean-ui-{$manager->name}",
+						$manager->label,
+						array( $this, 'meta_box' ),
+						$type,
+						$manager->context,
+						$manager->priority,
+						array( 'manager' => $manager )
+					);
+				}
 			}
 		}
 
