@@ -5,15 +5,17 @@
 		return;
 	}
 
-	console.log( butterbean_data );
-
 	/* === Backbone + Underscore === */
 
 	// Set up a variable to house our templates.
 	var templates = { managers : {}, sections : {}, controls : {} };
 
+	// Nav template.
+	var nav_template = wp.template( 'butterbean-nav' );
+
 	/* === Models === */
 
+	// Manager model (each manager is housed within a meta box).
 	var Manager_Model = Backbone.Model.extend( {
 		defaults: {
 			name     : '',
@@ -23,6 +25,7 @@
 		}
 	} );
 
+	// Section model (each section belongs to a manager).
 	var Section_Model = Backbone.Model.extend( {
 		defaults: {
 			name        : '',
@@ -34,6 +37,7 @@
 		}
 	} );
 
+	// Control model (each control belongs to a manager and section).
 	var Control_Model = Backbone.Model.extend( {
 		defaults: {
 			name        : '',
@@ -52,18 +56,21 @@
 
 	/* === Collections === */
 
-	var ButterBean_Managers = Backbone.Collection.extend( {
+	// Collection of managers.
+	var Manager_Collection = Backbone.Collection.extend( {
 		model : Manager_Model
 	} );
 
 	/* === Views === */
 
-	var ButterBean_Managers_View = Backbone.View.extend( {
+	// Manager collection view. Handles the output for all managers.
+	var Manager_Collection_View = Backbone.View.extend( {
 		collection : null,
 		render     : function() {
 
 			jQuery( this.el ).empty();
 
+			// Loop through each manager in the collection and render its view.
 			this.collection.forEach( function( manager ) {
 
 				var view = new Manager_View( {
@@ -78,6 +85,7 @@
 		}
 	} );
 
+	// Manager view.  Handles the output of a manager.
 	var Manager_View = Backbone.View.extend( {
 		initialize : function( options ) {
 
@@ -92,6 +100,7 @@
 		render : function() {
 			this.$el.append( this.template( this.model.toJSON() ) );
 
+			// Loop through each section for the manager and render its view.
 			_.each( this.model.attributes.sections, function( data ) {
 
 				var section = new Section_Model( data );
@@ -106,6 +115,7 @@
 				view.render();
 			} );
 
+			// Loop through each control for the manager and render its view.
 			_.each( this.model.attributes.controls, function( data ) {
 
 				var control = new Control_Model( data );
@@ -117,9 +127,12 @@
 
 				view.render();
 			} );
+
+			return this;
 		}
 	} );
 
+	// Section view.  Handles the output of a section.
 	var Section_View = Backbone.View.extend( {
 		initialize: function( options ) {
 
@@ -136,6 +149,7 @@
 		}
 	} );
 
+	// Control view. Handles the output of a control.
 	var Control_View = Backbone.View.extend( {
 		initialize: function( options ) {
 			var type = this.model.attributes.type;
@@ -152,25 +166,22 @@
 		}
 	} );
 
-	// Nav template.
-	var nav_template = wp.template( 'butterbean-nav' );
-
 	// Create a new manager collection.
-	var butterbean_managers = new ButterBean_Managers();
+	var managers = new Manager_Collection();
 
-	// Loop through each of the managers and handle templates.
+	// Loop through each of the managers and add it to the collection.
 	_.each( butterbean_data.managers, function( manager ) {
 
 		// Add a new manager model to the managers collection.
-		butterbean_managers.add( new Manager_Model( manager ) );
+		managers.add( new Manager_Model( manager ) );
 
 		// Adds the `.butterbean-ui` class to the container (meta box).
 		$( '#butterbean-ui-' + manager.name ).addClass( 'butterbean-ui' );
 	} );
 
 	// Create a new view for the manager collection.
-	var view = new ButterBean_Managers_View( {
-		collection : butterbean_managers
+	var view = new Manager_Collection_View( {
+		collection : managers
 	} );
 
 	// Render the managers.
