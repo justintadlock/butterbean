@@ -95,9 +95,9 @@ class ButterBean_Setting {
 	 * @access public
 	 * @return mixed
 	 */
-	public function get_value( $post_id ) {
+	public function get_value() {
 
-		return get_post_meta( $post_id, $this->name, true );
+		return get_post_meta( $this->manager->post_id, $this->name, true );
 	}
 
 	/**
@@ -136,17 +136,17 @@ class ButterBean_Setting {
 	 * @access public
 	 * @return void
 	 */
-	public function save( $post_id ) {
+	public function save() {
 
-		$old_value = $this->get_value( $post_id );
+		$old_value = $this->get_value();
 		$new_value = $this->get_posted_value();
 
 		// If we have don't have a new value but do have an old one, delete it.
 		if ( ! $new_value && $old_value )
-			delete_post_meta( $post_id, $this->name );
+			delete_post_meta( $this->manager->post_id, $this->name );
 
 		// If the new value doesn't match the old value, set it.
 		else if ( $new_value !== $old_value )
-			update_post_meta( $post_id, $this->name, $new_value );
+			update_post_meta( $this->manager->post_id, $this->name, $new_value );
 	}
 }

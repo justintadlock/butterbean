@@ -24,9 +24,9 @@ class ButterBean_Setting_Array extends ButterBean_Setting {
 	 * @access public
 	 * @return mixed
 	 */
-	public function get_value( $post_id ) {
+	public function get_value() {
 
-		return get_post_meta( $post_id, $this->name );
+		return get_post_meta( $this->manager->post_id, $this->name );
 	}
 
 	/**
@@ -62,21 +62,20 @@ class ButterBean_Setting_Array extends ButterBean_Setting {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  int     $post_id
 	 * @return void
 	 */
-	public function save( $post_id ) {
+	public function save() {
 
-		$old_values = $this->get_value( $post_id );
+		$old_values = $this->get_value();
 		$new_values = $this->get_posted_value();
 
 		// If there's an array of posted values, set them.
 		if ( is_array( $new_values ) )
-			$this->set_values( $post_id, $new_values, $old_values );
+			$this->set_values( $new_values, $old_values );
 
 		// If no array of posted values but we have old values, delete them.
 		else if ( $old_values )
-			$this->delete_values( $post_id );
+			$this->delete_values();
 	}
 
 	/**
@@ -84,23 +83,22 @@ class ButterBean_Setting_Array extends ButterBean_Setting {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  int     $post_id
 	 * @param  array   $new_values
 	 * @param  array   $old_values
 	 * @return void
 	 */
-	public function set_values( $post_id, $new_values, $old_values ) {
+	public function set_values( $new_values, $old_values ) {
 
 		foreach ( $new_values as $new ) {
 
 			if ( ! in_array( $new, $old_values ) )
-				$this->add_value( $post_id, $new );
+				$this->add_value( $new );
 		}
 
 		foreach ( $old_values as $old ) {
 
 			if ( ! in_array( $old, $new_values ) )
-				$this->remove_value( $post_id, $old );
+				$this->remove_value( $old );
 		}
 	}
 
@@ -109,12 +107,11 @@ class ButterBean_Setting_Array extends ButterBean_Setting {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  int     $post_id
 	 * @return void
 	 */
-	public function delete_values( $post_id ) {
+	public function delete_values() {
 
-		return delete_post_meta( $post_id, $this->name );
+		return delete_post_meta( $this->manager->post_id, $this->name );
 	}
 
 	/**
@@ -122,13 +119,12 @@ class ButterBean_Setting_Array extends ButterBean_Setting {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  int     $post_id
 	 * @param  mixed   $value
 	 * @return bool
 	 */
-	public function add_value( $post_id, $value ) {
+	public function add_value( $value ) {
 
-		return add_post_meta( $post_id, $this->name, $value, false );
+		return add_post_meta( $this->manager->post_id, $this->name, $value, false );
 	}
 
 	/**
@@ -136,12 +132,11 @@ class ButterBean_Setting_Array extends ButterBean_Setting {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  int     $post_id
 	 * @param  mixed   $value
 	 * @return bool
 	 */
-	public function remove_value( $post_id, $value ) {
+	public function remove_value( $value ) {
 
-		return delete_post_meta( $post_id, $this->name, $value );
+		return delete_post_meta( $this->manager->post_id, $this->name, $value );
 	}
 }

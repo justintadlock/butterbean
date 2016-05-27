@@ -380,7 +380,7 @@ class ButterBean_Manager {
 
 		// Loop through each setting and save it.
 		foreach ( $this->settings as $setting )
-			$setting->save( $this->post_id );
+			$setting->save();
 	}
 
 	/**

@@ -72,7 +72,7 @@ class ButterBean_Control_Parent extends ButterBean_Control {
 			array(
 				'post_type'      => $this->post_type,
 				'post_status'    => 'any',
-				'post__not_in'   => array( $post_id ),
+				'post__not_in'   => array( $this->manager->post_id ),
 				'posts_per_page' => -1,
 				'post_parent'    => 0,
 				'orderby'        => 'title',
