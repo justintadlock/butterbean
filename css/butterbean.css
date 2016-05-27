@@ -21,9 +21,13 @@
 	background: linear-gradient( 90deg, #fafafa 0%, #fafafa 20%, #fff 20%, #fff 100% );
 }
 
+	#side-sortables .butterbean-manager {
+		background: linear-gradient( 90deg, #fafafa 0%, #fafafa 48px, #fff 48px, #fff 100% );
+	}
+
 	@media only screen and ( max-width: 782px ) {
 
-		.butterbean-ui {
+		.butterbean-manager {
 			background: linear-gradient( 90deg, #fafafa 0%, #fafafa 48px, #fff 48px, #fff 100% );
 		}
 	}
@@ -74,7 +78,6 @@
 			}
 
 	@media only screen and ( max-width: 782px ) {
-
 		.butterbean-nav { width: 48px; }
 
 		.butterbean-nav li a .dashicons {
@@ -113,6 +116,53 @@
 		.butterbean-content {
 			width: calc( 100% - 48px );
 		}
+	}
+
+/* === Manager when in the side meta box. === */
+
+@media only screen and ( min-width: 850px ) {
+
+	#side-sortables .butterbean-manager { background: #fff; }
+
+	#side-sortables .butterbean-content { width: 100%; }
+
+	#side-sortables .butterbean-which-tab { display: inline-block; }
+
+	#side-sortables .butterbean-nav {
+		display: table;
+		width:   100%;
+	}
+
+		#side-sortables .butterbean-nav li {
+			display:      table-cell;
+			text-align:   center;
+			border-right: 1px solid #eee;
+		}
+
+			#side-sortables .butterbean-nav li:last-of-type { border-right: none; }
+
+		#side-sortables .butterbean-nav li a .dashicons {
+			width:       24px;
+			height:      24px;
+			font-size:   24px;
+			line-height: 24px;
+		}
+
+			#side-sortables .butterbean-nav li .dashicons::before {
+				width:  24px;
+				height: 24px;
+			}
+
+			#side-sortables .butterbean-which-tab { display: none; }
+
+			#side-sortables .butterbean-nav li .label {
+				overflow: hidden;
+				position: absolute;
+				top:      -1000em;
+				left:     -1000em;
+				width:    1px;
+				height:   1px;
+			}
 	}
 
 
