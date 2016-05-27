@@ -52,6 +52,15 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		public $managers = array();
 
 		/**
+		 * Array of control types.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @var    array
+		 */
+		public $control_types = array();
+
+		/**
 		 * Returns the instance.
 		 *
 		 * @since  1.0.0
@@ -158,6 +167,9 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			// Get the current post type.
 			$post_type = get_current_screen()->post_type;
 
+			// Register control types.
+			$this->register_control_types();
+
 			// Action hook for registering managers.
 			do_action( 'butterbean_register', $this, $post_type );
 
@@ -248,6 +260,35 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		public function manager_exists( $name ) {
 
 			return isset( $this->managers[ $name ] );
+		}
+
+		/**
+		 * Registers our control types so that devs don't have to directly instantiate
+		 * the class each time they register a control.  Instead, they can use the
+		 * `type` argument.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @return void
+		 */
+		public function register_control_types() {
+
+			$types = array(
+				'checkbox'      => 'ButterBean_Control_Checkbox',
+				'checkboxes'    => 'ButterBean_Control_Checkboxes',
+				'color'         => 'ButterBean_Control_Color',
+				'date'          => 'ButterBean_Control_Date',
+				'radio'         => 'ButterBean_Control_Radio',
+				'select'        => 'ButterBean_Control_Select',
+				'text'          => 'ButterBean_Control_Text',
+				'textarea'      => 'ButterBean_Control_Textarea',
+
+				'excerpt'       => 'ButterBean_Control_Excerpt',
+				'multi-avatars' => 'ButterBean_Control_Multi_Avatars',
+				'parent'        => 'ButterBean_Control_Parent'
+			);
+
+			$this->control_types = apply_filters( 'butterbean_control_types', $types );
 		}
 
 		/**

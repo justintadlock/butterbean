@@ -173,8 +173,21 @@ class ButterBean_Manager {
 	 */
 	public function register_control( $control, $args = array() ) {
 
-		if ( ! is_object( $control ) )
-			$control = new ButterBean_Control( $this, $control, $args );
+		if ( ! is_object( $control ) ) {
+
+			// If the type is set, let's check if there's a registered control type.
+			if ( isset( $args['type'] ) && isset( butterbean()->control_types[ $args['type'] ] ) ) {
+
+				$object = butterbean()->control_types[ $args['type'] ];
+
+				$control = new $object( $this, $control, $args );
+
+			// Fall back to the default control.
+			} else {
+
+				$control = new ButterBean_Control( $this, $control, $args );
+			}
+		}
 
 		if ( ! $this->control_exists( $control->name ) )
 			$this->controls[ $control->name ] = $control;
