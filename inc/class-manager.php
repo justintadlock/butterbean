@@ -346,11 +346,8 @@ class ButterBean_Manager {
 		$this->json['type'] = $this->type;
 
 		// Get all sections that have controls.
-		foreach ( $this->controls as $control ) {
+		foreach ( $this->controls as $control )
 			$sections_with_controls[] = $control->section;
-
-			$this->get_section( $control->section )->controls[] = $control->get_json();
-		}
 
 		$sections_with_controls = array_unique( $sections_with_controls );
 
@@ -359,6 +356,10 @@ class ButterBean_Manager {
 			if ( in_array( $section->name, $sections_with_controls ) )
 				$this->json['sections'][] = $section->get_json();
 		}
+
+		// Get the JSON data for each control.
+		foreach ( $this->controls as $control )
+			$this->json['controls'][] = $control->get_json();
 	}
 
 	/**

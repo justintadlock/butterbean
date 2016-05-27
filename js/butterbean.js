@@ -5,6 +5,8 @@
 		return;
 	}
 
+	console.log( butterbean_data );
+
 	/* === Backbone + Underscore === */
 
 	// Set up a variable to house our templates.
@@ -14,8 +16,10 @@
 
 	var Manager_Model = Backbone.Model.extend( {
 		defaults: {
-			name : '',
-			type : ''
+			name     : '',
+			type     : '',
+			sections : {},
+			controls : {}
 		}
 	} );
 
@@ -26,7 +30,6 @@
 			label       : '',
 			description : '',
 			icon        : '',
-			controls    : {},
 			manager     : ''
 		}
 	} );
@@ -51,10 +54,6 @@
 
 	var ButterBean_Managers = Backbone.Collection.extend( {
 		model : Manager_Model
-	} );
-
-	var ButterBean_Sections = Backbone.Collection.extend( {
-		model: Section_Model
 	} );
 
 	/* === Views === */
@@ -89,38 +88,13 @@
 			}
 
 			this.template = templates.managers[ type ];
-
 		},
 		render : function() {
 			this.$el.append( this.template( this.model.toJSON() ) );
 
-			var butterbean_sections = new ButterBean_Sections();
+			_.each( this.model.attributes.sections, function( data ) {
 
-			_.each( this.model.attributes.sections, function( section_json ) {
-
-				// Add a new section model.
-				butterbean_sections.add( new Section_Model( section_json ) );
-			} );
-
-			// Create a new view for the collection.
-			var view = new ButterBean_Sections_View( {
-				collection : butterbean_sections,
-				el         : this.model.attributes.name + ' .butterbean-content'
-			} );
-
-			// Render the sections.
-			view.render();
-		}
-	} );
-
-	var ButterBean_Sections_View = Backbone.View.extend( {
-		collection : null,
-
-		render : function() {
-
-			$( this.el ).empty();
-
-			this.collection.forEach( function( section ) {
+				var section = new Section_Model( data );
 
 				$( '#butterbean-ui-' + section.attributes.manager + ' .butterbean-nav' ).append( nav_template( section.attributes ) );
 
@@ -132,13 +106,22 @@
 				view.render();
 			} );
 
-			return this;
+			_.each( this.model.attributes.controls, function( data ) {
+
+				var control = new Control_Model( data );
+
+				var view = new Control_View( {
+					model : control,
+					el    : '#butterbean-' + control.attributes.manager + '-section-' + control.attributes.section
+				} );
+
+				view.render();
+			} );
 		}
 	} );
 
 	var Section_View = Backbone.View.extend( {
 		initialize: function( options ) {
-			this.controls = this.model.attributes.controls;
 
 			var type = this.model.attributes.type;
 
@@ -150,18 +133,6 @@
 		},
 		render: function() {
 			this.$el.append( this.template( this.model.toJSON() ) );
-
-			_.each( this.model.attributes.controls, function( control_json ) {
-
-				var control = new Control_Model( control_json );
-
-				var view = new Control_View( {
-					model : new Control_Model( control_json ),
-					el    : '#butterbean-' + control.attributes.manager + '-section-' + control.attributes.section
-				} );
-
-				view.render();
-			} );
 		}
 	} );
 

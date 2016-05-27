@@ -75,15 +75,6 @@ class ButterBean_Section {
 	public $description = '';
 
 	/**
-	 * Stores an array of controls assigned to the section.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @var    array()
-	 */
-	public $controls = array();
-
-	/**
 	 * Stores the JSON data for the manager.
 	 *
 	 * @since  1.0.0
@@ -142,7 +133,6 @@ class ButterBean_Section {
 		$this->json['icon']        = preg_match( '/dashicons-/', $this->icon ) ? sprintf( 'dashicons %s', sanitize_html_class( $this->icon ) ) : esc_attr( $this->icon );
 		$this->json['label']       = $this->label;
 		$this->json['description'] = $this->description;
-		$this->json['controls']    = $this->controls;
 	}
 
 	/**
