@@ -1,133 +1,217 @@
 ( function( $ ) {
 
+	// Bail if we don't have the JSON, which is passed in via `wp_localize_script()`.
+	if ( 'undefined' === typeof butterbean_data ) {
+		return;
+	}
+
 	/* === Backbone + Underscore === */
 
-	// Set up our variables.
-	var models      = { managers : {}, sections : {}, controls : {} },
-	    collections = { managers : {}, sections : {}, controls : {} },
-	    views       = { managers : {}, sections : {}, controls : {} },
-	    templates   = { managers : {}, sections : {}, controls : {} };
+	// Set up a variable to house our templates.
+	var templates = { managers : {}, sections : {}, controls : {} };
 
-	// Make sure we have the data passed in via `wp_localize_script()`, which is the
-	// managers, sections, and controls JSON.
-	if ( 'undefined' !== typeof butterbean_data ) {
+	/* === Models === */
 
-		// Models.
-		var ButterBean_Model = Backbone.Model.extend( {} );
-		var Manager_Model    = ButterBean_Model.extend( {} );
-		var Section_Model    = ButterBean_Model.extend( {} );
-		var Control_Model    = ButterBean_Model.extend( {} );
+	var Manager_Model = Backbone.Model.extend( {
+		defaults: {
+			name : '',
+			type : ''
+		}
+	} );
 
-		// Collections.
-		var Manager_Collection = Backbone.Collection.extend( { model : Manager_Model } );
-		var Section_Collection = Backbone.Collection.extend( { model : Section_Model } );
-		var Control_Collection = Backbone.Collection.extend( { model : Control_Model } );
+	var Section_Model = Backbone.Model.extend( {
+		defaults: {
+			name        : '',
+			type        : '',
+			label       : '',
+			description : '',
+			icon        : '',
+			controls    : {},
+			manager     : ''
+		}
+	} );
 
-		// Views
-		var ButterBean_View = Backbone.View.extend( {
-			initialize : function( options ) {
-				this.template = options.template;
-				this.render();
-			},
-			render: function() {
-				this.$el.append( this.template( this.model.attributes ) );
-				return this;
-		      }
-		} );
+	var Control_Model = Backbone.Model.extend( {
+		defaults: {
+			name        : '',
+			type        : '',
+			label       : '',
+			description : '',
+			icon        : '',
+			value       : '',
+			choices     : {},
+			attr        : '',
+			manager     : '',
+			section     : '',
+			setting     : ''
+		}
+	} );
 
-		var Manager_View = ButterBean_View.extend( {} );
-		var Section_View = ButterBean_View.extend( {} );
-		var Control_View = ButterBean_View.extend( {} );
+	/* === Collections === */
 
-		// Create new manager collection.
-		collections.managers = new Manager_Collection();
+	var ButterBean_Managers = Backbone.Collection.extend( {
+		model : Manager_Model
+	} );
 
-		// Nav template.
-		var nav_template = wp.template( 'butterbean-nav' );
+	var ButterBean_Sections = Backbone.Collection.extend( {
+		model: Section_Model
+	} );
 
-		// Loop through each of the managers and handle templates.
-		_.each( butterbean_data.managers, function( manager ) {
+	/* === Views === */
 
-			// Set the container ID for this manager.
-			var container = '#butterbean-ui-' + manager.name;
+	var ButterBean_Managers_View = Backbone.View.extend( {
+		collection : null,
+		render     : function() {
 
-			// Only add a new manager template if we have a different manager type.
-			if ( 'undefined' === typeof templates.managers[ manager.type ] ) {
+			jQuery( this.el ).empty();
 
-				templates.managers[ manager.type ] = wp.template( 'butterbean-manager-' + manager.type );
-			}
+			this.collection.forEach( function( manager ) {
 
-			// Add a new manager model.
-			models.managers[ manager.name ] = new Manager_Model( manager );
+				var view = new Manager_View( {
+					model : manager,
+					el    : '#butterbean-ui-' + manager.attributes.name + ' .inside'
+				} );
 
-			// Add manager model to collection.
-			collections.managers.add( models.managers[ manager.name ] );
-
-			// Add a new manager view.
-			views.managers[ manager.name ] = new Manager_View( {
-				model    : models.managers[ manager.name ],
-				el       : container + ' .inside',
-				template : templates.managers[ manager.type ]
+				view.render();
 			} );
 
-			collections.sections[ manager.name ] = new Section_Collection();
+			return this;
+		}
+	} );
 
-			// Adds the `.butterbean-ui` class to the container (meta box).
-			$( container ).addClass( 'butterbean-ui' );
+	var Manager_View = Backbone.View.extend( {
+		initialize : function( options ) {
 
-			/* === Create templates. === */
+			this.template = templates.managers[ this.model.attributes.type ];
 
-			// Loop through the sections and create a template for each type.
-			_.each( manager.sections, function( data ) {
+		},
+		render : function() {
+			this.$el.append( this.template( this.model.toJSON() ) );
 
-				// Append manager nav item.
-				$( container + ' .butterbean-nav' ).append( nav_template( data ) );
+			var butterbean_sections = new ButterBean_Sections();
 
-				// Only add a new section template if we have a different section type.
-				if ( 'undefined' === typeof templates.sections[ data.type ] ) {
-					templates.sections[ data.type ] = wp.template( 'butterbean-section-' + data.type );
-				}
+			_.each( this.model.attributes.sections, function( section_json ) {
 
 				// Add a new section model.
-				models.sections[ data.name ] = new Section_Model( data );
+				butterbean_sections.add( new Section_Model( section_json ) );
+			} );
 
-				// Add section model to collection.
-				collections.sections[ manager.name ].add( models.sections[ data.name ] );
+			// Create a new view for the collection.
+			var view = new ButterBean_Sections_View( {
+				collection : butterbean_sections,
+				el         : this.model.attributes.name + ' .butterbean-content'
+			} );
 
-				// Add a new manager view.
-				views.sections[ data.name ] = new Section_View( {
-					model    : models.sections[ data.name ],
-					el       : container + ' .butterbean-content',
-					template : templates.sections[ data.type ]
+			// Render the sections.
+			view.render();
+		}
+
+	} );
+
+	var ButterBean_Sections_View = Backbone.View.extend( {
+		collection : null,
+
+		render : function() {
+
+			$( this.el ).empty();
+
+			this.collection.forEach( function( section ) {
+
+				$( '#butterbean-ui-' + section.attributes.manager + ' .butterbean-nav' ).append( nav_template( section.attributes ) );
+
+				var view = new Section_View( {
+					model : section,
+					el    : '#butterbean-ui-' + section.attributes.manager + ' .butterbean-content'
 				} );
 
-				// Add a control collection for this section.
-				collections.controls[ manager.name + '-' + data.name ] = new Control_Collection();
+				view.render();
 			} );
+
+			return this;
+		}
+	} );
+
+	var Section_View = Backbone.View.extend( {
+		initialize: function( options ) {
+			this.controls = this.model.attributes.controls;
+
+			this.template = templates.sections[ this.model.attributes.type ];
+		},
+		render: function() {
+			this.$el.append( this.template( this.model.toJSON() ) );
+
+			_.each( this.model.attributes.controls, function( control_json ) {
+
+				var control = new Control_Model( control_json );
+
+				var view = new Control_View( {
+					model : new Control_Model( control_json ),
+					el    : '#butterbean-' + control.attributes.manager + '-section-' + control.attributes.section
+				} );
+
+				view.render();
+			} );
+		}
+	} );
+
+	var Control_View = Backbone.View.extend( {
+		initialize: function( options ) {
+			this.template = templates.controls[ this.model.attributes.type ];
+		},
+		render: function(){
+			this.$el.append( this.template( this.model.toJSON() ) );
+		}
+	} );
+
+	// Nav template.
+	var nav_template = wp.template( 'butterbean-nav' );
+
+	// Create a new manager collection.
+	var butterbean_managers = new ButterBean_Managers();
+
+	// Loop through each of the managers and handle templates.
+	_.each( butterbean_data.managers, function( manager ) {
+
+		// Add a new manager model to the managers collection.
+		butterbean_managers.add( new Manager_Model( manager ) );
+
+		// Adds the `.butterbean-ui` class to the container (meta box).
+		$( '#butterbean-ui-' + manager.name ).addClass( 'butterbean-ui' );
+
+		/* === Create templates. === */
+
+		// Only add a new manager template if we have a different manager type.
+		if ( 'undefined' === typeof templates.managers[ manager.type ] ) {
+
+			templates.managers[ manager.type ] = wp.template( 'butterbean-manager-' + manager.type );
+		}
+
+		// Loop through the sections and create a template for each type.
+		_.each( manager.sections, function( data ) {
+
+			// Only add a new section template if we have a different section type.
+			if ( 'undefined' === typeof templates.sections[ data.type ] ) {
+				templates.sections[ data.type ] = wp.template( 'butterbean-section-' + data.type );
+			}
 
 			// Loop through the controls and create a template for each type.
-			_.each( manager.controls, function( data ) {
+			_.each( data.controls, function( cdata ) {
 
 				// Only add a new control template if we have a different control type.
-				if ( 'undefined' === typeof templates.controls[ data.type ] ) {
-					templates.controls[ data.type ] = wp.template( 'butterbean-control-' + data.type );
+				if ( 'undefined' === typeof templates.controls[ cdata.type ] ) {
+					templates.controls[ cdata.type ] = wp.template( 'butterbean-control-' + cdata.type );
 				}
-
-				// Add a new control model.
-				models.controls[ data.name ] = new Control_Model( data );
-
-				// Add control model to collection.
-				collections.controls[ data.manager + '-' + data.section ].add( models.controls[ data.name ] );
-
-				// Add a new manager view.
-				views.controls[ data.name ] = new Control_View( {
-					model    : models.controls[ data.name ],
-					el       : container + ' #butterbean-' + data.manager + '-section-' + data.section,
-					template : templates.controls[ data.type ]
-				} );
 			} );
 		} );
-	}
+	} );
+
+	// Create a new view for the manager collection.
+	var view = new ButterBean_Managers_View( {
+		collection : butterbean_managers
+	} );
+
+	// Render the managers.
+	view.render();
 
 	/* ====== Tabs ====== */
 
