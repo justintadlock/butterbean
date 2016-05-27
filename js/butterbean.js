@@ -82,7 +82,13 @@
 	var Manager_View = Backbone.View.extend( {
 		initialize : function( options ) {
 
-			this.template = templates.managers[ this.model.attributes.type ];
+			var type = this.model.attributes.type;
+
+			if ( 'undefined' === typeof templates.managers[ type ] ) {
+				templates.managers[ type ] = wp.template( 'butterbean-manager-' + type );
+			}
+
+			this.template = templates.managers[ type ];
 
 		},
 		render : function() {
@@ -105,7 +111,6 @@
 			// Render the sections.
 			view.render();
 		}
-
 	} );
 
 	var ButterBean_Sections_View = Backbone.View.extend( {
@@ -135,7 +140,13 @@
 		initialize: function( options ) {
 			this.controls = this.model.attributes.controls;
 
-			this.template = templates.sections[ this.model.attributes.type ];
+			var type = this.model.attributes.type;
+
+			if ( 'undefined' === typeof templates.sections[ type ] ) {
+				templates.sections[ type ] = wp.template( 'butterbean-section-' + type );
+			}
+
+			this.template = templates.sections[ type ];
 		},
 		render: function() {
 			this.$el.append( this.template( this.model.toJSON() ) );
@@ -156,7 +167,14 @@
 
 	var Control_View = Backbone.View.extend( {
 		initialize: function( options ) {
-			this.template = templates.controls[ this.model.attributes.type ];
+			var type = this.model.attributes.type;
+
+			// Only add a new control template if we have a different control type.
+			if ( 'undefined' === typeof templates.controls[ type ] ) {
+				templates.controls[ type ] = wp.template( 'butterbean-control-' + type );
+			}
+
+			this.template = templates.controls[ type ];
 		},
 		render: function(){
 			this.$el.append( this.template( this.model.toJSON() ) );
@@ -177,32 +195,6 @@
 
 		// Adds the `.butterbean-ui` class to the container (meta box).
 		$( '#butterbean-ui-' + manager.name ).addClass( 'butterbean-ui' );
-
-		/* === Create templates. === */
-
-		// Only add a new manager template if we have a different manager type.
-		if ( 'undefined' === typeof templates.managers[ manager.type ] ) {
-
-			templates.managers[ manager.type ] = wp.template( 'butterbean-manager-' + manager.type );
-		}
-
-		// Loop through the sections and create a template for each type.
-		_.each( manager.sections, function( data ) {
-
-			// Only add a new section template if we have a different section type.
-			if ( 'undefined' === typeof templates.sections[ data.type ] ) {
-				templates.sections[ data.type ] = wp.template( 'butterbean-section-' + data.type );
-			}
-
-			// Loop through the controls and create a template for each type.
-			_.each( data.controls, function( cdata ) {
-
-				// Only add a new control template if we have a different control type.
-				if ( 'undefined' === typeof templates.controls[ cdata.type ] ) {
-					templates.controls[ cdata.type ] = wp.template( 'butterbean-control-' + cdata.type );
-				}
-			} );
-		} );
 	} );
 
 	// Create a new view for the manager collection.
