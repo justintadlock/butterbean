@@ -134,6 +134,15 @@ class ButterBean_Control {
 	}
 
 	/**
+	 * Enqueue scripts/styles for the control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function enqueue() {}
+
+	/**
 	 * Get the value for the setting.
 	 *
 	 * @since  1.0.0

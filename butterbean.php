@@ -262,6 +262,13 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			wp_enqueue_script( 'butterbean', $this->dir_uri . "js/butterbean{$min}.js", array( 'backbone', 'wp-util' ), '', true );
 
 			wp_enqueue_style( 'butterbean', $this->dir_uri . "css/butterbean{$min}.css" );
+
+			// Loop through the manager and its controls and call each control's `enqueue()` method.
+			foreach ( $this->managers as $manager ) {
+
+				foreach ( $manager->controls as $control )
+					$control->enqueue();
+			}
 		}
 
 		/**
