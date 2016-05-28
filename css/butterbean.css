@@ -126,8 +126,6 @@
 
 	#side-sortables .butterbean-content { width: 100%; }
 
-	#side-sortables .butterbean-which-tab { display: inline-block; }
-
 	#side-sortables .butterbean-nav {
 		display: table;
 		width:   100%;
@@ -152,8 +150,6 @@
 				width:  24px;
 				height: 24px;
 			}
-
-			#side-sortables .butterbean-which-tab { display: none; }
 
 			#side-sortables .butterbean-nav li .label {
 				overflow: hidden;

@@ -204,16 +204,6 @@
 	// Makes the 'aria-selected' attribute true for the first tab nav item.
 	$( '.butterbean-nav :first-child' ).attr( 'aria-selected', 'true' );
 
-	// Copies the current tab item title to the box header.
-	$( '.butterbean-title' ).append( ' <span class="butterbean-which-tab" />' );
-
-	$( '.butterbean-which-tab' ).each( function() {
-
-		var text = $( this ).parents( '.butterbean-ui' ).find( '.butterbean-nav :first-child a' ).text();
-
-		$( this ).text( text );
-	} );
-
 	// When a tab nav item is clicked.
 	$( '.butterbean-nav li a' ).click(
 		function( j ) {
@@ -235,9 +225,6 @@
 
 			// Set the `aria-selected` attribute to true for this tab nav item.
 			$( this ).parent().attr( 'aria-selected', 'true' );
-
-			// Copy the current tab item title to the box header.
-			$( manager ).find( '.butterbean-which-tab' ).text( $( this ).text() );
 		}
 	); // click()
 
