@@ -196,10 +196,10 @@
 	$( '.butterbean-ui .butterbean-description' ).addClass( 'description' );
 
 	// Hides the tab content.
-	$( '.butterbean-section' ).hide();
+	$( '.butterbean-section' ).attr( 'aria-hidden', true );
 
 	// Shows the first tab's content.
-	$( '.butterbean-section:first-of-type' ).show();
+	$( '.butterbean-section:first-of-type' ).attr( 'aria-hidden', false );
 
 	// Makes the 'aria-selected' attribute true for the first tab nav item.
 	$( '.butterbean-nav :first-child' ).attr( 'aria-selected', 'true' );
@@ -225,10 +225,10 @@
 			var manager = $( this ).parents( '.butterbean-ui' );
 
 			// Hide all tab content.
-			$( manager ).find( '.butterbean-section' ).hide();
+			$( manager ).find( '.butterbean-section' ).attr( 'aria-hidden', true );
 
 			// Find the tab content that matches the tab nav item and show it.
-			$( manager ).find( $( this ).attr( 'href' ) ).show();
+			$( manager ).find( $( this ).attr( 'href' ) ).attr( 'aria-hidden', false );
 
 			// Set the `aria-selected` attribute to false for all tab nav items.
 			$( manager ).find( '.butterbean-nav li' ).attr( 'aria-selected', 'false' );

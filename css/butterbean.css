@@ -173,6 +173,9 @@
 		box-sizing: border-box;
 }
 
+	.butterbean-section[aria-hidden="true"]  { display: none; }
+	.butterbean-section[aria-hidden="false"] { display: block; }
+
 .butterbean-control {
 	margin-bottom: 20px;
 }
