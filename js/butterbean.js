@@ -228,4 +228,20 @@
 		}
 	); // click()
 
+	/* === Color palette control === */
+
+	// Adds a `.selected` class to the label of checked inputs.
+	$( 'input:radio:checked', '.butterbean-control-palette' ).parent( 'label' ).addClass( 'selected' );
+
+	$( 'input:radio', '.butterbean-control-palette' ).change(
+		function() {
+
+			var container = $( this ).parents( '.butterbean-control-palette' );
+
+			// Removes the `.selected` class from other labels and adds it to the new one.
+			$( 'label.selected', container ).removeClass( 'selected' );
+			$( this ).parent( 'label' ).addClass( 'selected' );
+		}
+	);
+
 }( jQuery ) );
