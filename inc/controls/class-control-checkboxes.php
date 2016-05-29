@@ -38,7 +38,6 @@ class ButterBean_Control_CheckBoxes extends ButterBean_Control {
 	public function to_json() {
 		parent::to_json();
 
-		$this->json['name']    = "butterbean_{$this->manager->name}_setting_{$this->setting}[]";
 		$this->json['value']   = (array) $this->get_value();
 	}
 

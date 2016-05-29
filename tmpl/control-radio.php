@@ -14,7 +14,7 @@
 
 		<li>
 			<label>
-				<input type="radio" value="{{ choice }}" name="butterbean_{{ data.manager }}_setting_{{ data.setting }}" <# if ( data.value === choice ) { #> checked="checked" <# } #> />
+				<input type="radio" value="{{ choice }}" name="{{ data.field_name }}" <# if ( data.value === choice ) { #> checked="checked" <# } #> />
 				{{ label }}
 			</label>
 		</li>

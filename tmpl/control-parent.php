@@ -4,7 +4,7 @@
 		<br />
 	<# } #>
 
-	<select name="{{ data.name }}" id="{{ data.name }}">
+	<select name="{{ data.field_name }}" id="{{ data.field_name }}">
 
 		<# _.each( data.choices, function( choice ) { #>
 			<option value="{{ choice.value }}" <# if ( choice.value === data.value ) { #> selected="selected" <# } #>>{{ choice.label }}</option>

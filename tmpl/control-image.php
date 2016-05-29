@@ -8,7 +8,7 @@
 	<br />
 <# } #>
 
-<input type="hidden" class="butterbean-attachment-id" name="butterbean_{{ data.manager }}_setting_{{ data.setting }}" value="{{ data.value }}" />
+<input type="hidden" class="butterbean-attachment-id" name="{{ data.field_name }}" value="{{ data.value }}" />
 
 <img class="butterbean-img" src="{{ data.src }}" />
 <div class="butterbean-placeholder">{{ data.l10n.placeholder }}</div>

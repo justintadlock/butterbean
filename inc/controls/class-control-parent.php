@@ -63,8 +63,9 @@ class ButterBean_Control_Parent extends ButterBean_Control {
 	 * @return void
 	 */
 	public function to_json() {
-
 		parent::to_json();
+
+		$this->json['field_name'] = 'post_parent';
 
 		$_post = get_post( $this->manager->post_id );
 

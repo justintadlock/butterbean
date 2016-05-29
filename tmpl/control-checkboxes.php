@@ -14,7 +14,7 @@
 
 		<li>
 			<label>
-				<input type="checkbox" value="{{ choice }}" name="{{ data.name }}" <# if ( -1 !== _.indexOf( data.value, choice ) ) { #> checked="checked" <# } #> />
+				<input type="checkbox" value="{{ choice }}" name="{{ data.field_name }}[]" <# if ( -1 !== _.indexOf( data.value, choice ) ) { #> checked="checked" <# } #> />
 				{{ label }}
 			</label>
 		</li>

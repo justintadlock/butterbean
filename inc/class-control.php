@@ -214,6 +214,7 @@ class ButterBean_Control {
 		$this->json['description'] = $this->description;
 		$this->json['value']       = $this->get_value();
 		$this->json['choices']     = $this->choices;
+		$this->json['field_name']  = "butterbean_{$this->manager->name}_setting_{$this->setting}";
 
 		$this->json['attr'] = '';
 
