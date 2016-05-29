@@ -178,9 +178,23 @@
 
 	.butterbean-label { font-weight: bold; display: inline-block; margin-bottom: 2px; }
 
-.butterbean-control #excerpt {
-	height: 125px;
-	margin: 0;
+/* === Media === */
+
+.butterbean-control-image .butterbean-img {
+	display:    block;
+	max-width:  100%;
+	max-height: 300px;
+	height:     auto;
+}
+
+.butterbean-placeholder {
+	width:       100%;
+	position:    relative;
+	text-align:  center;
+	padding:     9px 0;
+	line-height: 20px;
+	border:      1px dashed rgb(180, 185, 190);
+	box-sizing:  border-box;
 }
 
 /* === Textarea Control === */

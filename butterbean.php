@@ -123,6 +123,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			require_once( $this->dir_path . 'inc/controls/class-control-checkboxes.php'    );
 			require_once( $this->dir_path . 'inc/controls/class-control-color.php'         );
 			require_once( $this->dir_path . 'inc/controls/class-control-date.php'          );
+			require_once( $this->dir_path . 'inc/controls/class-control-image.php'         );
 			require_once( $this->dir_path . 'inc/controls/class-control-radio.php'         );
 			require_once( $this->dir_path . 'inc/controls/class-control-select.php'        );
 			require_once( $this->dir_path . 'inc/controls/class-control-text.php'          );
@@ -278,6 +279,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 				'checkboxes'    => 'ButterBean_Control_Checkboxes',
 				'color'         => 'ButterBean_Control_Color',
 				'date'          => 'ButterBean_Control_Date',
+				'image'         => 'ButterBean_Control_Image',
 				'radio'         => 'ButterBean_Control_Radio',
 				'select'        => 'ButterBean_Control_Select',
 				'text'          => 'ButterBean_Control_Text',
@@ -301,8 +303,13 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		public function enqueue() {
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
+			// Register control scripts.
+			wp_register_script( 'butterbean-control-image', butterbean()->dir_uri . "js/control-image{$min}.js", array( 'media-views' ), '', true );
+
+			// Enqueue the main plugin script.
 			wp_enqueue_script( 'butterbean', $this->dir_uri . "js/butterbean{$min}.js", array( 'backbone', 'wp-util' ), '', true );
 
+			// Enqueue the main plugin style.
 			wp_enqueue_style( 'butterbean', $this->dir_uri . "css/butterbean{$min}.css" );
 
 			// Loop through the manager and its controls and call each control's `enqueue()` method.
