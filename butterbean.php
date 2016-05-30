@@ -410,33 +410,27 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			<?php foreach ( $this->managers as $manager ) {
 
 				if ( ! in_array( $manager->type, $m_templates ) ) {
-					$m_templates[] = $manager->type; ?>
+					$m_templates[] = $manager->type;
 
-					<script type="text/html" id="tmpl-butterbean-manager-<?php echo esc_attr( $manager->type ); ?>">
-						<?php $manager->print_template(); ?>
-					</script>
-				<?php }
+					$manager->print_template();
+				}
 
 				foreach ( $manager->sections as $section ) {
 
 					if ( ! in_array( $section->type, $s_templates ) ) {
-						$s_templates[] = $section->type; ?>
+						$s_templates[] = $section->type;
 
-						<script type="text/html" id="tmpl-butterbean-section-<?php echo esc_attr( $section->type ); ?>">
-							<?php $section->print_template(); ?>
-						</script>
-					<?php }
+						$section->print_template();
+					}
 				}
 
 				foreach ( $manager->controls as $control ) {
 
 					if ( ! in_array( $control->type, $c_templates ) ) {
-						$c_templates[] = $control->type; ?>
+						$c_templates[] = $control->type;
 
-						<script type="text/html" id="tmpl-butterbean-control-<?php echo esc_attr( $control->type ); ?>">
-							<?php $control->print_template(); ?>
-						</script>
-					<?php }
+						$control->print_template();
+					}
 				}
 			}
 		}
