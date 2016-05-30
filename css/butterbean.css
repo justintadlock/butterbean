@@ -139,6 +139,10 @@
 
 			#side-sortables .butterbean-nav li:last-of-type { border-right: none; }
 
+		#side-sortables .butterbean-nav li a {
+			padding:     10px 0;
+		}
+
 		#side-sortables .butterbean-nav li a .dashicons {
 			width:       24px;
 			height:      24px;

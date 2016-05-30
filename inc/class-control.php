@@ -230,12 +230,9 @@ class ButterBean_Control {
 	 * @access public
 	 * @return void
 	 */
-	public function print_template() { ?>
-
-		<div id="butterbean-control-{{ data.name }}" class="butterbean-control butterbean-control-{{ data.type }}">
-			<?php $this->template(); ?>
-		</div>
-	<?php }
+	public function print_template() {
+		$this->template();
+	}
 
 	/**
 	 * Gets the Underscore.js template.

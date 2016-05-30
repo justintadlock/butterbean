@@ -142,12 +142,9 @@ class ButterBean_Section {
 	 * @access public
 	 * @return void
 	 */
-	public function print_template() { ?>
-
-		<div id="butterbean-{{ data.manager }}-section-{{ data.name }}" class="butterbean-section butterbean-section-{{ data.type }}">
-			<?php $this->template(); ?>
-		</div>
-	<?php }
+	public function print_template() {
+		$this->template();
+	}
 
 	/**
 	 * Gets the Underscore.js template.

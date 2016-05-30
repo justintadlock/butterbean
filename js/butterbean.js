@@ -33,7 +33,8 @@
 			label       : '',
 			description : '',
 			icon        : '',
-			manager     : ''
+			manager     : '',
+			active      : false
 		}
 	} );
 
@@ -56,40 +57,25 @@
 
 	/* === Collections === */
 
-	// Collection of managers.
-	var Manager_Collection = Backbone.Collection.extend( {
-		model : Manager_Model
+	// Collection of sections.
+	var Section_Collection = Backbone.Collection.extend( {
+		model : Section_Model
 	} );
 
 	/* === Views === */
 
-	// Manager collection view. Handles the output for all managers.
-	var Manager_Collection_View = Backbone.View.extend( {
-		collection : null,
-		render     : function() {
-
-			jQuery( this.el ).empty();
-
-			// Loop through each manager in the collection and render its view.
-			this.collection.forEach( function( manager ) {
-
-				var view = new Manager_View( {
-					model : manager,
-					el    : '#butterbean-ui-' + manager.attributes.name + ' .inside'
-				} );
-
-				view.render();
-			} );
-
-			return this;
-		}
-	} );
-
 	// Manager view.  Handles the output of a manager.
 	var Manager_View = Backbone.View.extend( {
+		tagName : 'div',
+		attributes : function() {
+			return {
+				'id'    : 'butterbean-manager-' + this.model.get( 'name' ),
+				'class' : 'butterbean-manager butterbean-manager-' + this.model.get( 'type' )
+			};
+		},
 		initialize : function( options ) {
 
-			var type = this.model.attributes.type;
+			var type = this.model.get( 'type' );
 
 			if ( 'undefined' === typeof templates.managers[ type ] ) {
 				templates.managers[ type ] = wp.template( 'butterbean-manager-' + type );
@@ -98,34 +84,41 @@
 			this.template = templates.managers[ type ];
 		},
 		render : function() {
-			this.$el.append( this.template( this.model.toJSON() ) );
+			this.$el.html( this.template( this.model.toJSON() ) );
+			return this;
+		},
+		subview_render : function() {
 
-			// Loop through each section for the manager and render its view.
-			_.each( this.model.attributes.sections, function( data ) {
+			// Create a new section collection.
+			var section_collection = new Section_Collection();
 
-				var section = new Section_Model( data );
+			// Loop through each section and add it to the collection.
+			_.each( this.model.get( 'sections' ), function( data ) {
 
-				$( '#butterbean-ui-' + section.attributes.manager + ' .butterbean-nav' ).append( nav_template( section.attributes ) );
-
-				var view = new Section_View( {
-					model : section,
-					el    : '#butterbean-ui-' + section.attributes.manager + ' .butterbean-content'
-				} );
-
-				view.render();
+				section_collection.add( new Section_Model( data ) );
 			} );
 
+			// Loop through each manager in the collection and render its view.
+			section_collection.forEach( function( section, i ) {
+
+				var nav_view     = new Nav_View(     { model : section } );
+				var section_view = new Section_View( { model : section } );
+
+				$( '#butterbean-ui-' + section.get( 'manager' ) + ' .butterbean-nav'     ).append( nav_view.render().el     );
+				$( '#butterbean-ui-' + section.get( 'manager' ) + ' .butterbean-content' ).append( section_view.render().el );
+
+				// If the first model, set it to active.
+				section.set( 'active', 0 == i );
+			}, this );
+
 			// Loop through each control for the manager and render its view.
-			_.each( this.model.attributes.controls, function( data ) {
+			_.each( this.model.get( 'controls' ), function( data ) {
 
 				var control = new Control_Model( data );
 
-				var view = new Control_View( {
-					model : control,
-					el    : '#butterbean-' + control.attributes.manager + '-section-' + control.attributes.section
-				} );
+				var view = new Control_View( { model : control } );
 
-				view.render();
+				$( '#butterbean-' + control.get( 'manager' ) + '-section-' + control.get( 'section' ) ).append( view.render().el );
 			} );
 
 			return this;
@@ -134,9 +127,18 @@
 
 	// Section view.  Handles the output of a section.
 	var Section_View = Backbone.View.extend( {
+		tagName : 'div',
+		attributes : function() {
+			return {
+				'id'          : 'butterbean-' + this.model.get( 'manager' ) + '-section-' + this.model.get( 'name' ),
+				'class'       : 'butterbean-section butterbean-section-' + this.model.get( 'type' ),
+				'aria-hidden' : ! this.model.get( 'active' )
+			};
+		},
 		initialize: function( options ) {
+			this.model.on('change', this.onchange, this);
 
-			var type = this.model.attributes.type;
+			var type = this.model.get( 'type' );
 
 			if ( 'undefined' === typeof templates.sections[ type ] ) {
 				templates.sections[ type ] = wp.template( 'butterbean-section-' + type );
@@ -145,14 +147,66 @@
 			this.template = templates.sections[ type ];
 		},
 		render: function() {
-			this.$el.append( this.template( this.model.toJSON() ) );
+			this.$el.html( this.template( this.model.toJSON() ) );
+			return this;
+		},
+		onchange : function() {
+
+			// Set the view's `aria-hidden` attribute based on whether the model is active.
+			this.$el.attr( 'aria-hidden', ! this.model.get( 'active' ) );
+		},
+	} );
+
+	// Nav view.
+	var Nav_View = Backbone.View.extend( {
+		template : nav_template,
+		tagName : 'li',
+		attributes : function() {
+			return {
+				'aria-selected' : this.model.get( 'active' )
+			};
+		},
+		initialize : function() {
+			this.model.on('change', this.render, this);
+			this.model.on('change', this.onchange, this);
+		},
+		render : function() {
+			this.$el.html( this.template( this.model.toJSON() ) );
+			return this;
+		},
+		events : {
+			'click a' : 'onselect'
+		},
+		onchange : function() {
+
+			// Set the `aria-selected` attibute based on the model active state.
+			this.$el.attr( 'aria-selected', this.model.get( 'active' ) );
+		},
+		onselect : function( event ) {
+			event.preventDefault();
+
+			// Loop through each of the models in the collection and set them to inactive.
+			_.each( this.model.collection.models, function( m ) {
+
+				m.set( 'active', false );
+			}, this );
+
+			// Set this view's model to active.
+			this.model.set( 'active', true );
 		}
 	} );
 
 	// Control view. Handles the output of a control.
 	var Control_View = Backbone.View.extend( {
+		tagName : 'div',
+		attributes : function() {
+			return {
+				'id'    : 'butterbean-control-' + this.model.get( 'name' ),
+				'class' : 'butterbean-control butterbean-control-' + this.model.get( 'type' )
+			};
+		},
 		initialize: function( options ) {
-			var type = this.model.attributes.type;
+			var type = this.model.get( 'type' );
 
 			// Only add a new control template if we have a different control type.
 			if ( 'undefined' === typeof templates.controls[ type ] ) {
@@ -162,71 +216,37 @@
 			this.template = templates.controls[ type ];
 		},
 		render: function(){
-			this.$el.append( this.template( this.model.toJSON() ) );
+			this.$el.html( this.template( this.model.toJSON() ) );
+			return this;
 		}
 	} );
 
-	// Create a new manager collection.
-	var managers = new Manager_Collection();
+	// Loop through each of the managers and render their views.
+	_.each( butterbean_data.managers, function( data ) {
 
-	// Loop through each of the managers and add it to the collection.
-	_.each( butterbean_data.managers, function( manager ) {
+		// Create a new manager model.
+		var manager = new Manager_Model( data );
 
-		// Add a new manager model to the managers collection.
-		managers.add( new Manager_Model( manager ) );
+		// Create a new manager view.
+		var view = new Manager_View( { model : manager } );
 
-		// Adds the `.butterbean-ui` class to the container (meta box).
-		$( '#butterbean-ui-' + manager.name ).addClass( 'butterbean-ui' );
+		// Add the `.butterbean-ui` class to the meta box.
+		$( '#butterbean-ui-' + manager.get( 'name' ) ).addClass( 'butterbean-ui' );
+
+		// Render the manager view.
+		$( '#butterbean-ui-' + manager.get( 'name' ) + ' .inside' ).append( view.render().el );
+
+		// Render the manager subviews.
+		view.subview_render();
 	} );
 
-	// Create a new view for the manager collection.
-	var view = new Manager_Collection_View( {
-		collection : managers
-	} );
-
-	// Render the managers.
-	view.render();
-
-	/* ====== Tabs ====== */
+	/* ====== Add classes ====== */
 
 	// Looks for `.hndle` and adds the `.butterbean-title` class.
 	$( '.butterbean-ui .hndle' ).addClass( 'butterbean-title' );
 
 	// Adds the core WP `.description` class to any `.butterbean-description` elements.
 	$( '.butterbean-ui .butterbean-description' ).addClass( 'description' );
-
-	// Hides the tab content.
-	$( '.butterbean-section' ).attr( 'aria-hidden', true );
-
-	// Shows the first tab's content.
-	$( '.butterbean-section:first-of-type' ).attr( 'aria-hidden', false );
-
-	// Makes the 'aria-selected' attribute true for the first tab nav item.
-	$( '.butterbean-nav :first-child' ).attr( 'aria-selected', 'true' );
-
-	// When a tab nav item is clicked.
-	$( '.butterbean-nav li a' ).click(
-		function( j ) {
-
-			// Prevent the default browser action when a link is clicked.
-			j.preventDefault();
-
-			// Get the manager.
-			var manager = $( this ).parents( '.butterbean-ui' );
-
-			// Hide all tab content.
-			$( manager ).find( '.butterbean-section' ).attr( 'aria-hidden', true );
-
-			// Find the tab content that matches the tab nav item and show it.
-			$( manager ).find( $( this ).attr( 'href' ) ).attr( 'aria-hidden', false );
-
-			// Set the `aria-selected` attribute to false for all tab nav items.
-			$( manager ).find( '.butterbean-nav li' ).attr( 'aria-selected', 'false' );
-
-			// Set the `aria-selected` attribute to true for this tab nav item.
-			$( this ).parent().attr( 'aria-selected', 'true' );
-		}
-	); // click()
 
 	/* === Color palette control === */
 
