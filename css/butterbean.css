@@ -203,7 +203,8 @@
 
 /* === Textarea Control === */
 
-.butterbean-control-textarea textarea {
+.butterbean-control-textarea textarea,
+.butterbean-control-excerpt  textarea {
 	display: block;
 	width:   100%;
 	height:  105px;

@@ -21,6 +21,30 @@
 class ButterBean_Control_Excerpt extends ButterBean_Control_Textarea {
 
 	/**
+	 * Gets the attributes for the control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return array
+	 */
+	public function get_attr() {
+		parent::get_attr();
+
+		$this->attr['id'] = 'post_excerpt';
+	}
+
+	/**
+	 * Returns the HTML field name for the control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return array
+	 */
+	public function get_field_name() {
+		return 'post_excerpt';
+	}
+
+	/**
 	 * Get the value for the setting.
 	 *
 	 * @since  1.0.0
@@ -30,5 +54,16 @@ class ButterBean_Control_Excerpt extends ButterBean_Control_Textarea {
 	public function get_value() {
 
 		return get_post( $this->manager->post_id )->post_excerpt;
+	}
+
+	/**
+	 * Gets the Underscore.js template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function template() {
+		butterbean_get_template( 'control', 'textarea' );
 	}
 }

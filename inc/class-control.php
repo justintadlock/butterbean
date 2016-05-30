@@ -165,9 +165,21 @@ class ButterBean_Control {
 	 */
 	public function get_attr() {
 
-		$defaults = array( 'name' => "butterbean_{$this->manager->name}_setting_{$this->setting}" );
+		$defaults = array( 'name' => $this->get_field_name() );
 
 		return wp_parse_args( $this->attr, $defaults );
+	}
+
+	/**
+	 * Returns the HTML field name for the control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return array
+	 */
+	public function get_field_name() {
+
+		return "butterbean_{$this->manager->name}_setting_{$this->setting}";
 	}
 
 	/**
@@ -214,7 +226,7 @@ class ButterBean_Control {
 		$this->json['description'] = $this->description;
 		$this->json['value']       = $this->get_value();
 		$this->json['choices']     = $this->choices;
-		$this->json['field_name']  = "butterbean_{$this->manager->name}_setting_{$this->setting}";
+		$this->json['field_name']  = $this->get_field_name();
 
 		$this->json['attr'] = '';
 

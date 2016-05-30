@@ -283,7 +283,6 @@ if ( ! class_exists( 'ButterBean' ) ) {
 				'select-group'  => 'ButterBean_Control_Select_Group',
 				'textarea'      => 'ButterBean_Control_Textarea',
 
-				'excerpt'       => 'ButterBean_Control_Excerpt',
 				'multi-avatars' => 'ButterBean_Control_Multi_Avatars',
 				'parent'        => 'ButterBean_Control_Parent'
 			);
