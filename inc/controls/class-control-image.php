@@ -97,15 +97,4 @@ class ButterBean_Control_Image extends ButterBean_Control {
 
 		$this->json['src'] = $image ? esc_url( $image[0] ) : '';
 	}
-
-	/**
-	 * Gets the Underscore.js template.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
-	 */
-	public function template() {
-		butterbean_get_template( 'control', 'image' );
-	}
 }

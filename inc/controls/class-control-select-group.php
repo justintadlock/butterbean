@@ -49,15 +49,4 @@ class ButterBean_Control_Select_Group extends ButterBean_Control {
 		$this->json['choices'] = $choices;
 		$this->json['group']   = $group;
 	}
-
-	/**
-	 * Gets the Underscore.js template.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
-	 */
-	public function template() {
-		butterbean_get_template( 'control', 'select-group' );
-	}
 }

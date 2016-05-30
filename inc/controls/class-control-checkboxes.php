@@ -38,17 +38,6 @@ class ButterBean_Control_CheckBoxes extends ButterBean_Control {
 	public function to_json() {
 		parent::to_json();
 
-		$this->json['value']   = (array) $this->get_value();
-	}
-
-	/**
-	 * Gets the Underscore.js template.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
-	 */
-	public function template() {
-		butterbean_get_template( 'control', 'checkboxes' );
+		$this->json['value'] = (array) $this->get_value();
 	}
 }

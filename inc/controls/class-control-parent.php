@@ -87,15 +87,4 @@ class ButterBean_Control_Parent extends ButterBean_Control {
 		foreach ( $posts as $post )
 			$this->json['choices'][] = array( 'value' => $post->ID, 'label' => $post->post_title );
 	}
-
-	/**
-	 * Gets the Underscore.js template.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
-	 */
-	public function template() {
-		butterbean_get_template( 'control', 'parent' );
-	}
 }

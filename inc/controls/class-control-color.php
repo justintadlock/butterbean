@@ -62,15 +62,4 @@ class ButterBean_Control_Color extends ButterBean_Control {
 
 		return ltrim( $value, '#' );
 	}
-
-	/**
-	 * Gets the Underscore.js template.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
-	 */
-	public function template() {
-		butterbean_get_template( 'control', 'color' );
-	}
 }

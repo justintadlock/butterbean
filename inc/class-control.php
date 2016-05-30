@@ -245,6 +245,6 @@ class ButterBean_Control {
 	 * @return void
 	 */
 	public function template() {
-		butterbean_get_template( 'control' );
+		butterbean_get_template( 'control', $this->type );
 	}
 }

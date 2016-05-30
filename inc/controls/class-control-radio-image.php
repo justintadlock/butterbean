@@ -42,15 +42,4 @@ class ButterBean_Control_Radio_Image extends ButterBean_Control {
 
 		$this->json['choices'] = $this->choices;
 	}
-
-	/**
-	 * Gets the Underscore.js template.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
-	 */
-	public function template() {
-		butterbean_get_template( 'control', 'radio-image' );
-	}
 }

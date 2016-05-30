@@ -53,17 +53,6 @@ class ButterBean_Control_Multi_Avatars extends ButterBean_Control {
 	}
 
 	/**
-	 * Gets the Underscore.js template.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
-	 */
-	public function template() {
-		butterbean_get_template( 'control', 'multi-avatars' );
-	}
-
-	/**
 	 * Returns an array of user roles that are allowed to edit, publish, or create
 	 * posts of the given post type.
 	 *

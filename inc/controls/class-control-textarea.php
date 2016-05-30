@@ -39,15 +39,4 @@ class ButterBean_Control_Textarea extends ButterBean_Control {
 
 		$this->json['value'] = esc_textarea( $this->get_value( $this->manager->post_id ) );
 	}
-
-	/**
-	 * Gets the Underscore.js template.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
-	 */
-	public function template() {
-		butterbean_get_template( 'control', 'textarea' );
-	}
 }
