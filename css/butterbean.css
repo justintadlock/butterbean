@@ -18,14 +18,14 @@
 .butterbean-manager {
 	overflow:   hidden;
 	background: #fff;
-	background: linear-gradient( 90deg, #fafafa 0%, #fafafa 20%, #fff 20%, #fff 100% );
+	background: linear-gradient( 90deg, #fafafa 0%, #fafafa 180px, #fff 180px, #fff 100% );
 }
 
 	#side-sortables .butterbean-manager {
 		background: linear-gradient( 90deg, #fafafa 0%, #fafafa 48px, #fff 48px, #fff 100% );
 	}
 
-	@media only screen and ( max-width: 782px ) {
+	@media only screen and ( max-width: 782px ), ( max-width: 980px ) and ( min-width: 851px ) {
 
 		.butterbean-manager {
 			background: linear-gradient( 90deg, #fafafa 0%, #fafafa 48px, #fff 48px, #fff 100% );
@@ -38,7 +38,7 @@
 		position:         relative;
 		float:            left;
 		list-style:       none;
-		width:            20%;
+		width:            180px;/*20%;*/
 		line-height:      1em;
 		margin:           0 0 -1px 0;
 		padding:          0;
@@ -77,7 +77,7 @@
 				background-color: #e0e0e0;
 			}
 
-	@media only screen and ( max-width: 782px ) {
+	@media only screen and ( max-width: 782px ), ( max-width: 980px ) and ( min-width: 851px ) {
 		.butterbean-nav { width: 48px; }
 
 		.butterbean-nav li a .dashicons {
@@ -106,12 +106,12 @@
 
 	.butterbean-content {
 		float:       left;
-		width:       80%;
+		width:       calc( 100% - 180px );
 		margin-left: -1px;
 		border-left: 1px solid #eee;
 	}
 
-	@media only screen and ( max-width: 782px ) {
+	@media only screen and ( max-width: 782px ), ( max-width: 980px ) and ( min-width: 851px ) {
 
 		.butterbean-content {
 			width: calc( 100% - 48px );
