@@ -119,17 +119,13 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			require_once( $this->dir_path . 'inc/class-setting.php' );
 
 			// Load control sub-classes.
-			require_once( $this->dir_path . 'inc/controls/class-control-checkbox.php'      );
 			require_once( $this->dir_path . 'inc/controls/class-control-checkboxes.php'    );
 			require_once( $this->dir_path . 'inc/controls/class-control-color.php'         );
 			require_once( $this->dir_path . 'inc/controls/class-control-date.php'          );
 			require_once( $this->dir_path . 'inc/controls/class-control-image.php'         );
 			require_once( $this->dir_path . 'inc/controls/class-control-palette.php'       );
-			require_once( $this->dir_path . 'inc/controls/class-control-radio.php'         );
 			require_once( $this->dir_path . 'inc/controls/class-control-radio-image.php'   );
-			require_once( $this->dir_path . 'inc/controls/class-control-select.php'        );
 			require_once( $this->dir_path . 'inc/controls/class-control-select-group.php'  );
-			require_once( $this->dir_path . 'inc/controls/class-control-text.php'          );
 			require_once( $this->dir_path . 'inc/controls/class-control-textarea.php'      );
 
 			require_once( $this->dir_path . 'inc/controls/class-control-excerpt.php'       );
@@ -278,17 +274,13 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		public function register_control_types() {
 
 			$types = array(
-				'checkbox'      => 'ButterBean_Control_Checkbox',
 				'checkboxes'    => 'ButterBean_Control_Checkboxes',
 				'color'         => 'ButterBean_Control_Color',
 				'date'          => 'ButterBean_Control_Date',
 				'image'         => 'ButterBean_Control_Image',
 				'palette'       => 'ButterBean_Control_Palette',
-				'radio'         => 'ButterBean_Control_Radio',
 				'radio-image'   => 'ButterBean_Control_Radio_Image',
-				'select'        => 'ButterBean_Control_Select',
 				'select-group'  => 'ButterBean_Control_Select_Group',
-				'text'          => 'ButterBean_Control_Text',
 				'textarea'      => 'ButterBean_Control_Textarea',
 
 				'excerpt'       => 'ButterBean_Control_Excerpt',
