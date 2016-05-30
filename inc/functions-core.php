@@ -44,7 +44,7 @@ function butterbean_get_template( $name, $slug = '' ) {
 	foreach ( $templates as $template ) {
 
 		if ( file_exists( butterbean()->dir_path . "tmpl/{$template}" ) ) {
-			require_once( butterbean()->dir_path . "tmpl/{$template}" );
+			require( butterbean()->dir_path . "tmpl/{$template}" );
 			break;
 		}
 	}
