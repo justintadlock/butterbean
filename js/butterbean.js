@@ -84,7 +84,7 @@
 			this.template = templates.managers[ type ];
 		},
 		render : function() {
-			this.$el.html( this.template( this.model.toJSON() ) );
+			this.el.innerHTML = this.template( this.model.toJSON() );
 			return this;
 		},
 		subview_render : function() {
@@ -104,8 +104,8 @@
 				var nav_view     = new Nav_View(     { model : section } );
 				var section_view = new Section_View( { model : section } );
 
-				$( '#butterbean-ui-' + section.get( 'manager' ) + ' .butterbean-nav'     ).append( nav_view.render().el     );
-				$( '#butterbean-ui-' + section.get( 'manager' ) + ' .butterbean-content' ).append( section_view.render().el );
+				document.querySelector( '#butterbean-ui-' + section.get( 'manager' ) + ' .butterbean-nav'     ).appendChild( nav_view.render().el     );
+				document.querySelector( '#butterbean-ui-' + section.get( 'manager' ) + ' .butterbean-content' ).appendChild( section_view.render().el );
 
 				// If the first model, set it to active.
 				section.set( 'active', 0 == i );
@@ -118,7 +118,7 @@
 
 				var view = new Control_View( { model : control } );
 
-				$( '#butterbean-' + control.get( 'manager' ) + '-section-' + control.get( 'section' ) ).append( view.render().el );
+				document.querySelector( '#butterbean-' + control.get( 'manager' ) + '-section-' + control.get( 'section' ) ).appendChild( view.render().el );
 			} );
 
 			return this;
@@ -147,13 +147,13 @@
 			this.template = templates.sections[ type ];
 		},
 		render: function() {
-			this.$el.html( this.template( this.model.toJSON() ) );
+			this.el.innerHTML = this.template( this.model.toJSON() );
 			return this;
 		},
 		onchange : function() {
 
 			// Set the view's `aria-hidden` attribute based on whether the model is active.
-			this.$el.attr( 'aria-hidden', ! this.model.get( 'active' ) );
+			this.el.setAttribute( 'aria-hidden', ! this.model.get( 'active' ) );
 		},
 	} );
 
@@ -171,7 +171,7 @@
 			this.model.on('change', this.onchange, this);
 		},
 		render : function() {
-			this.$el.html( this.template( this.model.toJSON() ) );
+			this.el.innerHTML = this.template( this.model.toJSON() );
 			return this;
 		},
 		events : {
@@ -180,7 +180,7 @@
 		onchange : function() {
 
 			// Set the `aria-selected` attibute based on the model active state.
-			this.$el.attr( 'aria-selected', this.model.get( 'active' ) );
+			this.el.setAttribute( 'aria-selected', this.model.get( 'active' ) );
 		},
 		onselect : function( event ) {
 			event.preventDefault();
@@ -216,7 +216,7 @@
 			this.template = templates.controls[ type ];
 		},
 		render: function(){
-			this.$el.html( this.template( this.model.toJSON() ) );
+			this.el.innerHTML = this.template( this.model.toJSON() );
 			return this;
 		}
 	} );
@@ -231,10 +231,10 @@
 		var view = new Manager_View( { model : manager } );
 
 		// Add the `.butterbean-ui` class to the meta box.
-		$( '#butterbean-ui-' + manager.get( 'name' ) ).addClass( 'butterbean-ui' );
+		document.querySelector( '#butterbean-ui-' + manager.get( 'name' ) ).className += ' butterbean-ui';
 
 		// Render the manager view.
-		$( '#butterbean-ui-' + manager.get( 'name' ) + ' .inside' ).append( view.render().el );
+		document.querySelector( '#butterbean-ui-' + manager.get( 'name' ) + ' .inside' ).appendChild( view.render().el );
 
 		// Render the manager subviews.
 		view.subview_render();
@@ -243,10 +243,10 @@
 	/* ====== Add classes ====== */
 
 	// Looks for `.hndle` and adds the `.butterbean-title` class.
-	$( '.butterbean-ui .hndle' ).addClass( 'butterbean-title' );
+	document.querySelector( '.butterbean-ui .hndle' ).className += ' butterbean-title';
 
 	// Adds the core WP `.description` class to any `.butterbean-description` elements.
-	$( '.butterbean-ui .butterbean-description' ).addClass( 'description' );
+	document.querySelector( '.butterbean-ui .butterbean-description' ).className += ' description';
 
 	/* === Color palette control === */
 
