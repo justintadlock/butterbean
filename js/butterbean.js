@@ -7,6 +7,9 @@
 
 	/* === Backbone + Underscore === */
 
+	// Set up a variable to house our views.
+	var views = { managers : {}, sections : {}, controls : {} };
+
 	// Set up a variable to house our templates.
 	var templates = { managers : {}, sections : {}, controls : {} };
 
@@ -116,7 +119,9 @@
 
 				var control = new Control_Model( data );
 
-				var view = new Control_View( { model : control } );
+				var callback = _.isUndefined( views.controls[ data.type ] ) ? views.controls[ 'default' ] : views.controls[ data.type ];
+
+				var view = new callback( { model : control } );
 
 				document.getElementById( 'butterbean-' + control.get( 'manager' ) + '-section-' + control.get( 'section' ) ).appendChild( view.render().el );
 			} );
@@ -197,7 +202,7 @@
 	} );
 
 	// Control view. Handles the output of a control.
-	var Control_View = Backbone.View.extend( {
+	views.controls.default = Backbone.View.extend( {
 		tagName : 'div',
 		attributes : function() {
 			return {
@@ -214,10 +219,35 @@
 			}
 
 			this.template = templates.controls[ type ];
+
+			this.ready();
 		},
 		render: function(){
 			this.el.innerHTML = this.template( this.model.toJSON() );
 			return this;
+		},
+		ready : function() {}
+	} );
+
+	// Palette control view.
+	views.controls.palette = views.controls.default.extend( {
+		events : {
+			'change input' : 'onselect'
+		},
+		ready : function() {
+
+			_.each( this.model.get( 'choices' ), function( choice, key ) {
+				choice.selected = key === this.model.get( 'value' );
+			}, this );
+		},
+		onselect : function() {
+
+			// @todo This should happen on change.
+			_.each( document.querySelectorAll( '#' + this.el.id + ' label' ), function( el ) {
+				el.setAttribute( 'aria-selected', false );
+			} );
+
+			document.querySelector( '#' + this.el.id + ' input:checked' ).parentNode.setAttribute( 'aria-selected', true );
 		}
 	} );
 
@@ -247,21 +277,5 @@
 
 	// Adds the core WP `.description` class to any `.butterbean-description` elements.
 	document.querySelector( '.butterbean-ui .butterbean-description' ).className += ' description';
-
-	/* === Color palette control === */
-
-	// Adds a `.selected` class to the label of checked inputs.
-	$( 'input:radio:checked', '.butterbean-control-palette' ).parent( 'label' ).addClass( 'selected' );
-
-	$( 'input:radio', '.butterbean-control-palette' ).change(
-		function() {
-
-			var container = $( this ).parents( '.butterbean-control-palette' );
-
-			// Removes the `.selected` class from other labels and adds it to the new one.
-			$( 'label.selected', container ).removeClass( 'selected' );
-			$( this ).parent( 'label' ).addClass( 'selected' );
-		}
-	);
 
 }( jQuery ) );

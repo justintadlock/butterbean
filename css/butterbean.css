@@ -217,7 +217,7 @@
 	padding: 0 10px 10px;
 }
 
-.butterbean-control-palette label.selected {
+.butterbean-control-palette label[aria-selected="true"] {
 	padding-top: 5px;
 	background-color: #ddd;
 }
