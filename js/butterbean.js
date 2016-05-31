@@ -236,18 +236,20 @@
 		},
 		ready : function() {
 
-			_.each( this.model.get( 'choices' ), function( choice, key ) {
-				choice.selected = key === this.model.get( 'value' );
-			}, this );
+			_.bindAll( this, 'render' );
+			this.model.bind( 'change', this.render );
 		},
 		onselect : function() {
 
-			// @todo This should happen on change.
-			_.each( document.querySelectorAll( '#' + this.el.id + ' label' ), function( el ) {
-				el.setAttribute( 'aria-selected', false );
+			var value = document.querySelector( '#' + this.el.id + ' input:checked' ).getAttribute( 'value' );
+
+			var choices = this.model.get( 'choices' );
+
+			_.each( choices, function( choice, key ) {
+				choice.selected = key === value;
 			} );
 
-			document.querySelector( '#' + this.el.id + ' input:checked' ).parentNode.setAttribute( 'aria-selected', true );
+			this.model.set( 'choices', choices ).trigger( 'change', this.model );
 		}
 	} );
 

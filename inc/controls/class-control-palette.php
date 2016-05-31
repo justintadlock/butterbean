@@ -29,9 +29,14 @@ class ButterBean_Control_Palette extends ButterBean_Control {
 	public function to_json() {
 		parent::to_json();
 
+		$value = $this->get_value();
+
 		// Make sure the colors have a hash.
-		foreach ( $this->choices as $choice => $value )
-			$this->choices[ $choice ]['colors'] = array_map( 'maybe_hash_hex_color', $value['colors'] );
+		foreach ( $this->choices as $choice => $palette ) {
+			$this->choices[ $choice ]['colors'] = array_map( 'maybe_hash_hex_color', $palette['colors'] );
+
+			$this->choices[ $choice ]['selected'] = $value && $choice === $value;
+		}
 
 		$this->json['choices'] = $this->choices;
 	}
