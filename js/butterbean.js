@@ -118,7 +118,7 @@
 
 				var view = new Control_View( { model : control } );
 
-				document.querySelector( '#butterbean-' + control.get( 'manager' ) + '-section-' + control.get( 'section' ) ).appendChild( view.render().el );
+				document.getElementById( 'butterbean-' + control.get( 'manager' ) + '-section-' + control.get( 'section' ) ).appendChild( view.render().el );
 			} );
 
 			return this;
@@ -231,7 +231,7 @@
 		var view = new Manager_View( { model : manager } );
 
 		// Add the `.butterbean-ui` class to the meta box.
-		document.querySelector( '#butterbean-ui-' + manager.get( 'name' ) ).className += ' butterbean-ui';
+		document.getElementById( 'butterbean-ui-' + manager.get( 'name' ) ).className += ' butterbean-ui';
 
 		// Render the manager view.
 		document.querySelector( '#butterbean-ui-' + manager.get( 'name' ) + ' .inside' ).appendChild( view.render().el );
