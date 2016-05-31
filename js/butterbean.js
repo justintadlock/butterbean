@@ -1,7 +1,7 @@
 ( function( $ ) {
 
 	// Bail if we don't have the JSON, which is passed in via `wp_localize_script()`.
-	if ( 'undefined' === typeof butterbean_data ) {
+	if ( _.isUndefined( butterbean_data ) ) {
 		return;
 	}
 
@@ -77,7 +77,7 @@
 
 			var type = this.model.get( 'type' );
 
-			if ( 'undefined' === typeof templates.managers[ type ] ) {
+			if ( _.isUndefined( templates.managers[ type ] ) ) {
 				templates.managers[ type ] = wp.template( 'butterbean-manager-' + type );
 			}
 
@@ -140,7 +140,7 @@
 
 			var type = this.model.get( 'type' );
 
-			if ( 'undefined' === typeof templates.sections[ type ] ) {
+			if ( _.isUndefined( templates.sections[ type ] ) ) {
 				templates.sections[ type ] = wp.template( 'butterbean-section-' + type );
 			}
 
@@ -209,7 +209,7 @@
 			var type = this.model.get( 'type' );
 
 			// Only add a new control template if we have a different control type.
-			if ( 'undefined' === typeof templates.controls[ type ] ) {
+			if ( _.isUndefined( templates.controls[ type ] ) ) {
 				templates.controls[ type ] = wp.template( 'butterbean-control-' + type );
 			}
 
