@@ -1,4 +1,4 @@
-( function( $ ) {
+( function() {
 
 	// Bail if we don't have the JSON, which is passed in via `wp_localize_script()`.
 	if ( _.isUndefined( butterbean_data ) ) {
@@ -280,4 +280,4 @@
 	// Adds the core WP `.description` class to any `.butterbean-description` elements.
 	document.querySelector( '.butterbean-ui .butterbean-description' ).className += ' description';
 
-}( jQuery ) );
+}() );
