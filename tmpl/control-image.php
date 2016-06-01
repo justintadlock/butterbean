@@ -9,7 +9,7 @@
 <input type="hidden" class="butterbean-attachment-id" name="{{ data.field_name }}" value="{{ data.value }}" />
 
 <# if ( data.src ) { #>
-	<img class="butterbean-img" src="{{ data.src }}" />
+	<img class="butterbean-img" src="{{ data.src }}" alt="{{ data.alt }}" />
 <# } else { #>
 	<div class="butterbean-placeholder">{{ data.l10n.placeholder }}</div>
 <# } #>

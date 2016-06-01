@@ -88,11 +88,14 @@ class ButterBean_Control_Image extends ButterBean_Control {
 		$this->json['l10n'] = $this->l10n;
 
 		$value = $this->get_value();
-		$image = '';
+		$image = $alt = '';
 
-		if ( $value )
+		if ( $value ) {
 			$image = wp_get_attachment_image_src( absint( $value ), 'large' );
+			$alt   = get_post_meta( absint( $value ), '_wp_attachment_image_alt', true );
+		}
 
 		$this->json['src'] = $image ? esc_url( $image[0] ) : '';
+		$this->json['alt'] = $alt   ? esc_attr( $alt )     : '';
 	}
 }

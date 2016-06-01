@@ -287,7 +287,8 @@
 				var media = this.modal.state().get( 'selection' ).first().toJSON();
 
 				this.model.set( {
-					src   :  media.sizes.large ? media.sizes.large.url : media.url,
+					src   : media.sizes.large ? media.sizes.large.url : media.url,
+					alt   : media.alt,
 					value : media.id
 				} );
 			}, this );
@@ -296,7 +297,7 @@
 		},
 		removemedia : function() {
 
-			this.model.set( { src : '', value : '' } );
+			this.model.set( { src : '', alt : '', value : '' } );
 		}
 	} );
 
