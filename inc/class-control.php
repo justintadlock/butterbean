@@ -183,19 +183,6 @@ class ButterBean_Control {
 	}
 
 	/**
-	 * Prints the attributes for the control.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
-	 */
-	public function attr() {
-
-		foreach ( $this->get_attr() as $attr => $value )
-			printf( '%s="%s" ', esc_html( $attr ), esc_attr( $value ) );
-	}
-
-	/**
 	 * Returns the json array.
 	 *
 	 * @since  1.0.0
