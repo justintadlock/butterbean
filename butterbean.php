@@ -300,9 +300,6 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		public function enqueue() {
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-			// Register control scripts.
-			wp_register_script( 'butterbean-control-image', butterbean()->dir_uri . "js/control-image{$min}.js", array( 'media-views' ), '', true );
-
 			// Enqueue the main plugin script.
 			wp_enqueue_script( 'butterbean', $this->dir_uri . "js/butterbean{$min}.js", array( 'backbone', 'wp-util' ), '', true );
 

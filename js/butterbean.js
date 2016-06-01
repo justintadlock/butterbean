@@ -253,6 +253,53 @@
 		}
 	} );
 
+	// Image control view.
+	views.controls.image = views.controls.default.extend( {
+		events : {
+			'click .butterbean-add-media'    : 'showmodal',
+			'click .butterbean-change-media' : 'showmodal',
+			'click .butterbean-remove-media' : 'removemedia'
+		},
+		ready : function() {
+
+			_.bindAll( this, 'render' );
+			this.model.bind( 'change', this.render );
+		},
+		showmodal : function() {
+
+			if ( ! _.isUndefined( this.modal ) ) {
+
+				this.modal.open();
+				return;
+			}
+
+			this.modal = wp.media( {
+				frame    : 'select',
+				multiple : false,
+				editing  : true,
+				title    : this.model.get( 'l10n' ).choose,
+				library  : { type : 'image' },
+				button   : { text:  this.model.get( 'l10n' ).set }
+			} );
+
+			this.modal.on( 'select', function() {
+
+				var media = this.modal.state().get( 'selection' ).first().toJSON();
+
+				this.model.set( {
+					src   :  media.sizes.large ? media.sizes.large.url : media.url,
+					value : media.id
+				} );
+			}, this );
+
+			this.modal.open();
+		},
+		removemedia : function() {
+
+			this.model.set( { src : '', value : '' } );
+		}
+	} );
+
 	// Loop through each of the managers and render their views.
 	_.each( butterbean_data.managers, function( data ) {
 

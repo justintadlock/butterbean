@@ -1,6 +1,6 @@
 <?php
 /**
- * Image control class.  This control allows users to set an image.  It passes the attachment 
+ * Image control class.  This control allows users to set an image.  It passes the attachment
  * ID the setting, so you'll need a custom control class if you want to store anything else,
  * such as the URL or other data.
  *
@@ -72,9 +72,7 @@ class ButterBean_Control_Image extends ButterBean_Control {
 	 */
 	public function enqueue() {
 
-		wp_enqueue_script( 'butterbean-control-image' );
-
-		wp_localize_script( 'butterbean-control-image', 'butterbean_control_image', $this->l10n );
+		wp_enqueue_script( 'media-views' );
 	}
 
 	/**
