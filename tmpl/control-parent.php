@@ -1,7 +1,6 @@
 <label>
 	<# if ( data.label ) { #>
 		<span class="butterbean-label">{{ data.label }}</span>
-		<br />
 	<# } #>
 
 	<select name="{{ data.field_name }}" id="{{ data.field_name }}">
@@ -13,7 +12,6 @@
 	</select>
 
 	<# if ( data.description ) { #>
-		<br />
 		<span class="butterbean-description">{{{ data.description }}}</span>
 	<# } #>
 </label>

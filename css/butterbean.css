@@ -180,7 +180,25 @@
 	margin-bottom: 20px;
 }
 
-	.butterbean-label { font-weight: bold; display: inline-block; margin-bottom: 2px; }
+	.butterbean-label {
+		display       : block !important; /* this is getting overwritten somewhere */
+		font-weight   : bold;
+		display       : inline-block;
+		margin-bottom : 4px;
+	}
+
+		.butterbean-control-checkbox .butterbean-label { display: inline !important; }
+
+	.butterbean-description {
+		display       : block;
+		font-style    : italic;
+		margin-top    : 4px;
+	}
+
+		.butterbean-label + .butterbean-description {
+			margin-top    : 0;
+			margin-bottom : 4px;
+		}
 
 /* === Media === */
 

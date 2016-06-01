@@ -6,7 +6,6 @@
 	<# } #>
 
 	<# if ( data.description ) { #>
-		<br />
 		<span class="butterbean-description">{{{ data.description }}}</span>
 	<# } #>
 </label>

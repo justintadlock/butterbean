@@ -1,11 +1,9 @@
 <# if ( data.label ) { #>
 	<span class="butterbean-label">{{ data.label }}</span>
-	<br />
 <# } #>
 
 <# if ( data.description ) { #>
 	<span class="butterbean-description">{{{ data.description }}}</span>
-	<br />
 <# } #>
 
 <input type="hidden" class="butterbean-attachment-id" name="{{ data.field_name }}" value="{{ data.value }}" />

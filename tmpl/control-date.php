@@ -1,6 +1,9 @@
 <# if ( data.label ) { #>
 	<span class="butterbean-label">{{ data.label }}</span>
-	<br />
+<# } #>
+
+<# if ( data.description ) { #>
+	<span class="butterbean-description">{{{ data.description }}}</span>
 <# } #>
 
 <label>
@@ -21,8 +24,3 @@
 	<span class="screen-reader-text">{{ data.year.label }}</span>
 	<input type="text" name="{{ data.year.name }}" value="{{ data.year.value }}" {{{ data.year.attr }}} />
 </label>
-
-<# if ( data.description ) { #>
-	<br />
-	<span class="butterbean-description">{{{ data.description }}}</span>
-<# } #>

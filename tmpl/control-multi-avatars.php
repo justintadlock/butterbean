@@ -1,11 +1,9 @@
 <# if ( data.label ) { #>
 	<span class="butterbean-label">{{ data.label }}</span>
-	<br />
 <# } #>
 
 <# if ( data.description ) { #>
 	<span class="butterbean-description">{{{ data.description }}}</span>
-	<br />
 <# } #>
 
 <div class="butterbean-multi-avatars-wrap">
