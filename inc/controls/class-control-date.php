@@ -40,6 +40,8 @@ class ButterBean_Control_Date extends ButterBean_Control {
 
 		parent::to_json();
 
+		$field_name = $this->get_field_name();
+
 		// Get project start/end dates.
 		$date = $this->get_value( $this->manager->post_id );
 
@@ -52,14 +54,14 @@ class ButterBean_Control_Date extends ButterBean_Control {
 		$this->json['year'] = array(
 			'value' => esc_attr( $year ),
 			'label' => esc_html__( 'Year', 'butterbean' ),
-			'name'  => esc_attr( "butterbean_{$this->manager->name}_setting_{$this->setting}_year" ),
+			'name'  => esc_attr( "{$field_name}_year" ),
 			'attr'  => sprintf( 'placeholder="%s" size="4" maxlength="4" autocomplete="off"', esc_attr( date_i18n( 'Y' ) ) )
 		);
 
 		// Month
 		$this->json['month'] = array(
 			'value'   => esc_attr( $month ),
-			'name'    => esc_attr( "butterbean_{$this->manager->name}_setting_{$this->setting}_month" ),
+			'name'    => esc_attr( "{$field_name}_month" ),
 			'label'   => esc_html__( 'Month', 'butterbean' ),
 			'choices' => array(
 				array(
@@ -83,7 +85,7 @@ class ButterBean_Control_Date extends ButterBean_Control {
 		// Day
 		$this->json['day'] = array(
 			'value' => esc_attr( $day ),
-			'name'  => esc_attr( "butterbean_{$this->manager->name}_setting_{$this->setting}_day" ),
+			'name'  => esc_attr( "{$field_name}_day" ),
 			'label' => esc_html__( 'Day', 'butterbean' ),
 			'attr'  => sprintf( 'placeholder="%s" size="2" maxlength="2" autocomplete="off"', esc_attr( date_i18n( 'd' ) ) )
 		);

@@ -111,10 +111,22 @@ class ButterBean_Setting {
 
 		$value = '';
 
-		if ( isset( $_POST[ "butterbean_{$this->manager->name}_setting_{$this->name}" ] ) )
-			$value = $_POST[ "butterbean_{$this->manager->name}_setting_{$this->name}" ];
+		if ( isset( $_POST[ $this->get_field_name() ] ) )
+			$value = $_POST[ $this->get_field_name() ];
 
 		return $this->sanitize( $value );
+	}
+
+	/**
+	 * Retuns the correct field name for the setting.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return string
+	 */
+	public function get_field_name() {
+
+		return "butterbean_{$this->manager->name}_setting_{$this->name}";
 	}
 
 	/**

@@ -28,10 +28,12 @@ class ButterBean_Setting_Date extends ButterBean_Setting {
 	 */
 	public function get_posted_value() {
 
+		$field_name = $this->get_field_name();
+
 		// Get the posted year, month, and day.
-		$year  = ! empty( $_POST[ "butterbean_{$this->manager->name}_setting_{$this->name}_year" ] )  ? zeroise( absint( $_POST[ "butterbean_{$this->manager->name}_setting_{$this->name}_year" ]  ), 4 ) : '';
-		$month = ! empty( $_POST[ "butterbean_{$this->manager->name}_setting_{$this->name}_month" ] ) ? zeroise( absint( $_POST[ "butterbean_{$this->manager->name}_setting_{$this->name}_month" ] ), 2 ) : '';
-		$day   = ! empty( $_POST[ "butterbean_{$this->manager->name}_setting_{$this->name}_day" ] )   ? zeroise( absint( $_POST[ "butterbean_{$this->manager->name}_setting_{$this->name}_day" ]   ), 2 ) : '';
+		$year  = ! empty( $_POST[ "{$field_name}_year" ] )  ? zeroise( absint( $_POST[ "{$field_name}_year" ]  ), 4 ) : '';
+		$month = ! empty( $_POST[ "{$field_name}_month" ] ) ? zeroise( absint( $_POST[ "{$field_name}_month" ] ), 2 ) : '';
+		$day   = ! empty( $_POST[ "{$field_name}_day" ] )   ? zeroise( absint( $_POST[ "{$field_name}_day" ]   ), 2 ) : '';
 
 		$new_date = $year && $month && $day ? "{$year}-{$month}-{$day} 00:00:00" : '';
 
