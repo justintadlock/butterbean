@@ -19,8 +19,8 @@
 	/* === Models === */
 
 	// Manager model (each manager is housed within a meta box).
-	var Manager_Model = Backbone.Model.extend( {
-		defaults: {
+	var Manager = Backbone.Model.extend( {
+		defaults : {
 			name     : '',
 			type     : '',
 			sections : {},
@@ -29,8 +29,8 @@
 	} );
 
 	// Section model (each section belongs to a manager).
-	var Section_Model = Backbone.Model.extend( {
-		defaults: {
+	var Section = Backbone.Model.extend( {
+		defaults : {
 			name        : '',
 			type        : '',
 			label       : '',
@@ -42,8 +42,8 @@
 	} );
 
 	// Control model (each control belongs to a manager and section).
-	var Control_Model = Backbone.Model.extend( {
-		defaults: {
+	var Control = Backbone.Model.extend( {
+		defaults : {
 			name        : '',
 			type        : '',
 			label       : '',
@@ -61,14 +61,14 @@
 	/* === Collections === */
 
 	// Collection of sections.
-	var Section_Collection = Backbone.Collection.extend( {
-		model : Section_Model
+	var Sections = Backbone.Collection.extend( {
+		model : Section
 	} );
 
 	/* === Views === */
 
 	// Manager view.  Handles the output of a manager.
-	var Manager_View = Backbone.View.extend( {
+	views.managers.default = Backbone.View.extend( {
 		tagName : 'div',
 		attributes : function() {
 			return {
@@ -93,19 +93,19 @@
 		subview_render : function() {
 
 			// Create a new section collection.
-			var section_collection = new Section_Collection();
+			var sections = new Sections();
 
 			// Loop through each section and add it to the collection.
 			_.each( this.model.get( 'sections' ), function( data ) {
 
-				section_collection.add( new Section_Model( data ) );
+				sections.add( new Section( data ) );
 			} );
 
 			// Loop through each manager in the collection and render its view.
-			section_collection.forEach( function( section, i ) {
+			sections.forEach( function( section, i ) {
 
 				var nav_view     = new Nav_View(     { model : section } );
-				var section_view = new Section_View( { model : section } );
+				var section_view = new views.sections.default( { model : section } );
 
 				document.querySelector( '#butterbean-ui-' + section.get( 'manager' ) + ' .butterbean-nav'     ).appendChild( nav_view.render().el     );
 				document.querySelector( '#butterbean-ui-' + section.get( 'manager' ) + ' .butterbean-content' ).appendChild( section_view.render().el );
@@ -117,7 +117,7 @@
 			// Loop through each control for the manager and render its view.
 			_.each( this.model.get( 'controls' ), function( data ) {
 
-				var control = new Control_Model( data );
+				var control = new Control( data );
 
 				var callback = _.isUndefined( views.controls[ data.type ] ) ? views.controls[ 'default' ] : views.controls[ data.type ];
 
@@ -131,7 +131,7 @@
 	} );
 
 	// Section view.  Handles the output of a section.
-	var Section_View = Backbone.View.extend( {
+	views.sections.default = Backbone.View.extend( {
 		tagName : 'div',
 		attributes : function() {
 			return {
@@ -140,7 +140,7 @@
 				'aria-hidden' : ! this.model.get( 'active' )
 			};
 		},
-		initialize: function( options ) {
+		initialize : function( options ) {
 			this.model.on('change', this.onchange, this);
 
 			var type = this.model.get( 'type' );
@@ -151,7 +151,7 @@
 
 			this.template = templates.sections[ type ];
 		},
-		render: function() {
+		render : function() {
 			this.el.innerHTML = this.template( this.model.toJSON() );
 			return this;
 		},
@@ -210,7 +210,7 @@
 				'class' : 'butterbean-control butterbean-control-' + this.model.get( 'type' )
 			};
 		},
-		initialize: function( options ) {
+		initialize : function( options ) {
 			var type = this.model.get( 'type' );
 
 			// Only add a new control template if we have a different control type.
@@ -222,7 +222,7 @@
 
 			this.ready();
 		},
-		render: function(){
+		render : function(){
 			this.el.innerHTML = this.template( this.model.toJSON() );
 			return this;
 		},
@@ -305,10 +305,10 @@
 	_.each( butterbean_data.managers, function( data ) {
 
 		// Create a new manager model.
-		var manager = new Manager_Model( data );
+		var manager = new Manager( data );
 
 		// Create a new manager view.
-		var view = new Manager_View( { model : manager } );
+		var view = new views.managers.default( { model : manager } );
 
 		// Add the `.butterbean-ui` class to the meta box.
 		document.getElementById( 'butterbean-ui-' + manager.get( 'name' ) ).className += ' butterbean-ui';
