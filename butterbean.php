@@ -173,33 +173,30 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			// Action hook for registering managers.
 			do_action( 'butterbean_register', $this, $post_type );
 
-			// If no managers registered, bail.
-			if ( ! $this->managers )
-				return;
-
 			// Loop through the managers to see if we're using on on this screen.
 			foreach ( $this->managers as $manager ) {
 
 				// If we found a matching post type, add our actions/filters.
-				if ( in_array( $post_type, (array) $manager->post_type ) ) {
-
-					// Add meta boxes.
-					add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-
-					// Save settings.
-					add_action( 'save_post', array( $this, 'update' ) );
-
-					// Load scripts and styles.
-					add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
-
-					// Localize scripts and Undescore templates.
-					add_action( 'admin_footer', array( $this, 'localize_scripts' ) );
-					add_action( 'admin_footer', array( $this, 'print_templates' ) );
-
-					// Break out of the loop.
-					break;
-				}
+				if ( ! in_array( $post_type, (array) $manager->post_type ) )
+					$this->unregister_manager( $manager->name );
 			}
+
+			// If no managers registered, bail.
+			if ( ! $this->managers )
+				return;
+
+			// Add meta boxes.
+			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+
+			// Save settings.
+			add_action( 'save_post', array( $this, 'update' ) );
+
+			// Load scripts and styles.
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+
+			// Localize scripts and Undescore templates.
+			add_action( 'admin_footer', array( $this, 'localize_scripts' ) );
+			add_action( 'admin_footer', array( $this, 'print_templates' ) );
 		}
 
 		/**
