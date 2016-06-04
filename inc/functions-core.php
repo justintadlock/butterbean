@@ -25,6 +25,62 @@ function butterbean_validate_boolean( $value ) {
 }
 
 /**
+ * Pre-WP 4.6 function for sanitizing hex colors.
+ *
+ * @since  1.0.0
+ * @access public
+ * @param  string  $color
+ * @return string
+ */
+function butterbean_sanitize_hex_color( $color ) {
+
+	if ( function_exists( 'sanitize_hex_color' ) )
+		return sanitize_hex_color( $color );
+
+	return $color && preg_match('|^#([A-Fa-f0-9]{3}){1,2}$|', $color ) ? $color : '';
+}
+
+/**
+ * Pre-WP 4.6 function for sanitizing hex colors without a hash.
+ *
+ * @since  1.0.0
+ * @access public
+ * @param  string  $color
+ * @return string
+ */
+function butterbean_sanitize_hex_color_no_hash( $color ) {
+
+	if ( function_exists( 'sanitize_hex_color_no_hash' ) )
+		return sanitize_hex_color_no_hash( $color );
+
+	$color = ltrim( $color, '#' );
+
+	if ( '' === $color )
+		return '';
+
+	return butterbean_sanitize_hex_color( '#' . $color ) ? $color : null;
+}
+
+/**
+ * Pre-WP 4.6 function for sanitizing a color and adding a hash.
+ *
+ * @since  1.0.0
+ * @access public
+ * @param  string  $color
+ * @return string
+ */
+function butterbean_maybe_hash_hex_color( $color ) {
+
+	if ( function_exists( 'maybe_has_hex_color' ) )
+		return maybe_has_hex_color( $color );
+
+	if ( $unhashed = butterbean_sanitize_hex_color_no_hash( $color ) )
+		return '#' . $unhashed;
+
+	return $color;
+}
+
+/**
  * Helper function for getting Underscore.js templates.
  *
  * @since  1.0.0

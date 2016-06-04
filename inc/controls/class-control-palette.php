@@ -33,7 +33,7 @@ class ButterBean_Control_Palette extends ButterBean_Control {
 
 		// Make sure the colors have a hash.
 		foreach ( $this->choices as $choice => $palette ) {
-			$this->choices[ $choice ]['colors'] = array_map( 'maybe_hash_hex_color', $palette['colors'] );
+			$this->choices[ $choice ]['colors'] = array_map( 'butterbean_maybe_hash_hex_color', $palette['colors'] );
 
 			$this->choices[ $choice ]['selected'] = $value && $choice === $value;
 		}
