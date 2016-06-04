@@ -112,6 +112,10 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 */
 		private function includes() {
 
+			// If not in the admin, bail.
+			if ( ! is_admin() )
+				return;
+
 			// Load base classes.
 			require_once( $this->dir_path . 'inc/class-manager.php' );
 			require_once( $this->dir_path . 'inc/class-section.php' );
