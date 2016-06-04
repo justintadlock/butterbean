@@ -64,13 +64,24 @@ class ButterBean_Control {
 	public $section = '';
 
 	/**
-	 * ID of the setting the control is for.
+	 * The setting key for the specific setting the control is tied to.
+	 * Controls can have multiple settings attached to them.  The default
+	 * setting is `default`.
 	 *
 	 * @since  1.0.0
 	 * @access public
 	 * @var    string
 	 */
-	public $setting = '';
+	public $setting = 'default';
+
+	/**
+	 * Array of settings if the control has multiple settings.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    array
+	 */
+	public $settings = array();
 
 	/**
 	 * The type of control.
@@ -129,8 +140,8 @@ class ButterBean_Control {
 		$this->manager = $manager;
 		$this->name    = $name;
 
-		if ( ! isset( $args['setting'] ) )
-			$this->setting = $name;
+		if ( ! $args['settings'] || ! is_array( $args['settings'] ) )
+			$this->settings['default'] = $name;
 	}
 
 	/**
@@ -147,11 +158,12 @@ class ButterBean_Control {
 	 *
 	 * @since  1.0.0
 	 * @access public
+	 * @param  string  $setting
 	 * @return mixed
 	 */
-	public function get_value() {
+	public function get_value( $setting = 'default' ) {
 
-		$setting = $this->manager->get_setting( $this->setting );
+		$setting = $this->manager->get_setting( $this->settings[ $setting ] );
 
 		return $setting ? $setting->get_value() : '';
 	}
@@ -175,11 +187,12 @@ class ButterBean_Control {
 	 *
 	 * @since  1.0.0
 	 * @access public
+	 * @param  string  $setting
 	 * @return array
 	 */
-	public function get_field_name() {
+	public function get_field_name( $setting = 'default' ) {
 
-		return "butterbean_{$this->manager->name}_setting_{$this->setting}";
+		return "butterbean_{$this->manager->name}_setting_{$this->settings[ $setting ]}";
 	}
 
 	/**
@@ -207,6 +220,7 @@ class ButterBean_Control {
 		$this->json['manager']     = $this->manager->name;
 		$this->json['section']     = $this->section;
 		$this->json['setting']     = $this->setting;
+		$this->json['settings']    = $this->settings;
 		$this->json['name']        = $this->name;
 		$this->json['label']       = $this->label;
 		$this->json['type']        = $this->type;
