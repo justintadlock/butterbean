@@ -418,6 +418,6 @@ class ButterBean_Manager {
 	 * @return void
 	 */
 	public function template() {
-		butterbean_get_template( 'manager', $this->type );
+		butterbean_get_manager_template( $this->type );
 	}
 }

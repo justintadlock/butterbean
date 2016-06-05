@@ -43,6 +43,15 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		public $dir_uri = '';
 
 		/**
+		 * Directory path to the template folder.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @var    string
+		 */
+		public $tmpl_path = '';
+
+		/**
 		 * Array of managers.
 		 *
 		 * @since  1.0.0
@@ -99,8 +108,10 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 */
 		private function setup() {
 
-			$this->dir_path = apply_filters( 'butterbean_dir_path', trailingslashit( plugin_dir_path( __FILE__ ) ) );
-			$this->dir_uri  = apply_filters( 'butterbean_dir_uri',  trailingslashit( plugin_dir_url(  __FILE__ ) ) );
+			$this->dir_path  = apply_filters( 'butterbean_dir_path', trailingslashit( plugin_dir_path( __FILE__ ) ) );
+			$this->dir_uri   = apply_filters( 'butterbean_dir_uri',  trailingslashit( plugin_dir_url(  __FILE__ ) ) );
+
+			$this->tmpl_path = trailingslashit( $this->dir_path . 'tmpl' );
 		}
 
 		/**
@@ -399,7 +410,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			$c_templates = array(); ?>
 
 			<script type="text/html" id="tmpl-butterbean-nav">
-				<?php butterbean_get_template( 'nav' ); ?>
+				<?php butterbean_get_nav_template(); ?>
 			</script>
 
 			<?php foreach ( $this->managers as $manager ) {

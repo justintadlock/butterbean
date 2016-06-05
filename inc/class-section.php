@@ -188,6 +188,6 @@ class ButterBean_Section {
 	 * @return void
 	 */
 	public function template() {
-		butterbean_get_template( 'section', $this->type );
+		butterbean_get_section_template( $this->type );
 	}
 }

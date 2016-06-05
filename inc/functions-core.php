@@ -81,6 +81,50 @@ function butterbean_maybe_hash_hex_color( $color ) {
 }
 
 /**
+ * Gets Underscore.js templates for managers.
+ *
+ * @since  1.0.0
+ * @param  string  $slug
+ * @return void
+ */
+function butterbean_get_manager_template( $slug = '' ) {
+	butterbean_get_template( 'manager', $slug );
+}
+
+/**
+ * Gets Underscore.js templates for navs.
+ *
+ * @since  1.0.0
+ * @param  string  $slug
+ * @return void
+ */
+function butterbean_get_nav_template( $slug = '' ) {
+	butterbean_get_template( 'nav', $slug );
+}
+
+/**
+ * Gets Underscore.js templates for sections.
+ *
+ * @since  1.0.0
+ * @param  string  $slug
+ * @return void
+ */
+function butterbean_get_section_template( $slug = '' ) {
+	butterbean_get_template( 'section', $slug );
+}
+
+/**
+ * Gets Underscore.js templates for controls.
+ *
+ * @since  1.0.0
+ * @param  string  $slug
+ * @return void
+ */
+function butterbean_get_control_template( $slug = '' ) {
+	butterbean_get_template( 'control', $slug );
+}
+
+/**
  * Helper function for getting Underscore.js templates.
  *
  * @since  1.0.0
@@ -91,17 +135,29 @@ function butterbean_maybe_hash_hex_color( $color ) {
 function butterbean_get_template( $name, $slug = '' ) {
 
 	$templates = array();
+	$located   = '';
 
 	if ( $slug )
 		$templates[] = "{$name}-{$slug}.php";
 
 	$templates[] = "{$name}.php";
 
+	// Allow devs to filter the template hierarchy.
+	$templates = apply_filters( "butterbean_{$name}_template_hierarchy", $templates, $slug );
+
+	// Loop through the templates and locate one.
 	foreach ( $templates as $template ) {
 
-		if ( file_exists( butterbean()->dir_path . "tmpl/{$template}" ) ) {
-			require( butterbean()->dir_path . "tmpl/{$template}" );
+		if ( file_exists( butterbean()->tmpl_path . $template ) ) {
+			$located = butterbean()->tmpl_path . $template;
 			break;
 		}
 	}
+
+	// Allow devs to filter the final template.
+	$located = apply_filters( "butterbean_{$name}_template", $located, $slug );
+
+	// Load the template.
+	if ( $located )
+		require( $located );
 }
