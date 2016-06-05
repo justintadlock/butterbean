@@ -230,6 +230,12 @@
 	height:  105px;
 }
 
+/* === Date Control === */
+
+.butterbean-control-date select {
+	vertical-align: top;
+}
+
 /* === Palette Control === */
 
 .butterbean-control-palette label {
