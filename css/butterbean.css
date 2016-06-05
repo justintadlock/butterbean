@@ -15,26 +15,26 @@
 
 /* Tabs wrapper. */
 
-.butterbean-manager {
+.butterbean-manager-default {
 	overflow:   hidden;
 	background: #fff;
 	background: linear-gradient( 90deg, #fafafa 0%, #fafafa 180px, #fff 180px, #fff 100% );
 }
 
-	#side-sortables .butterbean-manager {
+	#side-sortables .butterbean-manager-default {
 		background: linear-gradient( 90deg, #fafafa 0%, #fafafa 48px, #fff 48px, #fff 100% );
 	}
 
 	@media only screen and ( max-width: 782px ), ( max-width: 980px ) and ( min-width: 851px ) {
 
-		.butterbean-manager {
+		.butterbean-manager-default {
 			background: linear-gradient( 90deg, #fafafa 0%, #fafafa 48px, #fff 48px, #fff 100% );
 		}
 	}
 
 	/* Tab nav. */
 
-	.butterbean-nav {
+	.butterbean-manager-default .butterbean-nav {
 		position:         relative;
 		float:            left;
 		list-style:       none;
@@ -47,7 +47,7 @@
 		box-sizing:       border-box;
 	}
 
-		.butterbean-nav li {
+		.butterbean-manager-default .butterbean-nav li {
 			display:     block;
 			position:    relative;
 			margin:      0;
@@ -55,7 +55,7 @@
 			line-height: 20px;
 		}
 
-			.butterbean-nav li a {
+			.butterbean-manager-default .butterbean-nav li a {
 				display:         block;
 				margin:          0;
 				padding:         10px;
@@ -65,12 +65,12 @@
 				box-shadow:      none;
 			}
 
-				.butterbean-nav li a .dashicons {
+				.butterbean-manager-default .butterbean-nav .dashicons {
 					line-height:  20px;
 					margin-right: 3px;
 				}
 
-			.butterbean-nav li[aria-selected="true"] a {
+			.butterbean-manager-default .butterbean-nav li[aria-selected="true"] a {
 				position:         relative;
 				font-weight:      bold;
 				color:            #555;
@@ -78,21 +78,21 @@
 			}
 
 	@media only screen and ( max-width: 782px ), ( max-width: 980px ) and ( min-width: 851px ) {
-		.butterbean-nav { width: 48px; }
+		.butterbean-manager-default .butterbean-nav { width: 48px; }
 
-		.butterbean-nav li a .dashicons {
+		.butterbean-manager-default .butterbean-nav .dashicons {
 			width:       24px;
 			height:      24px;
 			font-size:   24px;
 			line-height: 24px;
 		}
 
-			.butterbean-nav li .dashicons::before {
+			.butterbean-manager-default .butterbean-nav .dashicons::before {
 				width:  24px;
 				height: 24px;
 			}
 
-		.butterbean-nav li .label {
+		.butterbean-manager-default .butterbean-nav .label {
 			overflow: hidden;
 			position: absolute;
 			top:      -1000em;
@@ -104,7 +104,7 @@
 
 	/* Tab content wrapper */
 
-	.butterbean-content {
+	.butterbean-manager-default .butterbean-content {
 		float:       left;
 		width:       calc( 100% - 180px );
 		margin-left: -1px;
@@ -113,7 +113,7 @@
 
 	@media only screen and ( max-width: 782px ), ( max-width: 980px ) and ( min-width: 851px ) {
 
-		.butterbean-content {
+		.butterbean-manager-default .butterbean-content {
 			width: calc( 100% - 48px );
 		}
 	}
@@ -122,40 +122,40 @@
 
 @media only screen and ( min-width: 850px ) {
 
-	#side-sortables .butterbean-manager { background: #fff; }
+	#side-sortables .butterbean-manager-default { background: #fff; }
 
-	#side-sortables .butterbean-content { width: 100%; }
+	#side-sortables .butterbean-manager-default .butterbean-content { width: 100%; }
 
-	#side-sortables .butterbean-nav {
+	#side-sortables .butterbean-manager-default .butterbean-nav {
 		display: table;
 		width:   100%;
 	}
 
-		#side-sortables .butterbean-nav li {
+		#side-sortables .butterbean-manager-default .butterbean-nav li {
 			display:      table-cell;
 			text-align:   center;
 			border-right: 1px solid #eee;
 		}
 
-			#side-sortables .butterbean-nav li:last-of-type { border-right: none; }
+			#side-sortables .butterbean-manager-default .butterbean-nav li:last-of-type { border-right: none; }
 
-		#side-sortables .butterbean-nav li a {
+		#side-sortables .butterbean-manager-default .butterbean-nav li a {
 			padding:     10px 0;
 		}
 
-		#side-sortables .butterbean-nav li a .dashicons {
+		#side-sortables .butterbean-manager-default .butterbean-nav .dashicons {
 			width:       24px;
 			height:      24px;
 			font-size:   24px;
 			line-height: 24px;
 		}
 
-			#side-sortables .butterbean-nav li .dashicons::before {
+			#side-sortables .butterbean-manager-default .butterbean-nav .dashicons::before {
 				width:  24px;
 				height: 24px;
 			}
 
-			#side-sortables .butterbean-nav li .label {
+			#side-sortables .butterbean-manager-default .butterbean-nav .label {
 				overflow: hidden;
 				position: absolute;
 				top:      -1000em;
@@ -168,34 +168,36 @@
 
 /* === Content === */
 
-.butterbean-section {
+.butterbean-manager-default .butterbean-section {
 		padding:     12px 12px 0;
 		box-sizing: border-box;
 }
 
-	.butterbean-section[aria-hidden="true"]  { display: none; }
-	.butterbean-section[aria-hidden="false"] { display: block; }
+	.butterbean-manager-default .butterbean-section[aria-hidden="true"]  { display: none; }
+	.butterbean-manager-default .butterbean-section[aria-hidden="false"] { display: block; }
 
-.butterbean-control {
+.butterbean-manager-default .butterbean-control {
 	margin-bottom: 20px;
 }
 
-	.butterbean-label {
+	.butterbean-manager-default .butterbean-label {
 		display       : block !important; /* this is getting overwritten somewhere */
 		font-weight   : bold;
 		display       : inline-block;
 		margin-bottom : 4px;
 	}
 
-		.butterbean-control-checkbox .butterbean-label { display: inline !important; }
+		.butterbean-manager-default .butterbean-control-checkbox .butterbean-label {
+			display: inline !important;
+		}
 
-	.butterbean-description {
+	.butterbean-manager-default .butterbean-description {
 		display       : block;
 		font-style    : italic;
 		margin-top    : 4px;
 	}
 
-		.butterbean-label + .butterbean-description {
+		.butterbean-manager-default .butterbean-label + .butterbean-description {
 			margin-top    : 0;
 			margin-bottom : 4px;
 		}
