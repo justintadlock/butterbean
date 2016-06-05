@@ -111,6 +111,33 @@ class ButterBean_Control {
 	public $choices = array();
 
 	/**
+	 * Priority (order) the control should be output.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    int
+	 */
+	public $priority = 10;
+
+	/**
+	 * The number of instances created.
+	 *
+	 * @since  1.0.0
+	 * @access protected
+	 * @var    int
+	 */
+	protected static $instance_count = 0;
+
+	/**
+	 * The instance of the current control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    int
+	 */
+	public $instance_number;
+
+	/**
 	 * Stores the JSON data for the control.
 	 *
 	 * @since  1.0.0
@@ -142,6 +169,10 @@ class ButterBean_Control {
 
 		if ( empty( $args['settings'] ) || ! is_array( $args['settings'] ) )
 			$this->settings['default'] = $name;
+
+		// Increment the instance count and set the instance number.
+		self::$instance_count += 1;
+		$this->instance_number = self::$instance_count;
 	}
 
 	/**

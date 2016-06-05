@@ -181,8 +181,14 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			foreach ( $this->managers as $manager ) {
 
 				// If we found a matching post type, add our actions/filters.
-				if ( ! in_array( $post_type, (array) $manager->post_type ) )
+				if ( ! in_array( $post_type, (array) $manager->post_type ) ) {
 					$this->unregister_manager( $manager->name );
+					continue;
+				}
+
+				// Sort controls and sections by priority.
+				uasort( $manager->controls, array( $this, 'priority_sort' ) );
+				uasort( $manager->sections, array( $this, 'priority_sort' ) );
 			}
 
 			// If no managers registered, bail.
@@ -445,6 +451,23 @@ if ( ! class_exists( 'ButterBean' ) ) {
 
 			foreach ( $this->managers as $manager )
 				$manager->save( $this->post_id );
+		}
+
+		/**
+		 * Helper method for sorting sections and controls by priority.
+		 *
+		 * @since  1.0.0
+		 * @access protected
+		 * @param  object     $a
+		 * @param  object     $b
+		 * @return int
+		 */
+		protected function priority_sort( $a, $b ) {
+
+			if ( $a->priority === $b->priority )
+				return $a->instance_number - $b->instance_number;
+
+			return $a->priority - $b->priority;
 		}
 	}
 
