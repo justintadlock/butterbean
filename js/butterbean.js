@@ -37,6 +37,7 @@
 			description : '',
 			icon        : '',
 			manager     : '',
+			active      : '',
 			selected    : false
 		}
 	} );
@@ -153,7 +154,12 @@
 			this.template = templates.sections[ type ];
 		},
 		render : function() {
-			this.el.innerHTML = this.template( this.model.toJSON() );
+
+			// Only render template if model is active.
+			if ( this.model.get( 'active' ) ) {
+				this.el.innerHTML = this.template( this.model.toJSON() );
+			}
+
 			return this;
 		},
 		onchange : function() {
@@ -177,7 +183,12 @@
 			this.model.on('change', this.onchange, this);
 		},
 		render : function() {
-			this.el.innerHTML = this.template( this.model.toJSON() );
+
+			// Only render template if model is active.
+			if ( this.model.get( 'active' ) ) {
+				this.el.innerHTML = this.template( this.model.toJSON() );
+			}
+
 			return this;
 		},
 		events : {

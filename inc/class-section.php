@@ -22,7 +22,6 @@ class ButterBean_Section {
 	/**
 	 * Stores the project details manager object.
 	 *
-	 * @see    PDEV_Project_Details_Manager
 	 * @since  1.0.0
 	 * @access public
 	 * @var    object
@@ -102,6 +101,15 @@ class ButterBean_Section {
 	public $instance_number;
 
 	/**
+	 * A callback function for deciding if a section is active.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    callable
+	 */
+	public $active_callback = '';
+
+	/**
 	 * Stores the JSON data for the manager.
 	 *
 	 * @since  1.0.0
@@ -134,6 +142,10 @@ class ButterBean_Section {
 		// Increment the instance count and set the instance number.
 		self::$instance_count += 1;
 		$this->instance_number = self::$instance_count;
+
+		// Set the active callback function if not set.
+		if ( ! $this->active_callback )
+			$this->active_callback = array( $this, 'active_callback' );
 	}
 
 	/**
@@ -164,6 +176,32 @@ class ButterBean_Section {
 		$this->json['icon']        = preg_match( '/dashicons-/', $this->icon ) ? sprintf( 'dashicons %s', sanitize_html_class( $this->icon ) ) : esc_attr( $this->icon );
 		$this->json['label']       = $this->label;
 		$this->json['description'] = $this->description;
+		$this->json['active']      = $this->is_active();
+	}
+
+	/**
+	 * Returns whether the section is active.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return bool
+	 */
+	public function is_active() {
+
+		$is_active = call_user_func( $this->active_callback, $this );
+
+		return apply_filters( 'butterbean_is_section_active', $is_active, $this );
+	}
+
+	/**
+	 * Default active callback.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return bool
+	 */
+	public function active_callback() {
+		return true;
 	}
 
 	/**
