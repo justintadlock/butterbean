@@ -140,7 +140,7 @@ class ButterBean_Control {
 		$this->manager = $manager;
 		$this->name    = $name;
 
-		if ( ! $args['settings'] || ! is_array( $args['settings'] ) )
+		if ( empty( $args['settings'] ) || ! is_array( $args['settings'] ) )
 			$this->settings['default'] = $name;
 	}
 

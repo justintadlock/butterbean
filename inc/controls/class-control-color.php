@@ -49,16 +49,18 @@ class ButterBean_Control_Color extends ButterBean_Control {
 			} );
 		</script>
 	<?php }
+
 	/**
 	 * Get the value for the setting.
 	 *
 	 * @since  1.0.0
 	 * @access public
+	 * @param  string  $setting
 	 * @return mixed
 	 */
-	public function get_value() {
+	public function get_value( $setting = 'default' ) {
 
-		$value = parent::get_value();
+		$value = parent::get_value( $setting );
 
 		return ltrim( $value, '#' );
 	}

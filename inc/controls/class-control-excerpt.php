@@ -38,9 +38,10 @@ class ButterBean_Control_Excerpt extends ButterBean_Control_Textarea {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @return array
+	 * @param  string  $setting
+	 * @return string
 	 */
-	public function get_field_name() {
+	public function get_field_name( $setting = 'default' ) {
 		return 'post_excerpt';
 	}
 
@@ -49,9 +50,10 @@ class ButterBean_Control_Excerpt extends ButterBean_Control_Textarea {
 	 *
 	 * @since  1.0.0
 	 * @access public
+	 * @param  string  $setting
 	 * @return mixed
 	 */
-	public function get_value() {
+	public function get_value( $setting = 'default' ) {
 
 		return get_post( $this->manager->post_id )->post_excerpt;
 	}
