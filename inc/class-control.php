@@ -138,6 +138,15 @@ class ButterBean_Control {
 	public $instance_number;
 
 	/**
+	 * A callback function for deciding if a control is active.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    callable
+	 */
+	public $active_callback = '';
+
+	/**
 	 * Stores the JSON data for the control.
 	 *
 	 * @since  1.0.0
@@ -173,6 +182,10 @@ class ButterBean_Control {
 		// Increment the instance count and set the instance number.
 		self::$instance_count += 1;
 		$this->instance_number = self::$instance_count;
+
+		// Set the active callback function if not set.
+		if ( ! $this->active_callback )
+			$this->active_callback = array( $this, 'active_callback' );
 	}
 
 	/**
@@ -259,12 +272,38 @@ class ButterBean_Control {
 		$this->json['value']       = $this->get_value();
 		$this->json['choices']     = $this->choices;
 		$this->json['field_name']  = $this->get_field_name();
+		$this->json['active']      = $this->is_active();
 
 		$this->json['attr'] = '';
 
 		foreach ( $this->get_attr() as $attr => $value ) {
 			$this->json['attr'] .= sprintf( '%s="%s" ', esc_html( $attr ), esc_attr( $value ) );
 		}
+	}
+
+	/**
+	 * Returns whether the control is active.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return bool
+	 */
+	public function is_active() {
+
+		$is_active = call_user_func( $this->active_callback, $this );
+
+		return apply_filters( 'butterbean_is_control_active', $is_active, $control );
+	}
+
+	/**
+	 * Default active callback.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return bool
+	 */
+	public function active_callback() {
+		return true;
 	}
 
 	/**

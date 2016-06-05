@@ -52,6 +52,7 @@
 			value       : '',
 			choices     : {},
 			attr        : '',
+			active      : '',
 			manager     : '',
 			section     : '',
 			setting     : ''
@@ -222,8 +223,13 @@
 
 			this.ready();
 		},
-		render : function(){
-			this.el.innerHTML = this.template( this.model.toJSON() );
+		render : function() {
+
+			// Only render template if model is active.
+			if ( this.model.get( 'active' ) ) {
+				this.el.innerHTML = this.template( this.model.toJSON() );
+			}
+
 			return this;
 		},
 		ready : function() {}
