@@ -292,7 +292,7 @@ class ButterBean_Control {
 
 		$is_active = call_user_func( $this->active_callback, $this );
 
-		return apply_filters( 'butterbean_is_control_active', $is_active, $control );
+		return apply_filters( 'butterbean_is_control_active', $is_active, $this );
 	}
 
 	/**
