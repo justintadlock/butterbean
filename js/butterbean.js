@@ -37,7 +37,7 @@
 			description : '',
 			icon        : '',
 			manager     : '',
-			active      : false
+			selected    : false
 		}
 	} );
 
@@ -110,8 +110,8 @@
 				document.querySelector( '#butterbean-ui-' + section.get( 'manager' ) + ' .butterbean-nav'     ).appendChild( nav_view.render().el     );
 				document.querySelector( '#butterbean-ui-' + section.get( 'manager' ) + ' .butterbean-content' ).appendChild( section_view.render().el );
 
-				// If the first model, set it to active.
-				section.set( 'active', 0 == i );
+				// If the first model, set it to selected.
+				section.set( 'selected', 0 == i );
 			}, this );
 
 			// Loop through each control for the manager and render its view.
@@ -137,7 +137,7 @@
 			return {
 				'id'          : 'butterbean-' + this.model.get( 'manager' ) + '-section-' + this.model.get( 'name' ),
 				'class'       : 'butterbean-section butterbean-section-' + this.model.get( 'type' ),
-				'aria-hidden' : ! this.model.get( 'active' )
+				'aria-hidden' : ! this.model.get( 'selected' )
 			};
 		},
 		initialize : function( options ) {
@@ -157,8 +157,8 @@
 		},
 		onchange : function() {
 
-			// Set the view's `aria-hidden` attribute based on whether the model is active.
-			this.el.setAttribute( 'aria-hidden', ! this.model.get( 'active' ) );
+			// Set the view's `aria-hidden` attribute based on whether the model is selected.
+			this.el.setAttribute( 'aria-hidden', ! this.model.get( 'selected' ) );
 		},
 	} );
 
@@ -168,7 +168,7 @@
 		tagName : 'li',
 		attributes : function() {
 			return {
-				'aria-selected' : this.model.get( 'active' )
+				'aria-selected' : this.model.get( 'selected' )
 			};
 		},
 		initialize : function() {
@@ -184,8 +184,8 @@
 		},
 		onchange : function() {
 
-			// Set the `aria-selected` attibute based on the model active state.
-			this.el.setAttribute( 'aria-selected', this.model.get( 'active' ) );
+			// Set the `aria-selected` attibute based on the model selected state.
+			this.el.setAttribute( 'aria-selected', this.model.get( 'selected' ) );
 		},
 		onselect : function( event ) {
 			event.preventDefault();
@@ -193,11 +193,11 @@
 			// Loop through each of the models in the collection and set them to inactive.
 			_.each( this.model.collection.models, function( m ) {
 
-				m.set( 'active', false );
+				m.set( 'selected', false );
 			}, this );
 
-			// Set this view's model to active.
-			this.model.set( 'active', true );
+			// Set this view's model to selected.
+			this.model.set( 'selected', true );
 		}
 	} );
 
