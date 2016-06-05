@@ -28,9 +28,11 @@ class ButterBean_Control_Excerpt extends ButterBean_Control_Textarea {
 	 * @return array
 	 */
 	public function get_attr() {
-		parent::get_attr();
+		$attr = parent::get_attr();
 
-		$this->attr['id'] = 'post_excerpt';
+		$attr['id'] = 'post_excerpt';
+
+		return $attr;
 	}
 
 	/**
