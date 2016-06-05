@@ -316,7 +316,7 @@ class ButterBean_Control {
 	public function print_template() { ?>
 
 		<script type="text/html" id="tmpl-butterbean-control-<?php echo esc_attr( $this->type ); ?>">
-			<?php $this->template(); ?>
+			<?php $this->get_template(); ?>
 		</script>
 	<?php }
 
@@ -327,7 +327,7 @@ class ButterBean_Control {
 	 * @access public
 	 * @return void
 	 */
-	public function template() {
+	public function get_template() {
 		butterbean_get_control_template( $this->type );
 	}
 }

@@ -65,7 +65,7 @@ class ButterBean_Control_Excerpt extends ButterBean_Control_Textarea {
 	 * @access public
 	 * @return void
 	 */
-	public function template() {
+	public function get_template() {
 		butterbean_get_template( 'control', 'textarea' );
 	}
 }

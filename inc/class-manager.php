@@ -406,7 +406,7 @@ class ButterBean_Manager {
 	public function print_template() { ?>
 
 		<script type="text/html" id="tmpl-butterbean-manager-<?php echo esc_attr( $this->type ); ?>">
-			<?php $this->template(); ?>
+			<?php $this->get_template(); ?>
 		</script>
 	<?php }
 
@@ -417,7 +417,7 @@ class ButterBean_Manager {
 	 * @access public
 	 * @return void
 	 */
-	public function template() {
+	public function get_template() {
 		butterbean_get_manager_template( $this->type );
 	}
 }

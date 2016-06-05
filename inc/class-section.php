@@ -214,7 +214,7 @@ class ButterBean_Section {
 	public function print_template() { ?>
 
 		<script type="text/html" id="tmpl-butterbean-section-<?php echo esc_attr( $this->type ); ?>">
-			<?php $this->template(); ?>
+			<?php $this->get_template(); ?>
 		</script>
 	<?php }
 
@@ -225,7 +225,7 @@ class ButterBean_Section {
 	 * @access public
 	 * @return void
 	 */
-	public function template() {
+	public function get_template() {
 		butterbean_get_section_template( $this->type );
 	}
 }
