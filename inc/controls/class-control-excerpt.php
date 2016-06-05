@@ -66,6 +66,6 @@ class ButterBean_Control_Excerpt extends ButterBean_Control_Textarea {
 	 * @return void
 	 */
 	public function get_template() {
-		butterbean_get_template( 'control', 'textarea' );
+		butterbean_get_control_template( 'textarea' );
 	}
 }
