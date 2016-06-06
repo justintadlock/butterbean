@@ -450,9 +450,6 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 */
 		public function update( $post_id ) {
 
-			if ( ! $this->post_id )
-				$this->post_id = $post_id;
-
 			$do_autosave = defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE;
 			$is_autosave = wp_is_post_autosave( $post_id );
 			$is_revision = wp_is_post_revision( $post_id );
@@ -461,7 +458,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 				return;
 
 			foreach ( $this->managers as $manager )
-				$manager->save( $this->post_id );
+				$manager->save( $post_id );
 		}
 
 		/**
