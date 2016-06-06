@@ -96,6 +96,12 @@ If you need professional plugin support from me, the plugin author, you can acce
 
 ## Copyright and License
 
+Various ideas from different projects have made their way into ButterBean.  A few of the projects that had an important impact on the direction of this project are:
+
+* Architecturally, the PHP code was modeled after the core WordPress Customization API. - [GPL 2+](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+* The design concept of the default tabbed interface was taken from [WooCommerce](http://www.woothemes.com/woocommerce/). &copy; WooThemes - [GPL 3+](http://www.gnu.org/licenses/gpl.html)
+* Code ideas for the media frame were borrowed from [WP Term Images](https://wordpress.org/plugins/wp-term-images/). &copy; John James Jacoby - [GPL 2+](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+
 This project is licensed under the [GNU GPL](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html), version 2 or later.
 
 2015-2016 &copy; [Justin Tadlock](http://justintadlock.com).
