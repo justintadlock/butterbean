@@ -337,12 +337,4 @@
 		view.subview_render();
 	} );
 
-	/* ====== Add classes ====== */
-
-	// Looks for `.hndle` and adds the `.butterbean-title` class.
-	document.querySelector( '.butterbean-ui .hndle' ).className += ' butterbean-title';
-
-	// Adds the core WP `.description` class to any `.butterbean-description` elements.
-	document.querySelector( '.butterbean-ui .butterbean-description' ).className += ' description';
-
 }() );
