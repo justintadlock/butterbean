@@ -28,6 +28,17 @@ class ButterBean_Control_Date extends ButterBean_Control {
 	public $type = 'date';
 
 	/**
+	 * Whether to show the time.  Note that settings, particularly the
+	 * `ButterBean_Setting_Date` class will store the time as `00:00:00` if
+	 * no time is provided.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    bool
+	 */
+	public $show_time = true;
+
+	/**
 	 * Adds custom data to the json array. This data is passed to the Underscore template.
 	 *
 	 * @since  1.0.0
@@ -40,15 +51,22 @@ class ButterBean_Control_Date extends ButterBean_Control {
 
 		parent::to_json();
 
+		$this->json['show_time'] = $this->show_time;
+
 		$field_name = $this->get_field_name();
 
 		// Get project start/end dates.
-		$date = $this->get_value( $this->manager->post_id );
+		$date = $this->get_value();
 
-		// Get the individual years, months, and days.
+		// Get the year, month, and day.
 		$year  = $date ? mysql2date( 'Y', $date, false ) : '';
 		$month = $date ? mysql2date( 'm', $date, false ) : '';
 		$day   = $date ? mysql2date( 'd', $date, false ) : '';
+
+		// Get the hour, minute, and second.
+		$hour   = $date ? mysql2date( 'H', $date, false ) : '';
+		$minute = $date ? mysql2date( 'i', $date, false ) : '';
+		$second = $date ? mysql2date( 's', $date, false ) : '';
 
 		// Year
 		$this->json['year'] = array(
@@ -88,6 +106,30 @@ class ButterBean_Control_Date extends ButterBean_Control {
 			'name'  => esc_attr( "{$field_name}_day" ),
 			'label' => esc_html__( 'Day', 'butterbean' ),
 			'attr'  => sprintf( 'placeholder="%s" size="2" maxlength="2" autocomplete="off"', esc_attr( date_i18n( 'd' ) ) )
+		);
+
+		// Hour
+		$this->json['hour'] = array(
+			'value' => esc_attr( $hour ),
+			'name'  => esc_attr( "{$field_name}_hour" ),
+			'label' => esc_html__( 'Hour', 'butterbean' ),
+			'attr'  => 'placeholder="00" size="2" maxlength="2" autocomplete="off"'
+		);
+
+		// Minute
+		$this->json['minute'] = array(
+			'value' => esc_attr( $minute ),
+			'name'  => esc_attr( "{$field_name}_minute" ),
+			'label' => esc_html__( 'Minute', 'butterbean' ),
+			'attr'  => 'placeholder="00" size="2" maxlength="2" autocomplete="off"'
+		);
+
+		// Second
+		$this->json['second'] = array(
+			'value' => esc_attr( $second ),
+			'name'  => esc_attr( "{$field_name}_second" ),
+			'label' => esc_html__( 'Second', 'butterbean' ),
+			'attr'  => 'placeholder="00" size="2" maxlength="2" autocomplete="off"'
 		);
 	}
 }
