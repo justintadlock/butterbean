@@ -15,8 +15,8 @@ Drop the `butterbean` folder into your plugin. That's the simple part.
 You're only going to want to load this on the edit post screen for whatever post type you're using it on.
 
 ```php
-add_action( 'load-post.php'     'th_load' );
-add_action( 'load-post-new.php' 'th_load' );
+add_action( 'load-post.php',     'th_load' );
+add_action( 'load-post-new.php', 'th_load' );
 
 function th_load() {
 
@@ -59,7 +59,7 @@ $butterbean->register_manager(
 $manager = $butterbean->get_manager( 'example' );
 ```
 
-#### Registering a sections
+#### Registering a section
 
 A **section** is a group of controls within a manager.  They are presented as "tabbed" sections in the UI.
 
