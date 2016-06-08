@@ -37,6 +37,6 @@ class ButterBean_Control_Textarea extends ButterBean_Control {
 	public function to_json() {
 		parent::to_json();
 
-		$this->json['value'] = esc_textarea( $this->get_value( $this->manager->post_id ) );
+		$this->json['value'] = esc_textarea( $this->get_value() );
 	}
 }
