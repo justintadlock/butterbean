@@ -7,5 +7,5 @@
 		<span class="butterbean-description">{{{ data.description }}}</span>
 	<# } #>
 
-	<input {{{ data.attr }}} value="#{{ data.value }}" />
+	<input {{{ data.attr }}} value="<# if ( data.value ) { #>#{{ data.value }}<# } #>" />
 </label>
