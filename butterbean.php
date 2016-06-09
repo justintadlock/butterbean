@@ -656,19 +656,21 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
+		 * @param  string  $post_type
 		 * @return void
 		 */
-		public function add_meta_boxes() {
+		public function add_meta_boxes( $post_type ) {
 
 			foreach ( $this->managers as $manager ) {
 
-				foreach ( (array) $manager->post_type as $type ) {
+				// If the manager is registered for the current post type, add a meta box.
+				if ( in_array( $post_type, (array) $manager->post_type ) ) {
 
 					add_meta_box(
 						"butterbean-ui-{$manager->name}",
 						$manager->label,
 						array( $this, 'meta_box' ),
-						$type,
+						$post_type,
 						$manager->context,
 						$manager->priority,
 						array( 'manager' => $manager )
