@@ -678,7 +678,9 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		}
 
 		/**
-		 * Displays the meta box.
+		 * Displays the meta box.  Note that the actual content of the meta box is
+		 * handled via Underscore.js templates.  The only thing we're outputting here
+		 * is the nonce field.
 		 *
 		 * @since  1.0.0
 		 * @access public
@@ -693,9 +695,8 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			$manager->post_id = $this->post_id = $post->ID;
 
 			// Nonce field to validate on save.
-			wp_nonce_field( "butterbean_{$manager->name}_nonce", "butterbean_{$manager->name}" ); ?>
-
-		<?php }
+			wp_nonce_field( "butterbean_{$manager->name}_nonce", "butterbean_{$manager->name}" );
+		}
 
 		/**
 		 * Passes the appropriate section and control json data to the JS file.
