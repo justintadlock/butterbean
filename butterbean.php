@@ -61,6 +61,24 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		public $managers = array();
 
 		/**
+		 * Array of manager types.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @var    array
+		 */
+		public $manager_types = array();
+
+		/**
+		 * Array of section types.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @var    array
+		 */
+		public $section_types = array();
+
+		/**
 		 * Array of control types.
 		 *
 		 * @since  1.0.0
@@ -68,6 +86,15 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 * @var    array
 		 */
 		public $control_types = array();
+
+		/**
+		 * Array of setting types.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @var    array
+		 */
+		public $setting_types = array();
 
 		/**
 		 * Whether this is a new post.  Once the post is saved and we're
@@ -179,6 +206,12 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			// Call the register function.
 			add_action( 'load-post.php',     array( $this, 'register' ), 95 );
 			add_action( 'load-post-new.php', array( $this, 'register' ), 95 );
+
+			// Register default types.
+			add_action( 'butterbean_register', array( $this, 'register_manager_types' ), -95 );
+			add_action( 'butterbean_register', array( $this, 'register_section_types' ), -95 );
+			add_action( 'butterbean_register', array( $this, 'register_control_types' ), -95 );
+			add_action( 'butterbean_register', array( $this, 'register_setting_types' ), -95 );
 		}
 
 		/**
@@ -197,9 +230,6 @@ if ( ! class_exists( 'ButterBean' ) ) {
 
 			// Get the current post type.
 			$post_type = get_current_screen()->post_type;
-
-			// Register control types.
-			$this->register_control_types();
 
 			// Action hook for registering managers.
 			do_action( 'butterbean_register', $this, $post_type );
@@ -247,8 +277,12 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 */
 		public function register_manager( $manager, $args = array() ) {
 
-			if ( ! is_object( $manager ) )
-				$manager = new ButterBean_Manager( $manager, $args );
+			if ( ! is_object( $manager ) ) {
+
+				$type = isset( $args['type'] ) ? $this->get_manager_type( $args['type'] ) : $this->get_manager_type( 'default' );
+
+				$manager = new $type( $manager, $args );
+			}
 
 			if ( ! $this->manager_exists( $manager->name ) )
 				$this->managers[ $manager->name ] = $manager;
@@ -297,6 +331,262 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		}
 
 		/**
+		 * Registers a manager type.  This is just a method of telling ButterBean
+		 * the class of your custom manager type.  It allows the manager to be
+		 * called without having to pass an object to `register_manager()`.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @param  string  $class
+		 * @return void
+		 */
+		public function register_manager_type( $type, $class ) {
+
+			if ( ! $this->manager_type_exists( $type ) )
+				$this->manager_types[ $type ] = $class;
+		}
+
+		/**
+		 * Unregisters a manager type.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @return void
+		 */
+		public function unregister_manager_type( $type ) {
+
+			if ( $this->manager_type_exists( $type ) )
+				unset( $this->manager_types[ $type ] );
+		}
+
+		/**
+		 * Returns the class name for the manager type.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @return string
+		 */
+		public function get_manager_type( $type ) {
+
+			return $this->manager_type_exists( $type ) ? $this->manager_types[ $type ] : $this->manager_types[ 'default' ];
+		}
+
+		/**
+		 * Checks if a manager type exists.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @return bool
+		 */
+		public function manager_type_exists( $type ) {
+
+			return isset( $this->manager_types[ $type ] );
+		}
+
+		/**
+		 * Registers a section type.  This is just a method of telling ButterBean
+		 * the class of your custom section type.  It allows the section to be
+		 * called without having to pass an object to `register_section()`.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @param  string  $class
+		 * @return void
+		 */
+		public function register_section_type( $type, $class ) {
+
+			if ( ! $this->section_type_exists( $type ) )
+				$this->section_types[ $type ] = $class;
+		}
+
+		/**
+		 * Unregisters a section type.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @return void
+		 */
+		public function unregister_section_type( $type ) {
+
+			if ( $this->section_type_exists( $type ) )
+				unset( $this->section_types[ $type ] );
+		}
+
+		/**
+		 * Returns the class name for the section type.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @return string
+		 */
+		public function get_section_type( $type ) {
+
+			return $this->section_type_exists( $type ) ? $this->section_types[ $type ] : $this->section_types[ 'default' ];
+		}
+
+		/**
+		 * Checks if a section type exists.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @return bool
+		 */
+		public function section_type_exists( $type ) {
+
+			return isset( $this->section_types[ $type ] );
+		}
+
+		/**
+		 * Registers a control type.  This is just a method of telling ButterBean
+		 * the class of your custom control type.  It allows the control to be
+		 * called without having to pass an object to `register_control()`.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @param  string  $class
+		 * @return void
+		 */
+		public function register_control_type( $type, $class ) {
+
+			if ( ! $this->control_type_exists( $type ) )
+				$this->control_types[ $type ] = $class;
+		}
+
+		/**
+		 * Unregisters a control type.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @return void
+		 */
+		public function unregister_control_type( $type ) {
+
+			if ( $this->control_type_exists( $type ) )
+				unset( $this->control_types[ $type ] );
+		}
+
+		/**
+		 * Returns the class name for the control type.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @return string
+		 */
+		public function get_control_type( $type ) {
+
+			return $this->control_type_exists( $type ) ? $this->control_types[ $type ] : $this->control_types[ 'default' ];
+		}
+
+		/**
+		 * Checks if a control type exists.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @return bool
+		 */
+		public function control_type_exists( $type ) {
+
+			return isset( $this->control_types[ $type ] );
+		}
+
+		/**
+		 * Registers a setting type.  This is just a method of telling ButterBean
+		 * the class of your custom setting type.  It allows the setting to be
+		 * called without having to pass an object to `register_setting()`.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @param  string  $class
+		 * @return void
+		 */
+		public function register_setting_type( $type, $class ) {
+
+			if ( ! $this->setting_type_exists( $type ) )
+				$this->setting_types[ $type ] = $class;
+		}
+
+		/**
+		 * Unregisters a setting type.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @return void
+		 */
+		public function unregister_setting_type( $type ) {
+
+			if ( $this->setting_type_exists( $type ) )
+				unset( $this->setting_types[ $type ] );
+		}
+
+		/**
+		 * Returns the class name for the setting type.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @return string
+		 */
+		public function get_setting_type( $type ) {
+
+			return $this->setting_type_exists( $type ) ? $this->setting_types[ $type ] : $this->setting_types[ 'default' ];
+		}
+
+		/**
+		 * Checks if a setting type exists.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @param  string  $type
+		 * @return bool
+		 */
+		public function setting_type_exists( $type ) {
+
+			return isset( $this->setting_types[ $type ] );
+		}
+
+		/**
+		 * Registers our manager types so that devs don't have to directly instantiate
+		 * the class each time they register a manager.  Instead, they can use the
+		 * `type` argument.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @return void
+		 */
+		public function register_manager_types() {
+
+			$this->register_manager_type( 'default', 'ButterBean_Manager' );
+		}
+
+		/**
+		 * Registers our section types so that devs don't have to directly instantiate
+		 * the class each time they register a section.  Instead, they can use the
+		 * `type` argument.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @return void
+		 */
+		public function register_section_types() {
+
+			$this->register_section_type( 'default', 'ButterBean_Section' );
+		}
+
+		/**
 		 * Registers our control types so that devs don't have to directly instantiate
 		 * the class each time they register a control.  Instead, they can use the
 		 * `type` argument.
@@ -307,22 +597,33 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 */
 		public function register_control_types() {
 
-			$types = array(
-				'checkboxes'    => 'ButterBean_Control_Checkboxes',
-				'color'         => 'ButterBean_Control_Color',
-				'date'          => 'ButterBean_Control_Date',
-				'image'         => 'ButterBean_Control_Image',
-				'palette'       => 'ButterBean_Control_Palette',
-				'radio'         => 'ButterBean_Control_Radio',
-				'radio-image'   => 'ButterBean_Control_Radio_Image',
-				'select-group'  => 'ButterBean_Control_Select_Group',
-				'textarea'      => 'ButterBean_Control_Textarea',
+			$this->register_control_type( 'default',       'ButterBean_Control'               );
+			$this->register_control_type( 'checkboxes',    'ButterBean_Control_Checkboxes'    );
+			$this->register_control_type( 'color',         'ButterBean_Control_Color'         );
+			$this->register_control_type( 'date',          'ButterBean_Control_Date'          );
+			$this->register_control_type( 'image',         'ButterBean_Control_Image'         );
+			$this->register_control_type( 'palette',       'ButterBean_Control_Palette'       );
+			$this->register_control_type( 'radio',         'ButterBean_Control_Radio'         );
+			$this->register_control_type( 'radio-image',   'ButterBean_Control_Radio_Image'   );
+			$this->register_control_type( 'select-group',  'ButterBean_Control_Select_Group'  );
+			$this->register_control_type( 'textarea',      'ButterBean_Control_Textarea'      );
+			$this->register_control_type( 'multi-avatars', 'ButterBean_Control_Multi_Avatars' );
+			$this->register_control_type( 'parent',        'ButterBean_Control_Parent'        );
+		}
 
-				'multi-avatars' => 'ButterBean_Control_Multi_Avatars',
-				'parent'        => 'ButterBean_Control_Parent'
-			);
+		/**
+		 * Registers our setting types so that devs don't have to directly instantiate
+		 * the class each time they register a setting.  Instead, they can use the
+		 * `type` argument.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @return void
+		 */
+		public function register_setting_types() {
 
-			$this->control_types = apply_filters( 'butterbean_control_types', $types );
+			$this->register_setting_type( 'default', 'ButterBean_Setting'       );
+			$this->register_setting_type( 'array',   'ButterBean_Setting_Array' );
 		}
 
 		/**

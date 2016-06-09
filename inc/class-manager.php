@@ -155,8 +155,12 @@ class ButterBean_Manager {
 	 */
 	public function register_section( $section, $args = array() ) {
 
-		if ( ! is_object( $section ) )
-			$section = new ButterBean_Section( $this, $section, $args );
+		if ( ! is_object( $section ) ) {
+
+			$type = isset( $args['type'] ) ? butterbean()->get_section_type( $args['type'] ) : butterbean()->get_section_type( 'default' );
+
+			$section = new $type( $this, $section, $args );
+		}
 
 		if ( ! $this->section_exists( $section->name ) )
 			$this->sections[ $section->name ] = $section;
@@ -175,18 +179,9 @@ class ButterBean_Manager {
 
 		if ( ! is_object( $control ) ) {
 
-			// If the type is set, let's check if there's a registered control type.
-			if ( isset( $args['type'] ) && isset( butterbean()->control_types[ $args['type'] ] ) ) {
+			$type = isset( $args['type'] ) ? butterbean()->get_control_type( $args['type'] ) : butterbean()->get_control_type( 'default' );
 
-				$object = butterbean()->control_types[ $args['type'] ];
-
-				$control = new $object( $this, $control, $args );
-
-			// Fall back to the default control.
-			} else {
-
-				$control = new ButterBean_Control( $this, $control, $args );
-			}
+			$control = new $type( $this, $control, $args );
 		}
 
 		if ( ! $this->control_exists( $control->name ) )
@@ -204,8 +199,12 @@ class ButterBean_Manager {
 	 */
 	public function register_setting( $setting, $args = array() ) {
 
-		if ( ! is_object( $setting ) )
-			$setting = new ButterBean_Setting( $this, $setting, $args );
+		if ( ! is_object( $setting ) ) {
+
+			$type = isset( $args['type'] ) ? butterbean()->get_setting_type( $args['type'] ) : butterbean()->get_setting_type( 'default' );
+
+			$setting = new $type( $this, $setting, $args );
+		}
 
 		if ( ! $this->setting_exists( $setting->name ) )
 			$this->settings[ $setting->name ] = $setting;
