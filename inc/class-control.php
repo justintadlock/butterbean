@@ -207,9 +207,23 @@ class ButterBean_Control {
 	 */
 	public function get_value( $setting = 'default' ) {
 
-		$setting = $this->manager->get_setting( $this->settings[ $setting ] );
+		$setting = $this->get_setting( $setting );
 
 		return $setting ? $setting->get_value() : '';
+	}
+
+	/**
+	 * Returns the setting object associated with this control. If no setting is
+	 * found, `false` is returned.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $setting
+	 * @return object|bool
+	 */
+	public function get_setting( $setting = 'default' ) {
+
+		return $this->manager->get_setting( $this->settings[ $setting ] );
 	}
 
 	/**

@@ -97,7 +97,9 @@ class ButterBean_Setting {
 	 */
 	public function get_value() {
 
-		return get_post_meta( $this->manager->post_id, $this->name, true );
+		$value = get_post_meta( $this->manager->post_id, $this->name, true );
+
+		return ! $value && butterbean()->is_new_post ? $this->default : $value;
 	}
 
 	/**

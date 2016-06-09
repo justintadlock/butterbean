@@ -70,6 +70,17 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		public $control_types = array();
 
 		/**
+		 * Whether this is a new post.  Once the post is saved and we're
+		 * no longer on the `post-new.php` screen, this is going to be
+		 * `false`.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @var    bool
+		 */
+		public $is_new_post = false;
+
+		/**
 		 * Returns the instance.
 		 *
 		 * @since  1.0.0
@@ -178,6 +189,10 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 * @return void
 		 */
 		public function register() {
+
+			// If this is a new post, set the new post boolean.
+			if ( 'load-post-new.php' === current_action() )
+				$this->is_new_post = true;
 
 			// Get the current post type.
 			$post_type = get_current_screen()->post_type;

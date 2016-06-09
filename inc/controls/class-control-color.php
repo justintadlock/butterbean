@@ -28,11 +28,19 @@ class ButterBean_Control_Color extends ButterBean_Control {
 
 	public function __construct( $manager, $name, $args = array() ) {
 		parent::__construct( $manager, $name, $args );
+	}
 
-		$this->attr['class'] = 'butterbean-color-picker';
-		$this->attr['type']  = 'text';
-		$this->attr['maxlength'] = 7;
-		$this->attr['data-default-color'] = '';
+	public function get_attr() {
+		$attr = parent::get_attr();
+
+		$setting = $this->get_setting();
+
+		$attr['class']              = 'butterbean-color-picker';
+		$attr['type']               = 'text';
+		$attr['maxlength']          = 7;
+		$attr['data-default-color'] = $setting ? $setting->default : '';
+
+		return $attr;
 	}
 
 	public function enqueue() {
