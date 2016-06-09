@@ -150,6 +150,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			require_once( $this->dir_path . 'inc/controls/class-control-date.php'          );
 			require_once( $this->dir_path . 'inc/controls/class-control-image.php'         );
 			require_once( $this->dir_path . 'inc/controls/class-control-palette.php'       );
+			require_once( $this->dir_path . 'inc/controls/class-control-radio.php'         );
 			require_once( $this->dir_path . 'inc/controls/class-control-radio-image.php'   );
 			require_once( $this->dir_path . 'inc/controls/class-control-select-group.php'  );
 			require_once( $this->dir_path . 'inc/controls/class-control-textarea.php'      );
@@ -312,6 +313,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 				'date'          => 'ButterBean_Control_Date',
 				'image'         => 'ButterBean_Control_Image',
 				'palette'       => 'ButterBean_Control_Palette',
+				'radio'         => 'ButterBean_Control_Radio',
 				'radio-image'   => 'ButterBean_Control_Radio_Image',
 				'select-group'  => 'ButterBean_Control_Select_Group',
 				'textarea'      => 'ButterBean_Control_Textarea',

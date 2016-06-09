@@ -16,7 +16,7 @@
  * @since  1.0.0
  * @access public
  */
-class ButterBean_Control_Radio_Image extends ButterBean_Control {
+class ButterBean_Control_Radio_Image extends ButterBean_Control_Radio {
 
 	/**
 	 * The type of control.
