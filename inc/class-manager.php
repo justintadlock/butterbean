@@ -103,6 +103,33 @@ class ButterBean_Manager {
 	public $settings = array();
 
 	/**
+	 * A user role capability required to show the manager.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string|array
+	 */
+	public $capability = '';
+
+	/**
+	 * A feature that the current post type must support to show the manager.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
+	public $post_type_supports = '';
+
+	/**
+	 * A feature that the current theme must support to show the manager.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string|array
+	 */
+	public $theme_supports = '';
+
+	/**
 	 * Stores the JSON data for the manager.
 	 *
 	 * @since  1.0.0
@@ -353,6 +380,7 @@ class ButterBean_Manager {
 	public function to_json() {
 
 		$sections_with_controls = array();
+		$blocked_sections       = array();
 
 		$this->json['name'] = $this->name;
 		$this->json['type'] = $this->type;
@@ -365,13 +393,22 @@ class ButterBean_Manager {
 
 		// Get the JSON data for each section.
 		foreach ( $this->sections as $section ) {
-			if ( in_array( $section->name, $sections_with_controls ) )
+
+			$caps = $section->check_capabilities();
+
+			if ( $caps && in_array( $section->name, $sections_with_controls ) )
 				$this->json['sections'][] = $section->get_json();
+
+			if ( ! $caps )
+				$blocked_sections[] = $section->name;
 		}
 
 		// Get the JSON data for each control.
-		foreach ( $this->controls as $control )
-			$this->json['controls'][] = $control->get_json();
+		foreach ( $this->controls as $control ) {
+
+			if ( $control->check_capabilities() && ! in_array( $control->section, $blocked_sections ) )
+				$this->json['controls'][] = $control->get_json();
+		}
 	}
 
 	/**
@@ -393,6 +430,27 @@ class ButterBean_Manager {
 		// Loop through each setting and save it.
 		foreach ( $this->settings as $setting )
 			$setting->save();
+	}
+
+	/**
+	 * Checks if the control should be allowed at all.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return bool
+	 */
+	public function check_capabilities() {
+
+		if ( $this->capability && ! call_user_func_array( 'current_user_can', (array) $this->capability ) )
+			return false;
+
+		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->manager->post_id ), $this->post_type_supports ) ) )
+			return false;
+
+		if ( $this->theme_supports && ! call_user_func_array( 'theme_supports', (array) $this->theme_supports ) )
+			return false;
+
+		return true;
 	}
 
 	/**

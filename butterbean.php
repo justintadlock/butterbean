@@ -664,7 +664,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			foreach ( $this->managers as $manager ) {
 
 				// If the manager is registered for the current post type, add a meta box.
-				if ( in_array( $post_type, (array) $manager->post_type ) ) {
+				if ( in_array( $post_type, (array) $manager->post_type ) && $manager->check_capabilities() ) {
 
 					add_meta_box(
 						"butterbean-ui-{$manager->name}",
@@ -711,8 +711,11 @@ if ( ! class_exists( 'ButterBean' ) ) {
 
 			$json = array( 'managers' => array() );
 
-			foreach ( $this->managers as $manager )
-				$json['managers'][] = $manager->get_json();
+			foreach ( $this->managers as $manager ) {
+
+				if ( $manager->check_capabilities() )
+					$json['managers'][] = $manager->get_json();
+			}
 
 			wp_localize_script( 'butterbean', 'butterbean_data', $json );
 		}
@@ -735,6 +738,9 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			</script>
 
 			<?php foreach ( $this->managers as $manager ) {
+
+				if ( ! $manager->check_capabilities() )
+					continue;
 
 				if ( ! in_array( $manager->type, $m_templates ) ) {
 					$m_templates[] = $manager->type;
@@ -778,8 +784,11 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			if ( $do_autosave || $is_autosave || $is_revision )
 				return;
 
-			foreach ( $this->managers as $manager )
-				$manager->save( $post_id );
+			foreach ( $this->managers as $manager ) {
+
+				if ( $manager->check_capabilities() )
+					$manager->save( $post_id );
+			}
 		}
 
 		/**

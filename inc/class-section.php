@@ -110,6 +110,33 @@ class ButterBean_Section {
 	public $active_callback = '';
 
 	/**
+	 * A user role capability required to show the section.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string|array
+	 */
+	public $capability = '';
+
+	/**
+	 * A feature that the current post type must support to show the section.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
+	public $post_type_supports = '';
+
+	/**
+	 * A feature that the current theme must support to show the section.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string|array
+	 */
+	public $theme_supports = '';
+
+	/**
 	 * Stores the JSON data for the manager.
 	 *
 	 * @since  1.0.0
@@ -190,6 +217,9 @@ class ButterBean_Section {
 
 		$is_active = call_user_func( $this->active_callback, $this );
 
+		if ( $is_active )
+			$is_active = $this->check_capabilities();
+
 		return apply_filters( 'butterbean_is_section_active', $is_active, $this );
 	}
 
@@ -201,6 +231,27 @@ class ButterBean_Section {
 	 * @return bool
 	 */
 	public function active_callback() {
+		return true;
+	}
+
+	/**
+	 * Checks if the section should be allowed at all.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return bool
+	 */
+	public function check_capabilities() {
+
+		if ( $this->capability && ! call_user_func_array( 'current_user_can', (array) $this->capability ) )
+			return false;
+
+		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->manager->post_id ), $this->post_type_supports ) ) )
+			return false;
+
+		if ( $this->theme_supports && ! call_user_func_array( 'theme_supports', (array) $this->theme_supports ) )
+			return false;
+
 		return true;
 	}
 
