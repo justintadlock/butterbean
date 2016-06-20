@@ -78,7 +78,7 @@
 				'class' : 'butterbean-manager butterbean-manager-' + this.model.get( 'type' )
 			};
 		},
-		initialize : function( options ) {
+		initialize : function() {
 
 			var type = this.model.get( 'type' );
 
@@ -113,7 +113,7 @@
 				document.querySelector( '#butterbean-ui-' + section.get( 'manager' ) + ' .butterbean-content' ).appendChild( section_view.render().el );
 
 				// If the first model, set it to selected.
-				section.set( 'selected', 0 == i );
+				section.set( 'selected', 0 === i );
 			}, this );
 
 			// Loop through each control for the manager and render its view.
@@ -121,7 +121,7 @@
 
 				var control = new Control( data );
 
-				var callback = _.isUndefined( views.controls[ data.type ] ) ? views.controls[ 'default' ] : views.controls[ data.type ];
+				var callback = _.isUndefined( views.controls[ data.type ] ) ? views.controls.default : views.controls[ data.type ];
 
 				var view = new callback( { model : control } );
 
@@ -142,7 +142,7 @@
 				'aria-hidden' : ! this.model.get( 'selected' )
 			};
 		},
-		initialize : function( options ) {
+		initialize : function() {
 			this.model.on('change', this.onchange, this);
 
 			var type = this.model.get( 'type' );
@@ -166,7 +166,7 @@
 
 			// Set the view's `aria-hidden` attribute based on whether the model is selected.
 			this.el.setAttribute( 'aria-hidden', ! this.model.get( 'selected' ) );
-		},
+		}
 	} );
 
 	// Nav view.
@@ -222,7 +222,7 @@
 				'class' : 'butterbean-control butterbean-control-' + this.model.get( 'type' )
 			};
 		},
-		initialize : function( options ) {
+		initialize : function() {
 			var type = this.model.get( 'type' );
 
 			// Only add a new control template if we have a different control type.
