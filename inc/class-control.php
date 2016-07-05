@@ -262,7 +262,10 @@ class ButterBean_Control {
 	 */
 	public function get_attr() {
 
-		$defaults = array( 'name' => $this->get_field_name() );
+		$defaults = array();
+
+		if ( isset( $this->settings[ $this->setting ] ) )
+			$defaults['name'] = $this->get_field_name( $this->setting );
 
 		return wp_parse_args( $this->attr, $defaults );
 	}
