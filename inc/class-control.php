@@ -310,10 +310,11 @@ class ButterBean_Control {
 		$this->json['label']       = $this->label;
 		$this->json['type']        = $this->type;
 		$this->json['description'] = $this->description;
-		$this->json['value']       = $this->get_value();
 		$this->json['choices']     = $this->choices;
-		$this->json['field_name']  = $this->get_field_name();
 		$this->json['active']      = $this->is_active();
+
+		$this->json['value']       = isset( $this->settings[ $this->setting ] ) ? $this->get_value( $this->setting )      : '';
+		$this->json['field_name']  = isset( $this->settings[ $this->setting ] ) ? $this->get_field_name( $this->setting ) : '';
 
 		$this->json['attr'] = '';
 
