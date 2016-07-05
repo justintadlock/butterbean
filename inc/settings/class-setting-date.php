@@ -20,6 +20,15 @@
 class ButterBean_Setting_Date extends ButterBean_Setting {
 
 	/**
+	 * The type of setting.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
+	public $type = 'date';
+
+	/**
 	 * Gets the posted value of the setting.
 	 *
 	 * @since  1.0.0

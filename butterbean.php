@@ -624,6 +624,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 
 			$this->register_setting_type( 'default', 'ButterBean_Setting'       );
 			$this->register_setting_type( 'array',   'ButterBean_Setting_Array' );
+			$this->register_setting_type( 'date',    'ButterBean_Setting_Date'  );
 		}
 
 		/**
