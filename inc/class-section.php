@@ -176,6 +176,15 @@ class ButterBean_Section {
 	}
 
 	/**
+	 * Enqueue scripts/styles for the section.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function enqueue() {}
+
+	/**
 	 * Returns the json array.
 	 *
 	 * @since  1.0.0

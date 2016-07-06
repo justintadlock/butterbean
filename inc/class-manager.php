@@ -172,6 +172,15 @@ class ButterBean_Manager {
 	}
 
 	/**
+	 * Enqueue scripts/styles for the manager.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function enqueue() {}
+
+	/**
 	 * Register a section.
 	 *
 	 * @since  1.0.0

@@ -646,6 +646,11 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			// Loop through the manager and its controls and call each control's `enqueue()` method.
 			foreach ( $this->managers as $manager ) {
 
+				$manager->enqueue();
+
+				foreach ( $manager->sections as $section )
+					$section->enqueue();
+
 				foreach ( $manager->controls as $control )
 					$control->enqueue();
 			}
