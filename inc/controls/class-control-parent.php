@@ -39,20 +39,29 @@ class ButterBean_Control_Parent extends ButterBean_Control {
 	public $post_type = '';
 
 	/**
-	 * Creates a new control object.
+	 * Returns the HTML field name for the control.
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  object  $manager
-	 * @param  string  $name
-	 * @param  array   $args
-	 * @return void
+	 * @param  string  $setting
+	 * @return array
 	 */
-	public function __construct( $manager, $name, $args = array() ) {
+	public function get_field_name( $setting = 'default' ) {
 
-		parent::__construct( $manager, $name, $args );
+		return 'post_parent';
+	}
 
-		$this->post_type = isset( $args['post_type'] ) ? $args['post_type'] : get_post_type( $this->manager->post_id );
+	/**
+	 * Get the value for the setting.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $setting
+	 * @return mixed
+	 */
+	public function get_value( $setting = 'default' ) {
+
+		return get_post( $this->manager->post_id )->post_parent;
 	}
 
 	/**
@@ -65,13 +74,11 @@ class ButterBean_Control_Parent extends ButterBean_Control {
 	public function to_json() {
 		parent::to_json();
 
-		$this->json['field_name'] = 'post_parent';
-
 		$_post = get_post( $this->manager->post_id );
 
 		$posts = get_posts(
 			array(
-				'post_type'      => $this->post_type,
+				'post_type'      => $this->post_type ? $this->post_type : get_post_type( $this->manager->post_id ),
 				'post_status'    => 'any',
 				'post__not_in'   => array( $this->manager->post_id ),
 				'posts_per_page' => -1,
