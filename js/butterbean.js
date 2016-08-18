@@ -1,3 +1,5 @@
+window.butterbean = window.butterbean || {};
+
 ( function() {
 
 	// Bail if we don't have the JSON, which is passed in via `wp_localize_script()`.
@@ -7,11 +9,12 @@
 
 	/* === Backbone + Underscore === */
 
-	// Set up a variable to house our views.
-	var views = { managers : {}, sections : {}, controls : {} };
+	butterbean = {
+		views     : { managers : {}, sections : {}, controls : {} },
+		templates : { managers : {}, sections : {}, controls : {} }
+	};
 
-	// Set up a variable to house our templates.
-	var templates = { managers : {}, sections : {}, controls : {} };
+	var api = butterbean;
 
 	// Nav template.
 	var nav_template = wp.template( 'butterbean-nav' );
@@ -70,7 +73,7 @@
 	/* === Views === */
 
 	// Manager view.  Handles the output of a manager.
-	views.managers.default = Backbone.View.extend( {
+	api.views.managers.default = Backbone.View.extend( {
 		tagName : 'div',
 		attributes : function() {
 			return {
@@ -82,11 +85,11 @@
 
 			var type = this.model.get( 'type' );
 
-			if ( _.isUndefined( templates.managers[ type ] ) ) {
-				templates.managers[ type ] = wp.template( 'butterbean-manager-' + type );
+			if ( _.isUndefined( api.templates.managers[ type ] ) ) {
+				api.templates.managers[ type ] = wp.template( 'butterbean-manager-' + type );
 			}
 
-			this.template = templates.managers[ type ];
+			this.template = api.templates.managers[ type ];
 		},
 		render : function() {
 			this.el.innerHTML = this.template( this.model.toJSON() );
@@ -107,7 +110,7 @@
 			sections.forEach( function( section, i ) {
 
 				var nav_view     = new Nav_View(     { model : section } );
-				var section_view = new views.sections.default( { model : section } );
+				var section_view = new api.views.sections.default( { model : section } );
 
 				document.querySelector( '#butterbean-ui-' + section.get( 'manager' ) + ' .butterbean-nav'     ).appendChild( nav_view.render().el     );
 				document.querySelector( '#butterbean-ui-' + section.get( 'manager' ) + ' .butterbean-content' ).appendChild( section_view.render().el );
@@ -121,7 +124,7 @@
 
 				var control = new Control( data );
 
-				var callback = _.isUndefined( views.controls[ data.type ] ) ? views.controls.default : views.controls[ data.type ];
+				var callback = _.isUndefined( api.views.controls[ data.type ] ) ? api.views.controls.default : api.views.controls[ data.type ];
 
 				var view = new callback( { model : control } );
 
@@ -133,7 +136,7 @@
 	} );
 
 	// Section view.  Handles the output of a section.
-	views.sections.default = Backbone.View.extend( {
+	api.views.sections.default = Backbone.View.extend( {
 		tagName : 'div',
 		attributes : function() {
 			return {
@@ -147,11 +150,11 @@
 
 			var type = this.model.get( 'type' );
 
-			if ( _.isUndefined( templates.sections[ type ] ) ) {
-				templates.sections[ type ] = wp.template( 'butterbean-section-' + type );
+			if ( _.isUndefined( api.templates.sections[ type ] ) ) {
+				api.templates.sections[ type ] = wp.template( 'butterbean-section-' + type );
 			}
 
-			this.template = templates.sections[ type ];
+			this.template = api.templates.sections[ type ];
 		},
 		render : function() {
 
@@ -214,7 +217,7 @@
 	} );
 
 	// Control view. Handles the output of a control.
-	views.controls.default = Backbone.View.extend( {
+	api.views.controls.default = Backbone.View.extend( {
 		tagName : 'div',
 		attributes : function() {
 			return {
@@ -226,11 +229,11 @@
 			var type = this.model.get( 'type' );
 
 			// Only add a new control template if we have a different control type.
-			if ( _.isUndefined( templates.controls[ type ] ) ) {
-				templates.controls[ type ] = wp.template( 'butterbean-control-' + type );
+			if ( _.isUndefined( api.templates.controls[ type ] ) ) {
+				api.templates.controls[ type ] = wp.template( 'butterbean-control-' + type );
 			}
 
-			this.template = templates.controls[ type ];
+			this.template = api.templates.controls[ type ];
 
 			this.ready();
 		},
@@ -247,7 +250,7 @@
 	} );
 
 	// Palette control view.
-	views.controls.palette = views.controls.default.extend( {
+	api.views.controls.palette = api.views.controls.default.extend( {
 		events : {
 			'change input' : 'onselect'
 		},
@@ -271,7 +274,7 @@
 	} );
 
 	// Image control view.
-	views.controls.image = views.controls.default.extend( {
+	api.views.controls.image = api.views.controls.default.extend( {
 		events : {
 			'click .butterbean-add-media'    : 'showmodal',
 			'click .butterbean-change-media' : 'showmodal',
@@ -318,23 +321,39 @@
 		}
 	} );
 
-	// Loop through each of the managers and render their views.
-	_.each( butterbean_data.managers, function( data ) {
+	// Wait until the document has loaded until we render.
+	if ( typeof document.addEventListener !== 'undefined' )
+		document.addEventListener( 'DOMContentLoaded', render, false );
 
-		// Create a new manager model.
-		var manager = new Manager( data );
+	else if ( typeof window.attachEvent !== 'undefined' )
+		window.attachEvent( 'onload', render );
 
-		// Create a new manager view.
-		var view = new views.managers.default( { model : manager } );
+	/**
+	 * Renders our managers, sections, and controls.
+	 *
+	 * @since  1.0.0
+	 * @access private
+	 * return void
+	 */
+	function render() {
 
-		// Add the `.butterbean-ui` class to the meta box.
-		document.getElementById( 'butterbean-ui-' + manager.get( 'name' ) ).className += ' butterbean-ui';
+		// Loop through each of the managers and render their api.views.
+		_.each( butterbean_data.managers, function( data ) {
 
-		// Render the manager view.
-		document.querySelector( '#butterbean-ui-' + manager.get( 'name' ) + ' .inside' ).appendChild( view.render().el );
+			// Create a new manager model.
+			var manager = new Manager( data );
 
-		// Render the manager subviews.
-		view.subview_render();
-	} );
+			// Create a new manager view.
+			var view = new api.views.managers.default( { model : manager } );
 
+			// Add the `.butterbean-ui` class to the meta box.
+			document.getElementById( 'butterbean-ui-' + manager.get( 'name' ) ).className += ' butterbean-ui';
+
+			// Render the manager view.
+			document.querySelector( '#butterbean-ui-' + manager.get( 'name' ) + ' .inside' ).appendChild( view.render().el );
+
+			// Render the manager subapi.views.
+			view.subview_render();
+		} );
+	}
 }() );
