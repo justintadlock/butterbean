@@ -47,16 +47,15 @@ class ButterBean_Control_Color extends ButterBean_Control {
 		wp_enqueue_script( 'wp-color-picker' );
 		wp_enqueue_style(  'wp-color-picker' );
 
-		add_action( 'admin_footer', array( $this, 'print_scripts' ) );
+		wp_add_inline_script( 'butterbean', $this->add_inline_script() );
 	}
 
-	public function print_scripts() { ?>
-		<script type="text/javascript">
-			jQuery( document ).ready( function( $ ) {
-				$( '.butterbean-color-picker' ).wpColorPicker();
-			} );
-		</script>
-	<?php }
+	public function add_inline_script() {
+
+		return "jQuery( window ).on( 'load', function() {
+				jQuery( '.butterbean-color-picker' ).wpColorPicker();
+			} );";
+	}
 
 	/**
 	 * Get the value for the setting.
