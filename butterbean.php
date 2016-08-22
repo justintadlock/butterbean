@@ -253,7 +253,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 				return;
 
 			// Add meta boxes.
-			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 5 );
 
 			// Save settings.
 			add_action( 'save_post', array( $this, 'update' ) );
