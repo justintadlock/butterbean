@@ -52,7 +52,7 @@ class ButterBean_Control_Color extends ButterBean_Control {
 
 	public function add_inline_script() {
 
-		return "jQuery( window ).on( 'load', function() {
+		return "jQuery( document ).ready( function() {
 				jQuery( '.butterbean-color-picker' ).wpColorPicker();
 			} );";
 	}

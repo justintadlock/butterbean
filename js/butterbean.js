@@ -331,13 +331,6 @@ window.butterbean = window.butterbean || {};
 		}
 	} );
 
-	// Wait until the document has loaded until we render.
-	if ( typeof document.addEventListener !== 'undefined' )
-		document.addEventListener( 'DOMContentLoaded', render, false );
-
-	else if ( typeof window.attachEvent !== 'undefined' )
-		window.attachEvent( 'onload', render );
-
 	/**
 	 * Renders our managers, sections, and controls.
 	 *
@@ -345,7 +338,7 @@ window.butterbean = window.butterbean || {};
 	 * @access private
 	 * return void
 	 */
-	function render() {
+	api.render = function() {
 
 		// Loop through each of the managers and render their api.views.
 		_.each( butterbean_data.managers, function( data ) {
@@ -365,5 +358,6 @@ window.butterbean = window.butterbean || {};
 			// Render the manager subapi.views.
 			view.subview_render();
 		} );
-	}
+	};
+
 }() );

@@ -263,7 +263,10 @@ if ( ! class_exists( 'ButterBean' ) ) {
 
 			// Localize scripts and Undescore templates.
 			add_action( 'admin_footer', array( $this, 'localize_scripts' ) );
-			add_action( 'admin_footer', array( $this, 'print_templates' ) );
+			add_action( 'admin_footer', array( $this, 'print_templates'  ) );
+
+			// Renders our Backbone views.
+			add_action( 'admin_print_footer_scripts', array( $this, 'render_views' ), 95 );
 		}
 
 		/**
@@ -773,6 +776,26 @@ if ( ! class_exists( 'ButterBean' ) ) {
 				}
 			}
 		}
+
+		/**
+		 * Renders our Backbone views.  We're calling this late in the page load so
+		 * that other scripts have an opportunity to extend with their own, custom
+		 * views for custom controls and such.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @return void
+		 */
+		public function render_views() { ?>
+
+			<script type="text/javascript">
+				( function( api ) {
+					if ( _.isObject( api ) && _.isFunction( api.render ) ) {
+						api.render();
+					}
+				}( butterbean ) );
+			</script>
+		<?php }
 
 		/**
 		 * Saves the settings.
