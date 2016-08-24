@@ -26,10 +26,6 @@ class ButterBean_Control_Color extends ButterBean_Control {
 	 */
 	public $type = 'color';
 
-	public function __construct( $manager, $name, $args = array() ) {
-		parent::__construct( $manager, $name, $args );
-	}
-
 	public function get_attr() {
 		$attr = parent::get_attr();
 
@@ -44,17 +40,9 @@ class ButterBean_Control_Color extends ButterBean_Control {
 	}
 
 	public function enqueue() {
+
 		wp_enqueue_script( 'wp-color-picker' );
 		wp_enqueue_style(  'wp-color-picker' );
-
-		wp_add_inline_script( 'butterbean', $this->add_inline_script() );
-	}
-
-	public function add_inline_script() {
-
-		return "jQuery( document ).ready( function() {
-				jQuery( '.butterbean-color-picker' ).wpColorPicker();
-			} );";
 	}
 
 	/**
