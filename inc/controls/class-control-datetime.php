@@ -4,8 +4,8 @@
  * of `YYYY-MM-DD HH:MM:SS` or `0000-00-00 00:00:00`.  You can set the `$show_time`
  * property to `false`.
  *
- * Note that this control should be used in conjunction with the `date` setting type
- * or another custom class that can handle the datetime.
+ * Note that this control should be used in conjunction with the `datetime` setting
+ * type or another custom class that can handle the datetime.
  *
  * @package    ButterBean
  * @subpackage Admin
@@ -21,7 +21,7 @@
  * @since  1.0.0
  * @access public
  */
-class ButterBean_Control_Date extends ButterBean_Control {
+class ButterBean_Control_Datetime extends ButterBean_Control {
 
 	/**
 	 * The type of control.
@@ -30,7 +30,7 @@ class ButterBean_Control_Date extends ButterBean_Control {
 	 * @access public
 	 * @var    string
 	 */
-	public $type = 'date';
+	public $type = 'datetime';
 
 	/**
 	 * Whether to show the time.  Note that settings, particularly the

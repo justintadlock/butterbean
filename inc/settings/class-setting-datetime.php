@@ -1,7 +1,7 @@
 <?php
 /**
- * Date setting class.  This is meant to be used in conjunction with the built-in
- * `ButterBean_Date_Control` or a sub-class that passes the appropriate values.
+ * Datetime setting class.  This is meant to be used in conjunction with the built-in
+ * `ButterBean_Datetime_Control` or a sub-class that passes the appropriate values.
  *
  * @package    ButterBean
  * @subpackage Admin
@@ -17,7 +17,7 @@
  * @since  1.0.0
  * @access public
  */
-class ButterBean_Setting_Date extends ButterBean_Setting {
+class ButterBean_Setting_Datetime extends ButterBean_Setting {
 
 	/**
 	 * The type of setting.
@@ -26,7 +26,7 @@ class ButterBean_Setting_Date extends ButterBean_Setting {
 	 * @access public
 	 * @var    string
 	 */
-	public $type = 'date';
+	public $type = 'datetime';
 
 	/**
 	 * Gets the posted value of the setting.

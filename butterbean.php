@@ -174,7 +174,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			// Load control sub-classes.
 			require_once( $this->dir_path . 'inc/controls/class-control-checkboxes.php'    );
 			require_once( $this->dir_path . 'inc/controls/class-control-color.php'         );
-			require_once( $this->dir_path . 'inc/controls/class-control-date.php'          );
+			require_once( $this->dir_path . 'inc/controls/class-control-datetime.php'      );
 			require_once( $this->dir_path . 'inc/controls/class-control-image.php'         );
 			require_once( $this->dir_path . 'inc/controls/class-control-palette.php'       );
 			require_once( $this->dir_path . 'inc/controls/class-control-radio.php'         );
@@ -188,7 +188,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 
 			// Load setting sub-classes.
 			require_once( $this->dir_path . 'inc/settings/class-setting-multiple.php' );
-			require_once( $this->dir_path . 'inc/settings/class-setting-date.php'     );
+			require_once( $this->dir_path . 'inc/settings/class-setting-datetime.php' );
 			require_once( $this->dir_path . 'inc/settings/class-setting-array.php'    );
 
 			// Load functions.
@@ -604,7 +604,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			$this->register_control_type( 'default',       'ButterBean_Control'               );
 			$this->register_control_type( 'checkboxes',    'ButterBean_Control_Checkboxes'    );
 			$this->register_control_type( 'color',         'ButterBean_Control_Color'         );
-			$this->register_control_type( 'date',          'ButterBean_Control_Date'          );
+			$this->register_control_type( 'datetime',      'ButterBean_Control_Datetime'      );
 			$this->register_control_type( 'image',         'ButterBean_Control_Image'         );
 			$this->register_control_type( 'palette',       'ButterBean_Control_Palette'       );
 			$this->register_control_type( 'radio',         'ButterBean_Control_Radio'         );
@@ -630,7 +630,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			$this->register_setting_type( 'single',   'ButterBean_Setting'          );
 			$this->register_setting_type( 'multiple', 'ButterBean_Setting_Multiple' );
 			$this->register_setting_type( 'array',    'ButterBean_Setting_Array'    );
-			$this->register_setting_type( 'date',     'ButterBean_Setting_Date'     );
+			$this->register_setting_type( 'datetime', 'ButterBean_Setting_Datetime' );
 		}
 
 		/**
