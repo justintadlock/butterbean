@@ -600,6 +600,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			$this->register_control_type( 'checkboxes',    'ButterBean_Control_Checkboxes'    );
 			$this->register_control_type( 'color',         'ButterBean_Control_Color'         );
 			$this->register_control_type( 'datetime',      'ButterBean_Control_Datetime'      );
+			$this->register_control_type( 'excerpt',       'ButterBean_Control_Excerpt'       );
 			$this->register_control_type( 'image',         'ButterBean_Control_Image'         );
 			$this->register_control_type( 'palette',       'ButterBean_Control_Palette'       );
 			$this->register_control_type( 'radio',         'ButterBean_Control_Radio'         );
