@@ -1,6 +1,6 @@
 <?php
 /**
- * Color control class.  This class uses the core WordPress color picker.  Expected 
+ * Color control class.  This class uses the core WordPress color picker.  Expected
  * values are hex colors.  This class also attempts to strip `#` from the hex color.
  * By design, it's recommended to add the `#` on output.
  *
@@ -27,6 +27,19 @@ class ButterBean_Control_Color extends ButterBean_Control {
 	 * @var    string
 	 */
 	public $type = 'color';
+
+	/**
+	 * Custom options to pass to the color picker.  Mostly, this is a wrapper for
+	 * `iris()`, which is bundled with core WP.  However, if they change pickers
+	 * in the future, it may correspond to a different script.
+	 *
+	 * @link   http://automattic.github.io/Iris/#options
+	 * @link   https://make.wordpress.org/core/2012/11/30/new-color-picker-in-wp-3-5/
+	 * @since  1.0.0
+	 * @access public
+	 * @var    array
+	 */
+	public $options = array();
 
 	/**
 	 * Enqueue scripts/styles for the control.
@@ -74,5 +87,18 @@ class ButterBean_Control_Color extends ButterBean_Control {
 		$value = parent::get_value( $setting );
 
 		return ltrim( $value, '#' );
+	}
+
+	/**
+	 * Adds custom data to the json array. This data is passed to the Underscore template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function to_json() {
+		parent::to_json();
+
+		$this->json['options'] = $this->options;
 	}
 }

@@ -592,7 +592,9 @@ window.butterbean = window.butterbean || {};
 		// Calls the core WP color picker for the control's input.
 		ready : function() {
 
-			jQuery( '#' + this.el.id + ' .butterbean-color-picker' ).wpColorPicker();
+			var options = this.model.attributes.options;
+
+			jQuery( '#' + this.el.id + ' .butterbean-color-picker' ).wpColorPicker( options );
 		}
 	} );
 
