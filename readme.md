@@ -12,16 +12,11 @@ This is a quick guide.  If you're familiar with the WordPress Customization API,
 
 Drop the `butterbean` folder into your plugin. That's the simple part.
 
-You're only going to want to load this on the edit post screen for whatever post type you're using it on.
+The script will auto-load itself on the correct admin hooks.  You just need to load it like so:
 
-        add_action( 'load-post.php',     'th_load' );
-        add_action( 'load-post-new.php', 'th_load' );
+        add_action( 'plugins_loaded', 'th_load' );
 
         function th_load() {
-
-        	// Bail if not our post type.
-        	if ( 'your_post_type' !== get_current_screen()->post_type )
-        		return;
 
         	require_once( 'path/to/butterbean/butterbean.php' );
         }
