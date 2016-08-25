@@ -594,7 +594,7 @@ window.butterbean = window.butterbean || {};
 
 			var options = this.model.attributes.options;
 
-			jQuery( '#' + this.el.id + ' .butterbean-color-picker' ).wpColorPicker( options );
+			jQuery( this.$el ).find( '.butterbean-color-picker' ).wpColorPicker( options );
 		}
 	} );
 
