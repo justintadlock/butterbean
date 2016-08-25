@@ -187,8 +187,9 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			require_once( $this->dir_path . 'inc/controls/class-control-parent.php'        );
 
 			// Load setting sub-classes.
-			require_once( $this->dir_path . 'inc/settings/class-setting-date.php'  );
-			require_once( $this->dir_path . 'inc/settings/class-setting-array.php' );
+			require_once( $this->dir_path . 'inc/settings/class-setting-multiple.php' );
+			require_once( $this->dir_path . 'inc/settings/class-setting-date.php'     );
+			require_once( $this->dir_path . 'inc/settings/class-setting-array.php'    );
 
 			// Load functions.
 			require_once( $this->dir_path . 'inc/functions-core.php' );
@@ -625,9 +626,11 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 */
 		public function register_setting_types() {
 
-			$this->register_setting_type( 'default', 'ButterBean_Setting'       );
-			$this->register_setting_type( 'array',   'ButterBean_Setting_Array' );
-			$this->register_setting_type( 'date',    'ButterBean_Setting_Date'  );
+			$this->register_setting_type( 'default',  'ButterBean_Setting'          );
+			$this->register_setting_type( 'single',   'ButterBean_Setting'          );
+			$this->register_setting_type( 'multiple', 'ButterBean_Setting_Multiple' );
+			$this->register_setting_type( 'array',    'ButterBean_Setting_Array'    );
+			$this->register_setting_type( 'date',     'ButterBean_Setting_Date'     );
 		}
 
 		/**
