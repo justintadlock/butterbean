@@ -2,9 +2,11 @@
 
 ButterBean is a framework for creating cool post meta boxes.
 
-**Development environments only:** Please note that this is a development version of the code.  Don't use on a live site yet.
+The idea behind ButterBean came about because I often build custom post types that need quite a bit of custom metadata attached to the posts.  Separating this into multiple meta boxes wasn't fun or user friendly.  So, I decided to go with a single tabbed meta box instead.  
 
-## Usage
+And, that's what ButterBean is.  It's essentially a meta box with tabs for lots of content.
+
+## Documentation
 
 This is a quick guide.  If you're familiar with the WordPress Customization API, you should probably pick this up fairly quickly.  A lot of the same concepts are used here.
 
@@ -85,9 +87,34 @@ A **setting** is nothing more than some post metadata and how it gets stored.  A
         	)
         );
 
+### JavaScript API
+
+ButterBean was built using [Backbone](http://backbonejs.org) for handling models, collections, and views.  It uses [Underscore](http://underscorejs.org) for rendering templates for the views.  All output is handled via JavaScript rather than PHP so that we can do cool stuff on the fly without having to reload the page.  This is particularly useful when you start building more complex controls.
+
+#### The butterbean object
+
+`butterbean` is the global object that houses everything you ever want to touch on the JavaScript side of things.  It's located in the `js/butterbean.js` file.  This file is well-documented, so you'll want to dive into it for doing more advanced stuff.
+
+`butterbean.views.register_control()` is what most people will end up using.  It's a function for registering a custom control view.  New views can be created for each `type` of control.
+
+Here's a quick example of registering a view for a color control where we need to call the core WordPress `wpColorPicker()` function.  It uses the `ready()` function, which is fired after the HTML has been rendered for the view.
+
+```
+api.views.register_control( 'color', {
+
+	// Calls the core WP color picker for the control's input.
+        ready : function() {
+
+                var options = this.model.attributes.options;
+
+		jQuery( this.$el ).find( '.butterbean-color-picker' ).wpColorPicker( options );
+        }
+} );
+```
+
 ## Professional Support
 
-If you need professional plugin support from me, the plugin author, you can access the support forums at [Theme Hybrid](http://themehybrid.com/board/topics), which is a professional WordPress help/support site where I handle support for all my plugins and themes for a community of 60,000+ users (and growing).
+If you need professional plugin support from me, the plugin author, you can access the support forums at [Theme Hybrid](http://themehybrid.com/board/topics), which is a professional WordPress help/support site where I handle support for all my plugins and themes for a community of 70,000+ users (and growing).
 
 ## Copyright and License
 
