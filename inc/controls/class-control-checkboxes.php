@@ -1,8 +1,8 @@
 <?php
 /**
- * Multiple checkbox control class.  This is for array-type settings, so you'll need to
- * use it with either the `ButterBean_Setting_Array` class or a class that handles
- * arrays.
+ * Multiple checkbox control class.  This is for array-type settings, so you'll need 
+ * to utilize a setting type that handles arrays.  Both the `array` and `multiple` 
+ * setting types will do this.
  *
  * @package    ButterBean
  * @author     Justin Tadlock <justin@justintadlock.com>

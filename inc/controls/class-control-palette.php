@@ -1,6 +1,7 @@
 <?php
 /**
- * Radio control class.
+ * Color palette control class.  The purpose of this class is to give users a choice 
+ * of color palettes.  The actual data that is stored is a key of your choosing.
  *
  * @package    ButterBean
  * @author     Justin Tadlock <justin@justintadlock.com>
@@ -10,7 +11,7 @@
  */
 
 /**
- * Radio control class.
+ * Color palette control class.
  *
  * @since  1.0.0
  * @access public
@@ -26,6 +27,13 @@ class ButterBean_Control_Palette extends ButterBean_Control {
 	 */
 	public $type = 'palette';
 
+	/**
+	 * Adds custom data to the json array. This data is passed to the Underscore template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
 	public function to_json() {
 		parent::to_json();
 

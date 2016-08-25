@@ -1,6 +1,8 @@
 <?php
 /**
- * Text control class.
+ * Color control class.  This class uses the core WordPress color picker.  Expected 
+ * values are hex colors.  This class also attempts to strip `#` from the hex color.
+ * By design, it's recommended to add the `#` on output.
  *
  * @package    ButterBean
  * @author     Justin Tadlock <justin@justintadlock.com>
@@ -10,7 +12,7 @@
  */
 
 /**
- * Text control class.
+ * Color control class.
  *
  * @since  1.0.0
  * @access public
@@ -26,6 +28,26 @@ class ButterBean_Control_Color extends ButterBean_Control {
 	 */
 	public $type = 'color';
 
+	/**
+	 * Enqueue scripts/styles for the control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function enqueue() {
+
+		wp_enqueue_script( 'wp-color-picker' );
+		wp_enqueue_style(  'wp-color-picker' );
+	}
+
+	/**
+	 * Gets the attributes for the control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return array
+	 */
 	public function get_attr() {
 		$attr = parent::get_attr();
 
@@ -37,12 +59,6 @@ class ButterBean_Control_Color extends ButterBean_Control {
 		$attr['data-default-color'] = $setting ? $setting->default : '';
 
 		return $attr;
-	}
-
-	public function enqueue() {
-
-		wp_enqueue_script( 'wp-color-picker' );
-		wp_enqueue_style(  'wp-color-picker' );
 	}
 
 	/**

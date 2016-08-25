@@ -1,6 +1,11 @@
 <?php
 /**
- * Date control class.
+ * Datetime control class.  This class is meant for storing a datetime in the format
+ * of `YYYY-MM-DD HH:MM:SS` or `0000-00-00 00:00:00`.  You can set the `$show_time`
+ * property to `false`.
+ *
+ * Note that this control should be used in conjunction with the `date` setting type
+ * or another custom class that can handle the datetime.
  *
  * @package    ButterBean
  * @subpackage Admin
@@ -11,7 +16,7 @@
  */
 
 /**
- * Date control class.
+ * Datetime control class.
  *
  * @since  1.0.0
  * @access public

@@ -1,6 +1,6 @@
 <?php
 /**
- * Radio control class.
+ * Radio control class that creates a list of radio inputs to choose from.
  *
  * @package    ButterBean
  * @subpackage Admin
