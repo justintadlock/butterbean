@@ -36,7 +36,7 @@ window.butterbean = window.butterbean || {};
 	 * @param  object  $args
 	 * @return void
 	 */
-	api.views.add_manager = function( type, args ) {
+	api.views.register_manager = function( type, args ) {
 
 		if ( 'default' !== type )
 			this.managers[ type ] = this.managers.default.extend( args );
@@ -66,7 +66,7 @@ window.butterbean = window.butterbean || {};
 	 * @param  string  $type
 	 * @return void
 	 */
-	api.views.remove_manager = function( type ) {
+	api.views.unregister_manager = function( type ) {
 
 		if ( 'default' !== type && this.manager_exists( type ) )
 			delete this.managers[ type ];
@@ -94,7 +94,7 @@ window.butterbean = window.butterbean || {};
 	 * @param  object  $args
 	 * @return void
 	 */
-	api.views.add_section = function( type, args ) {
+	api.views.register_section = function( type, args ) {
 
 		if ( 'default' !== type )
 			this.sections[ type ] = this.sections.default.extend( args );
@@ -124,7 +124,7 @@ window.butterbean = window.butterbean || {};
 	 * @param  string  $type
 	 * @return void
 	 */
-	api.views.remove_section = function( type ) {
+	api.views.unregister_section = function( type ) {
 
 		if ( 'default' !== type && this.section_exists( type ) )
 			delete this.sections[ type ];
@@ -152,7 +152,7 @@ window.butterbean = window.butterbean || {};
 	 * @param  object  $args
 	 * @return void
 	 */
-	api.views.add_control = function( type, args ) {
+	api.views.register_control = function( type, args ) {
 
 		if ( 'default' !== type )
 			this.controls[ type ] = this.controls.default.extend( args );
@@ -182,7 +182,7 @@ window.butterbean = window.butterbean || {};
 	 * @param  string  $type
 	 * @return void
 	 */
-	api.views.remove_control = function( type ) {
+	api.views.unregister_control = function( type ) {
 
 		if ( 'default' !== type && this.control_exists( type ) )
 			delete this.controls[ type ];
@@ -302,7 +302,7 @@ window.butterbean = window.butterbean || {};
 
 	/**
 	 * The default manager view.  Other views can extend this using the
-	 * `butterbean.views.add_manager()` function.
+	 * `butterbean.views.register_manager()` function.
 	 *
 	 * @since  1.0.0
 	 * @access public
@@ -405,7 +405,7 @@ window.butterbean = window.butterbean || {};
 
 	/**
 	 * The default section view.  Other views can extend this using the
-	 * `butterbean.views.add_section()` function.
+	 * `butterbean.views.register_section()` function.
 	 *
 	 * @since  1.0.0
 	 * @access public
@@ -531,7 +531,7 @@ window.butterbean = window.butterbean || {};
 
 	/**
 	 * The default control view.  Other views can extend this using the
-	 * `butterbean.views.add_control()` function.
+	 * `butterbean.views.register_control()` function.
 	 *
 	 * @since  1.0.0
 	 * @access public
@@ -587,7 +587,7 @@ window.butterbean = window.butterbean || {};
 	 *
 	 * @since  1.0.0
 	 */
-	api.views.add_control( 'color', {
+	api.views.register_control( 'color', {
 
 		// Calls the core WP color picker for the control's input.
 		ready : function() {
@@ -603,7 +603,7 @@ window.butterbean = window.butterbean || {};
 	 *
 	 * @since  1.0.0
 	 */
-	api.views.add_control( 'palette', {
+	api.views.register_control( 'palette', {
 
 		// Adds custom events.
 		events : {
@@ -636,7 +636,7 @@ window.butterbean = window.butterbean || {};
 	 *
 	 * @since  1.0.0
 	 */
-	api.views.add_control( 'image', {
+	api.views.register_control( 'image', {
 
 		// Adds custom events.
 		events : {
