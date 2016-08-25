@@ -38,6 +38,16 @@ class ButterBean_Control_Image extends ButterBean_Control {
 	public $l10n = array();
 
 	/**
+	 * Image size to display.  If the size isn't found for the image,
+	 * the full size of the image will be output.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
+	public $size = 'large';
+
+	/**
 	 * Creates a new control object.
 	 *
 	 * @since  1.0.0
@@ -86,12 +96,13 @@ class ButterBean_Control_Image extends ButterBean_Control {
 		parent::to_json();
 
 		$this->json['l10n'] = $this->l10n;
+		$this->json['size'] = $this->size;
 
 		$value = $this->get_value();
 		$image = $alt = '';
 
 		if ( $value ) {
-			$image = wp_get_attachment_image_src( absint( $value ), 'large' );
+			$image = wp_get_attachment_image_src( absint( $value ), $this->size );
 			$alt   = get_post_meta( absint( $value ), '_wp_attachment_image_alt', true );
 		}
 

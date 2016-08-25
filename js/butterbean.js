@@ -672,9 +672,12 @@ window.butterbean = window.butterbean || {};
 				// Gets the JSON data for the first selection.
 				var media = this.media_modal.state().get( 'selection' ).first().toJSON();
 
+				// Size of image to display.
+				var size = this.model.attributes.size;
+
 				// Updates the model for the view.
 				this.model.set( {
-					src   : media.sizes.large ? media.sizes.large.url : media.url,
+					src   : media.sizes[ size ] ? media.sizes[ size ]['url'] : media.url,
 					alt   : media.alt,
 					value : media.id
 				} );
