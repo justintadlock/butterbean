@@ -16,8 +16,7 @@
 
 // For each version release, the priority needs to decrement by 1. This is so that
 // we can load newer versions earlier than older versions when there's a conflict.
-add_action( 'load-post.php',     'butterbean_loader_100', 9999 );
-add_action( 'load-post-new.php', 'butterbean_loader_100', 9999 );
+add_action( 'init', 'butterbean_loader_100', 9999 );
 
 if ( ! function_exists( 'butterbean_loader_100' ) ) {
 
