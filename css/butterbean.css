@@ -187,7 +187,7 @@
 		margin-bottom : 4px;
 	}
 
-		.butterbean-manager-default .butterbean-control-checkbox .butterbean-label {
+		.butterbean-manager-default .butterbean-control-boolean .butterbean-label {
 			display: inline !important;
 		}
 
@@ -232,7 +232,7 @@
 
 /* === Date Control === */
 
-.butterbean-control-date select {
+.butterbean-control-datetime select {
 	vertical-align: top;
 }
 
