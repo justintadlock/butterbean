@@ -71,8 +71,8 @@ function butterbean_sanitize_hex_color_no_hash( $color ) {
  */
 function butterbean_maybe_hash_hex_color( $color ) {
 
-	if ( function_exists( 'maybe_has_hex_color' ) )
-		return maybe_has_hex_color( $color );
+	if ( function_exists( 'maybe_hash_hex_color' ) )
+		return maybe_hash_hex_color( $color );
 
 	if ( $unhashed = butterbean_sanitize_hex_color_no_hash( $color ) )
 		return '#' . $unhashed;
