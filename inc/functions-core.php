@@ -134,23 +134,29 @@ function butterbean_get_control_template( $slug = '' ) {
  */
 function butterbean_get_template( $name, $slug = '' ) {
 
-	$templates = array();
-	$located   = '';
+	// Allow devs to hook in early to bypass template checking.
+	$located = apply_filters( "butterbean_pre_{$name}_template", '', $slug );
 
-	if ( $slug )
-		$templates[] = "{$name}-{$slug}.php";
+	// If there's no template, let's try to find one.
+	if ( ! $located ) {
 
-	$templates[] = "{$name}.php";
+		$templates = array();
 
-	// Allow devs to filter the template hierarchy.
-	$templates = apply_filters( "butterbean_{$name}_template_hierarchy", $templates, $slug );
+		if ( $slug )
+			$templates[] = "{$name}-{$slug}.php";
 
-	// Loop through the templates and locate one.
-	foreach ( $templates as $template ) {
+		$templates[] = "{$name}.php";
 
-		if ( file_exists( butterbean()->tmpl_path . $template ) ) {
-			$located = butterbean()->tmpl_path . $template;
-			break;
+		// Allow devs to filter the template hierarchy.
+		$templates = apply_filters( "butterbean_{$name}_template_hierarchy", $templates, $slug );
+
+		// Loop through the templates and locate one.
+		foreach ( $templates as $template ) {
+
+			if ( file_exists( butterbean()->tmpl_path . $template ) ) {
+				$located = butterbean()->tmpl_path . $template;
+				break;
+			}
 		}
 	}
 
