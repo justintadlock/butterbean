@@ -6,6 +6,12 @@ The idea behind ButterBean came about because I often build custom post types th
 
 And, that's what ButterBean is.  It's essentially a meta box with tabs for lots of content.
 
+## Just the interface
+
+A lot of meta box frameworks try to do everything.  They handle backend output, frontend output, and everything else you can think of.  ButterBean is meant to be an interface only.  Because every project's needs are vastly different, it doesn't make sense to stick you with a bunch of things you don't need.  This means that the code can stay relatively lean and flexible, which makes it perfect for bundling in your plugins.
+
+So, don't go looking for functions for outputting metadata on the front end from ButterBean.  It doesn't have any.  Use the core WordPress functionality or build your own wrapper functions.
+
 ## Documentation
 
 This is a quick guide.  If you're familiar with the WordPress Customization API, you should probably pick this up fairly quickly.  A lot of the same concepts are used here.
@@ -16,76 +22,88 @@ Drop the `butterbean` folder into your plugin. That's the simple part.
 
 The script will auto-load itself on the correct admin hooks.  You just need to load it like so:
 
-        add_action( 'plugins_loaded', 'th_load' );
+```
+add_action( 'plugins_loaded', 'th_load' );
 
-        function th_load() {
+function th_load() {
 
-        	require_once( 'path/to/butterbean/butterbean.php' );
-        }
+        require_once( 'path/to/butterbean/butterbean.php' );
+}
+```
 
 ### Registration
 
 There's a built-in action hook called `butterbean_register`.  You're going to use that to register everything.  So, you need to set up a callback function for that.
 
-        add_action( 'butterbean_register', 'th_register', 10, 2 );
+```
+add_action( 'butterbean_register', 'th_register', 10, 2 );
 
-        function th_register( $butterbean, $post_type ) {
+function th_register( $butterbean, $post_type ) {
 
-        	// Register managers, sections, controls, and settings here.
-        }
+        // Register managers, sections, controls, and settings here.
+}
+```
 
 #### Registering a manager
 
 A **manager** is a group of sections, controls, and settings.  It's displayed as a single meta box.  There can be multiple managers per screen (don't try multiples yet).
 
-        $butterbean->register_manager(
-        	'example',
-        	array(
-        		'label'     => esc_html__( 'Example', 'your-textdomain' ),
-        		'post_type' => 'your_post_type',
-        		'context'   => 'normal',
-        		'priority'  => 'high'
-        	)
-        );
+```
+$butterbean->register_manager(
+        'example',
+        array(
+        	'label'     => esc_html__( 'Example', 'your-textdomain' ),
+        	'post_type' => 'your_post_type',
+        	'context'   => 'normal',
+        	'priority'  => 'high'
+        )
+);
 
-        $manager = $butterbean->get_manager( 'example' );
+$manager = $butterbean->get_manager( 'example' );
+```
 
 #### Registering a section
 
 A **section** is a group of controls within a manager.  They are presented as "tabbed" sections in the UI.
 
-        $manager->register_section(
-        	'section_1',
-        	array(
-        		'label' => esc_html__( 'Section 1', 'your-textdomain' ),
-        		'icon'  => 'dashicons-admin-generic'
-        	)
-        );
+```
+$manager->register_section(
+        'section_1',
+        array(
+        	'label' => esc_html__( 'Section 1', 'your-textdomain' ),
+		'icon'  => 'dashicons-admin-generic'
+	)
+);
+```
 
 #### Registering a control
 
 A **control** is essentially a form field. It's the field(s) that a user enters data into.  Each control belongs to a section.  Each control should also be tied to a setting (below).
 
-        $manager->register_control(
-        	'abc_xyz', // Same as setting name.
-        	array(
-        		'type'    => 'text',
-        		'section' => 'section_1',
-        		'label'   => esc_html__( 'Control ABC', 'your-textdomain' ),
-        		'attr'    => array( 'class' => 'widefat' )
-        	)
-        );
+```
+$manager->register_control(
+        'abc_xyz', // Same as setting name.
+        array(
+        	'type'    => 'text',
+        	'section' => 'section_1',
+        	'label'   => esc_html__( 'Control ABC', 'your-textdomain' ),
+        	'attr'    => array( 'class' => 'widefat' )
+        )
+);
+```
 
 #### Registering a setting
 
 A **setting** is nothing more than some post metadata and how it gets stored.  A setting belongs to a specific control.
 
-        $manager->register_setting(
-        	'abc_xyz', // Same as control name.
-        	array(
-        		'sanitize_callback' => 'wp_filter_nohtml_kses'
-        	)
-        );
+```
+$manager->register_setting(
+        'abc_xyz', // Same as control name.
+        array(
+        	'sanitize_callback' => 'wp_filter_nohtml_kses'
+        )
+);
+```
 
 ### JavaScript API
 
@@ -100,16 +118,19 @@ ButterBean was built using [Backbone](http://backbonejs.org) for handling models
 Here's a quick example of registering a view for a color control where we need to call the core WordPress `wpColorPicker()` function.  It uses the `ready()` function, which is fired after the HTML has been rendered for the view.
 
 ```
-api.views.register_control( 'color', {
+( function() {
 
-	// Calls the core WP color picker for the control's input.
-        ready : function() {
+        butterbean.views.register_control( 'color', {
 
-                var options = this.model.attributes.options;
+        	// Calls the core WP color picker for the control's input.
+                ready : function() {
 
-		jQuery( this.$el ).find( '.butterbean-color-picker' ).wpColorPicker( options );
-        }
-} );
+                        var options = this.model.attributes.options;
+
+                        jQuery( this.$el ).find( '.butterbean-color-picker' ).wpColorPicker( options );
+                }
+        } );
+}() );
 ```
 
 ## Professional Support
