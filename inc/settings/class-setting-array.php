@@ -70,7 +70,7 @@ class ButterBean_Setting_Array extends ButterBean_Setting {
 		$new_values = $this->get_posted_value();
 
 		// If there's an array of posted values, set them.
-		if ( is_array( $new_values ) )
+		if ( $new_values && is_array( $new_values ) )
 			return update_post_meta( $this->manager->post_id, $this->name, $new_values );
 
 		// If no array of posted values but we have old values, delete them.
