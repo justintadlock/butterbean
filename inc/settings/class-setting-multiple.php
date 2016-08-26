@@ -75,6 +75,9 @@ class ButterBean_Setting_Multiple extends ButterBean_Setting {
 	 */
 	public function save() {
 
+		if ( ! $this->check_capabilities() )
+			return;
+
 		$old_values = $this->get_value();
 		$new_values = $this->get_posted_value();
 
