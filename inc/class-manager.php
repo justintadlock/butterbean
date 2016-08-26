@@ -38,7 +38,7 @@ class ButterBean_Manager {
 	public $name = '';
 
 	/**
-	 * Label for the control.
+	 * Label for the manager.
 	 *
 	 * @since  1.0.0
 	 * @access public
@@ -56,7 +56,7 @@ class ButterBean_Manager {
 	public $post_type = 'post';
 
 	/**
-	 * Location of the meta box.
+	 * Location of the meta box.  Accepted values: 'normal', 'advanced', 'side'.
 	 *
 	 * @link   https://developer.wordpress.org/reference/functions/add_meta_box/
 	 * @since  1.0.0
@@ -66,7 +66,7 @@ class ButterBean_Manager {
 	public $context = 'advanced';
 
 	/**
-	 * Priority of the meta box.
+	 * Priority of the meta box. Accepted values: 'high', 'core', 'default', 'low'.
 	 *
 	 * @link   https://developer.wordpress.org/reference/functions/add_meta_box/
 	 * @since  1.0.0
