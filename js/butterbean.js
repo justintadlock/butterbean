@@ -228,8 +228,11 @@ window.butterbean = window.butterbean || {};
 			// Render the manager view.
 			document.querySelector( '#butterbean-ui-' + manager.get( 'name' ) + ' .inside' ).appendChild( view.render().el );
 
-			// Render the manager subapi.views.
+			// Render the manager subviews.
 			view.subview_render();
+
+			// Call the view's ready method.
+			view.ready();
 		} );
 	};
 
@@ -400,7 +403,11 @@ window.butterbean = window.butterbean || {};
 			} );
 
 			return this;
-		}
+		},
+
+		// Function that is executed *after* the view has been rendered.
+		// This is meant to be overwritten in sub-views.
+		ready : function() {}
 	} );
 
 	/**
