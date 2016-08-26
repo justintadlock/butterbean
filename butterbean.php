@@ -3,7 +3,7 @@
  * Plugin Name: ButterBean
  * Plugin URI:  https://github.com/justintadlock/butterbean
  * Description: A little post meta framework.
- * Version:     1.0.0-dev
+ * Version:     1.0.0-rc-1
  * Author:      Justin Tadlock
  * Author URI:  http://themehybrid.com
  *
