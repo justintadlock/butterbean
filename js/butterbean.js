@@ -213,7 +213,7 @@ window.butterbean = window.butterbean || {};
 		// Loop through each of the managers and render their api.views.
 		_.each( butterbean_data.managers, function( data ) {
 
-			// Create a new manager model.
+			// Create a new manager model with the JSON data for the manager.
 			var manager = new Manager( data );
 
 			// Get the manager view callback.
@@ -222,11 +222,14 @@ window.butterbean = window.butterbean || {};
 			// Create a new manager view.
 			var view = new callback( { model : manager } );
 
+			// Get the meta box element.
+			var metabox = document.getElementById( 'butterbean-ui-' + manager.get( 'name' ) );
+
 			// Add the `.butterbean-ui` class to the meta box.
-			document.getElementById( 'butterbean-ui-' + manager.get( 'name' ) ).className += ' butterbean-ui';
+			metabox.className += ' butterbean-ui';
 
 			// Render the manager view.
-			document.querySelector( '#butterbean-ui-' + manager.get( 'name' ) + ' .inside' ).appendChild( view.render().el );
+			metabox.querySelector( '.inside' ).appendChild( view.render().el );
 
 			// Render the manager subviews.
 			view.subview_render();
