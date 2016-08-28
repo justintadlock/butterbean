@@ -24,7 +24,16 @@ window.butterbean = window.butterbean || {};
 		 * @access public
 		 * @var    object
 		 */
-		views : { managers : {}, sections : {}, controls : {} }
+		views : { managers : {}, sections : {}, controls : {} },
+
+		/**
+		 * Houses the manager, section, and control templates based on the `type`.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @var    object
+		 */
+		templates : { managers : {}, sections : {}, controls : {} }
 	};
 
 	/**
@@ -202,6 +211,168 @@ window.butterbean = window.butterbean || {};
 	};
 
 	/**
+	 * Creates a new manager template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $type
+	 * @param  object  $args
+	 * @return void
+	 */
+	api.templates.register_manager = function( type ) {
+
+		this.managers[ type ] = wp.template( 'butterbean-manager-' + type );
+	};
+
+	/**
+	 * Returns a manager template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $type
+	 * @return function
+	 */
+	api.templates.get_manager = function( type ) {
+
+		return this.manager_exists( type ) ? this.managers[ type ] : false;
+	};
+
+	/**
+	 * Removes a manager template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $type
+	 * @return void
+	 */
+	api.templates.unregister_manager = function( type ) {
+
+		if ( this.manager_exists( type ) )
+			delete this.managers[ type ];
+	};
+
+	/**
+	 * Checks if a manager template exists.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $type
+	 * @return bool
+	 */
+	api.templates.manager_exists = function( type ) {
+
+		return this.managers.hasOwnProperty( type );
+	};
+
+	/**
+	 * Creates a new section template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $type
+	 * @param  object  $args
+	 * @return void
+	 */
+	api.templates.register_section = function( type ) {
+
+		this.sections[ type ] = wp.template( 'butterbean-section-' + type );
+	};
+
+	/**
+	 * Returns a section template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $type
+	 * @return function
+	 */
+	api.templates.get_section = function( type ) {
+
+		return this.section_exists( type ) ? this.sections[ type ] : false;
+	};
+
+	/**
+	 * Removes a section template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $type
+	 * @return void
+	 */
+	api.templates.unregister_section = function( type ) {
+
+		if ( this.section_exists( type ) )
+			delete this.sections[ type ];
+	};
+
+	/**
+	 * Checks if a section template exists.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $type
+	 * @return bool
+	 */
+	api.templates.section_exists = function( type ) {
+
+		return this.sections.hasOwnProperty( type );
+	};
+
+	/**
+	 * Creates a new control template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $type
+	 * @param  object  $args
+	 * @return void
+	 */
+	api.templates.register_control = function( type ) {
+
+		this.controls[ type ] = wp.template( 'butterbean-control-' + type );
+	};
+
+	/**
+	 * Returns a control template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $type
+	 * @return function
+	 */
+	api.templates.get_control = function( type ) {
+
+		return this.control_exists( type ) ? this.controls[ type ] : false;
+	};
+
+	/**
+	 * Removes a control template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $type
+	 * @return void
+	 */
+	api.templates.unregister_control = function( type ) {
+
+		if ( this.control_exists( type ) )
+			delete this.controls[ type ];
+	};
+
+	/**
+	 * Checks if a control template exists.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $type
+	 * @return bool
+	 */
+	api.templates.control_exists = function( type ) {
+
+		return this.controls.hasOwnProperty( type );
+	};
+
+	/**
 	 * Renders our managers, sections, and controls.
 	 *
 	 * @since  1.0.0
@@ -240,9 +411,6 @@ window.butterbean = window.butterbean || {};
 	};
 
 	/* === Templates === */
-
-	// Templates.
-	var templates = { managers : {}, sections : {}, controls : {} };
 
 	// Nav template.
 	var nav_template = wp.template( 'butterbean-nav' );
@@ -333,11 +501,11 @@ window.butterbean = window.butterbean || {};
 			var type = this.model.get( 'type' );
 
 			// If there's not yet a template for this manager type, create it.
-			if ( _.isUndefined( templates.managers[ type ] ) )
-				templates.managers[ type ] = wp.template( 'butterbean-manager-' + type );
+			if ( ! api.templates.manager_exists( type ) )
+				api.templates.register_manager( type );
 
 			// Get the manager template.
-			this.template = templates.managers[ type ];
+			this.template = api.templates.get_manager( type );
 		},
 
 		// Renders the manager.
@@ -445,11 +613,11 @@ window.butterbean = window.butterbean || {};
 			var type = this.model.get( 'type' );
 
 			// If there's no template for this section type, create it.
-			if ( _.isUndefined( templates.sections[ type ] ) )
-				templates.sections[ type ] = wp.template( 'butterbean-section-' + type );
+			if ( ! api.templates.section_exists( type ) )
+				api.templates.register_section( type );
 
 			// Gets the section template.
-			this.template = templates.sections[ type ];
+			this.template = api.templates.get_section( type );
 		},
 
 		// Renders the section.
@@ -565,12 +733,11 @@ window.butterbean = window.butterbean || {};
 			var type = this.model.get( 'type' );
 
 			// Only add a new control template if we have a different control type.
-			if ( _.isUndefined( templates.controls[ type ] ) )
-				templates.controls[ type ] = wp.template( 'butterbean-control-' + type );
+			if ( ! api.templates.control_exists( type ) )
+				api.templates.register_control( type );
 
 			// Get the control template.
-			this.template = templates.controls[ type ];
-
+			this.template = api.templates.get_control( type );
 
 			// Bind changes so that the view is re-rendered when the model changes.
 			_.bindAll( this, 'render' );
