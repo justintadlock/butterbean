@@ -1,6 +1,6 @@
 # ButterBean
 
-ButterBean is a framework for creating cool post meta boxes.
+ButterBean is a neat little post meta box framework built on [Backbone.js](http://backbonejs.org) and [Underscore.js](http://underscorejs.org). You can run it as a standalone plugin or drop it into your own plugins.
 
 The idea behind ButterBean came about because I often build custom post types that need quite a bit of custom metadata attached to the posts.  Separating this into multiple meta boxes wasn't fun or user friendly.  So, I decided to go with a single tabbed meta box instead.  
 
@@ -108,6 +108,8 @@ $manager->register_setting(
 ### JavaScript API
 
 ButterBean was built using [Backbone](http://backbonejs.org) for handling models, collections, and views.  It uses [Underscore](http://underscorejs.org) for rendering templates for the views.  All output is handled via JavaScript rather than PHP so that we can do cool stuff on the fly without having to reload the page.  This is particularly useful when you start building more complex controls.
+
+You'll never need to touch JavaScript until you need to build a control that relies on JavaScript.
 
 #### The butterbean object
 
