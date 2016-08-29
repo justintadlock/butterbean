@@ -255,7 +255,8 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			add_action( 'save_post', array( $this, 'update' ) );
 
 			// Load scripts and styles.
-			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+			add_action( 'admin_enqueue_scripts',      array( $this, 'enqueue_scripts' ) );
+			add_action( 'butterbean_enqueue_scripts', array( $this, 'enqueue'         ) );
 
 			// Localize scripts and Undescore templates.
 			add_action( 'admin_footer', array( $this, 'localize_scripts' ) );
@@ -627,6 +628,18 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			$this->register_setting_type( 'multiple', 'ButterBean_Setting_Multiple' );
 			$this->register_setting_type( 'array',    'ButterBean_Setting_Array'    );
 			$this->register_setting_type( 'datetime', 'ButterBean_Setting_Datetime' );
+		}
+
+		/**
+		 * Fires an action hook to register/enqueue scripts/styles.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @return void
+		 */
+		public function enqueue_scripts() {
+
+			do_action( 'butterbean_enqueue_scripts' );
 		}
 
 		/**
