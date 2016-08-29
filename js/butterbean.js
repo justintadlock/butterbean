@@ -666,8 +666,8 @@ window.butterbean = window.butterbean || {};
 
 		// Initializes the nav item view.
 		initialize : function() {
-			this.model.on('change', this.render, this);
-			this.model.on('change', this.onchange, this);
+			this.model.on( 'change', this.render,   this );
+			this.model.on( 'change', this.onchange, this );
 		},
 
 		// Renders the nav item.
