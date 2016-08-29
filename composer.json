@@ -1,0 +1,19 @@
+{
+    "name": "justintadlock/butterbean",
+    "type": "wordpress-plugin",
+    "description": "A neat little post meta framework.",
+    "keywords" : ["wordpress", "meta boxes", "acf", "custom fields"],
+    "homepage": "https://github.com/justintadlock/butterbean",
+    "license": "GPL2+",
+    "authors": [
+        {
+            "name": "Justin Tadlock",
+            "email" : "justin@justintadlock.com",
+            "homepage": "http://justintadlock.com/"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/justintadlock/butterbean/issues",
+        "forum": "http://themehybrid.com/board/topics"
+    }
+}
