@@ -1,6 +1,7 @@
 <?php
 /**
- * Radio image control class.
+ * Radio image control class extends the built-in radio control.  This control is 
+ * meant for displaying an image instead of the radio fields.
  *
  * @package    ButterBean
  * @subpackage Admin

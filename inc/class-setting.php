@@ -19,6 +19,15 @@
 class ButterBean_Setting {
 
 	/**
+	 * The type of setting.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
+	public $type = 'default';
+
+	/**
 	 * Stores the manager object.
 	 *
 	 * @since  1.0.0

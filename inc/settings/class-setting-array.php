@@ -1,6 +1,6 @@
 <?php
 /**
- * Setting class for storing multiple post meta values for a single key.
+ * Setting class for storing a single meta value as an array.
  *
  * @package    ButterBean
  * @author     Justin Tadlock <justin@justintadlock.com>
@@ -18,16 +18,13 @@
 class ButterBean_Setting_Array extends ButterBean_Setting {
 
 	/**
-	 * Gets the value of the setting.
+	 * The type of setting.
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @return mixed
+	 * @var    string
 	 */
-	public function get_value() {
-
-		return get_post_meta( $this->manager->post_id, $this->name );
-	}
+	public $type = 'array';
 
 	/**
 	 * Sanitizes the value of the setting.
@@ -66,77 +63,18 @@ class ButterBean_Setting_Array extends ButterBean_Setting {
 	 */
 	public function save() {
 
+		if ( ! $this->check_capabilities() )
+			return;
+
 		$old_values = $this->get_value();
 		$new_values = $this->get_posted_value();
 
 		// If there's an array of posted values, set them.
-		if ( is_array( $new_values ) )
-			$this->set_values( $new_values, $old_values );
+		if ( $new_values && is_array( $new_values ) && $new_values !== $old_values )
+			return update_post_meta( $this->manager->post_id, $this->name, $new_values );
 
 		// If no array of posted values but we have old values, delete them.
-		else if ( $old_values )
-			$this->delete_values();
-	}
-
-	/**
-	 * Loops through new and old meta values and updates.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  array   $new_values
-	 * @param  array   $old_values
-	 * @return void
-	 */
-	public function set_values( $new_values, $old_values ) {
-
-		foreach ( $new_values as $new ) {
-
-			if ( ! in_array( $new, $old_values ) )
-				$this->add_value( $new );
-		}
-
-		foreach ( $old_values as $old ) {
-
-			if ( ! in_array( $old, $new_values ) )
-				$this->remove_value( $old );
-		}
-	}
-
-	/**
-	 * Deletes old meta values.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
-	 */
-	public function delete_values() {
-
-		return delete_post_meta( $this->manager->post_id, $this->name );
-	}
-
-	/**
-	 * Adds a single meta value.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  mixed   $value
-	 * @return bool
-	 */
-	public function add_value( $value ) {
-
-		return add_post_meta( $this->manager->post_id, $this->name, $value, false );
-	}
-
-	/**
-	 * Deletes a single meta value.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  mixed   $value
-	 * @return bool
-	 */
-	public function remove_value( $value ) {
-
-		return delete_post_meta( $this->manager->post_id, $this->name, $value );
+		else if ( $old_values && ! $new_values )
+			return delete_post_meta( $this->manager->post_id, $this->name );
 	}
 }

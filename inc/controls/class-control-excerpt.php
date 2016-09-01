@@ -21,6 +21,15 @@
 class ButterBean_Control_Excerpt extends ButterBean_Control_Textarea {
 
 	/**
+	 * The type of control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
+	public $type = 'excerpt';
+
+	/**
 	 * Gets the attributes for the control.
 	 *
 	 * @since  1.0.0

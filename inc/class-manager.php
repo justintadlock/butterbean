@@ -38,7 +38,7 @@ class ButterBean_Manager {
 	public $name = '';
 
 	/**
-	 * Label for the control.
+	 * Label for the manager.
 	 *
 	 * @since  1.0.0
 	 * @access public
@@ -56,7 +56,7 @@ class ButterBean_Manager {
 	public $post_type = 'post';
 
 	/**
-	 * Location of the meta box.
+	 * Location of the meta box.  Accepted values: 'normal', 'advanced', 'side'.
 	 *
 	 * @link   https://developer.wordpress.org/reference/functions/add_meta_box/
 	 * @since  1.0.0
@@ -66,7 +66,7 @@ class ButterBean_Manager {
 	public $context = 'advanced';
 
 	/**
-	 * Priority of the meta box.
+	 * Priority of the meta box. Accepted values: 'high', 'core', 'default', 'low'.
 	 *
 	 * @link   https://developer.wordpress.org/reference/functions/add_meta_box/
 	 * @since  1.0.0
@@ -172,6 +172,15 @@ class ButterBean_Manager {
 	}
 
 	/**
+	 * Enqueue scripts/styles for the manager.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function enqueue() {}
+
+	/**
 	 * Register a section.
 	 *
 	 * @since  1.0.0
@@ -238,6 +247,22 @@ class ButterBean_Manager {
 	}
 
 	/**
+	 * Register a control and setting object.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string        $name
+	 * @param  object|array  $control  Control object or array of control arguments.
+	 * @param  object|array  $setting  Setting object or array of setting arguments.
+	 * @return void
+	 */
+	public function register_field( $name, $control, $setting ) {
+
+		is_object( $control ) ? $this->register_control( $control ) : $this->register_control( $name, $control );
+		is_object( $setting ) ? $this->register_setting( $setting ) : $this->register_setting( $name, $setting );
+	}
+
+	/**
 	 * Unregisters a section object.
 	 *
 	 * @since  1.0.0
@@ -280,6 +305,20 @@ class ButterBean_Manager {
 	}
 
 	/**
+	 * Unregisters a control and setting object.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @return void
+	 */
+	public function unregister_field( $name ) {
+
+		$this->unregister_control( $name );
+		$this->unregister_setting( $name );
+	}
+
+	/**
 	 * Returns a section object.
 	 *
 	 * @since  1.0.0
@@ -319,6 +358,24 @@ class ButterBean_Manager {
 	}
 
 	/**
+	 * Returns an object that contains both the control and setting objects.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @return object|bool
+	 */
+	public function get_field( $name ) {
+
+		$control = $this->get_control( $name );
+		$setting = $this->get_setting( $name );
+
+		$field = array( 'name' => $name, 'control' => $control, 'setting' => $setting );
+
+		return $control && $setting ? (object) $field : false;
+	}
+
+	/**
 	 * Checks if a section exists.
 	 *
 	 * @since  1.0.0
@@ -355,6 +412,19 @@ class ButterBean_Manager {
 	public function setting_exists( $name ) {
 
 		return isset( $this->settings[ $name ] );
+	}
+
+	/**
+	 * Checks if a both a control and setting exist.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @return bool
+	 */
+	public function field_exists( $name ) {
+
+		return $this->control_exists( $name ) && $this->setting_exists( $name );
 	}
 
 	/**

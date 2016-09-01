@@ -1,6 +1,8 @@
 <?php
 /**
- * Text control class.
+ * Color control class.  This class uses the core WordPress color picker.  Expected
+ * values are hex colors.  This class also attempts to strip `#` from the hex color.
+ * By design, it's recommended to add the `#` on output.
  *
  * @package    ButterBean
  * @author     Justin Tadlock <justin@justintadlock.com>
@@ -10,7 +12,7 @@
  */
 
 /**
- * Text control class.
+ * Color control class.
  *
  * @since  1.0.0
  * @access public
@@ -26,10 +28,39 @@ class ButterBean_Control_Color extends ButterBean_Control {
 	 */
 	public $type = 'color';
 
-	public function __construct( $manager, $name, $args = array() ) {
-		parent::__construct( $manager, $name, $args );
+	/**
+	 * Custom options to pass to the color picker.  Mostly, this is a wrapper for
+	 * `iris()`, which is bundled with core WP.  However, if they change pickers
+	 * in the future, it may correspond to a different script.
+	 *
+	 * @link   http://automattic.github.io/Iris/#options
+	 * @link   https://make.wordpress.org/core/2012/11/30/new-color-picker-in-wp-3-5/
+	 * @since  1.0.0
+	 * @access public
+	 * @var    array
+	 */
+	public $options = array();
+
+	/**
+	 * Enqueue scripts/styles for the control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function enqueue() {
+
+		wp_enqueue_script( 'wp-color-picker' );
+		wp_enqueue_style(  'wp-color-picker' );
 	}
 
+	/**
+	 * Gets the attributes for the control.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return array
+	 */
 	public function get_attr() {
 		$attr = parent::get_attr();
 
@@ -42,21 +73,6 @@ class ButterBean_Control_Color extends ButterBean_Control {
 
 		return $attr;
 	}
-
-	public function enqueue() {
-		wp_enqueue_script( 'wp-color-picker' );
-		wp_enqueue_style(  'wp-color-picker' );
-
-		add_action( 'admin_footer', array( $this, 'print_scripts' ) );
-	}
-
-	public function print_scripts() { ?>
-		<script type="text/javascript">
-			jQuery( document ).ready( function( $ ) {
-				$( '.butterbean-color-picker' ).wpColorPicker();
-			} );
-		</script>
-	<?php }
 
 	/**
 	 * Get the value for the setting.
@@ -71,5 +87,18 @@ class ButterBean_Control_Color extends ButterBean_Control {
 		$value = parent::get_value( $setting );
 
 		return ltrim( $value, '#' );
+	}
+
+	/**
+	 * Adds custom data to the json array. This data is passed to the Underscore template.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function to_json() {
+		parent::to_json();
+
+		$this->json['options'] = $this->options;
 	}
 }

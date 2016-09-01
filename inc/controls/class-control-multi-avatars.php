@@ -2,7 +2,8 @@
 /**
  * Multi-avatars control.  This control is for outputting multiple users who can create,
  * edit, or publish posts of the given post type.  Multiple users can be selected.  The
- * data is expected to be an array.  For use with the `Butterbean_Setting_Array` class.
+ * data is expected to be an array.  This control should be used with a setting type that
+ * handles arrays, such as the built-in `array` or `multiple` types.
  *
  * @package    ButterBean
  * @author     Justin Tadlock <justin@justintadlock.com>

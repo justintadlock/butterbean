@@ -1,6 +1,7 @@
 <?php
 /**
- * Select group control class.
+ * Select group control class.  This works just like a normal select.  However, it
+ * allows for `<optgroup>` to be added.
  *
  * @package    ButterBean
  * @author     Justin Tadlock <justin@justintadlock.com>
