@@ -18,6 +18,15 @@ window.butterbean = window.butterbean || {};
 	var api = butterbean = {
 
 		/**
+		 * Houses the manager, section, and control models based on `name`.
+		 *
+		 * @since  1.1.0
+		 * @access public
+		 * @var    object
+		 */
+		models : { managers : {}, sections : {}, controls : {} },
+
+		/**
 		 * Houses the manager, section, and control views based on the `type`.
 		 *
 		 * @since  1.0.0
@@ -34,6 +43,174 @@ window.butterbean = window.butterbean || {};
 		 * @var    object
 		 */
 		templates : { managers : {}, sections : {}, controls : {} }
+	};
+
+	/**
+	 * Creates a new manager model.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @param  object  $data
+	 * @return void
+	 */
+	api.models.register_manager = function( name, data ) {
+
+		this.managers[ name ] = new Manager( data );
+	};
+
+	/**
+	 * Gets a manager model.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @return object
+	 */
+	api.models.get_manager = function( name ) {
+
+		return this.manager_exists( name ) ? this.managers[ name ] : false;
+	};
+
+	/**
+	 * Unregisters a manager model.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @param  object  $data
+	 * @return void
+	 */
+	api.models.unregister_manager = function( name ) {
+
+		if ( this.manager_exists( name ) )
+			delete this.managers[ name ];
+	};
+
+	/**
+	 * Checks if a manager model exists.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @param  object  $data
+	 * @return void
+	 */
+	api.models.manager_exists = function( name ) {
+
+		return this.managers.hasOwnProperty( name );
+	};
+
+	/**
+	 * Creates a new section model.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @param  object  $data
+	 * @return void
+	 */
+	api.models.register_section = function( name, data ) {
+
+		this.sections[ name ] = new Section( data );
+	};
+
+	/**
+	 * Gets a section model.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @return object
+	 */
+	api.models.get_section = function( name ) {
+
+		return this.section_exists( name ) ? this.sections[ name ] : false;
+	};
+
+	/**
+	 * Unregisters a section model.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @param  object  $data
+	 * @return void
+	 */
+	api.models.unregister_section = function( name ) {
+
+		if ( this.section_exists( name ) )
+			delete this.sections[ name ];
+	};
+
+	/**
+	 * Checks if a section model exists.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @param  object  $data
+	 * @return void
+	 */
+	api.models.section_exists = function( name ) {
+
+		return this.sections.hasOwnProperty( name );
+	};
+
+	/**
+	 * Creates a new control model.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @param  object  $data
+	 * @return void
+	 */
+	api.models.register_control = function( name, data ) {
+
+		this.controls[ name ] = new Control( data );
+	};
+
+	/**
+	 * Gets a control model.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @return object
+	 */
+	api.models.get_control = function( name ) {
+
+		return this.control_exists( name ) ? this.controls[ name ] : false;
+	};
+
+	/**
+	 * Unregisters a control model.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @param  object  $data
+	 * @return void
+	 */
+	api.models.unregister_control = function( name ) {
+
+		if ( this.control_exists( name ) )
+			delete this.controls[ name ];
+	};
+
+	/**
+	 * Checks if a control model exists.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @param  string  $name
+	 * @param  object  $data
+	 * @return void
+	 */
+	api.models.control_exists = function( name ) {
+
+		return this.controls.hasOwnProperty( name );
 	};
 
 	/**
@@ -385,10 +562,13 @@ window.butterbean = window.butterbean || {};
 		_.each( butterbean_data.managers, function( data ) {
 
 			// Create a new manager model with the JSON data for the manager.
-			var manager = new Manager( data );
+			api.models.register_manager( data.name, data );
+
+			// Get the model.
+			var manager = api.models.get_manager( data.name );
 
 			// Get the manager view callback.
-			var callback = api.views.get_manager( data.type );
+			var callback = api.views.get_manager( manager.get( 'type' ) );
 
 			// Create a new manager view.
 			var view = new callback( { model : manager } );
@@ -526,7 +706,11 @@ window.butterbean = window.butterbean || {};
 			// Loop through each section and add it to the collection.
 			_.each( this.model.get( 'sections' ), function( data ) {
 
-				sections.add( new Section( data ) );
+				// Create a new section model.
+				api.models.register_section( data.name, data );
+
+				// Add the section model to the collection.
+				sections.add( api.models.get_section( data.name ) );
 			} );
 
 			// Loop through each section in the collection and render its view.
@@ -539,7 +723,7 @@ window.butterbean = window.butterbean || {};
 				document.querySelector( '#butterbean-ui-' + section.get( 'manager' ) + ' .butterbean-nav'     ).appendChild( nav_view.render().el     );
 
 				// Get the section view callback.
-				var callback = api.views.get_section( section.attributes.type );
+				var callback = api.views.get_section( section.get( 'type' ) );
 
 				// Create a new section view.
 				var view = new callback( { model : section } );
@@ -558,10 +742,13 @@ window.butterbean = window.butterbean || {};
 			_.each( this.model.get( 'controls' ), function( data ) {
 
 				// Create a new control model.
-				var control = new Control( data );
+				api.models.register_control( data.name, data );
+
+				// Get the control model
+				var control = api.models.get_control( data.name );
 
 				// Get the control view callback.
-				var callback = api.views.get_control( data.type );
+				var callback = api.views.get_control( control.get( 'type' ) );
 
 				// Create a new control view.
 				var view = new callback( { model : control } );
