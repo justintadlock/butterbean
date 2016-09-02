@@ -956,7 +956,7 @@ window.butterbean = window.butterbean || {};
 		// Calls the core WP color picker for the control's input.
 		ready : function() {
 
-			var options = this.model.attributes.options;
+			var options = this.model.get( 'options' );
 
 			jQuery( this.$el ).find( '.butterbean-color-picker' ).wpColorPicker( options );
 		}
@@ -1037,7 +1037,7 @@ window.butterbean = window.butterbean || {};
 				var media = this.media_modal.state().get( 'selection' ).first().toJSON();
 
 				// Size of image to display.
-				var size = this.model.attributes.size;
+				var size = this.model.get( 'size' );
 
 				// Updates the model for the view.
 				this.model.set( {
