@@ -3,7 +3,7 @@
  * Plugin Name: ButterBean
  * Plugin URI:  https://github.com/justintadlock/butterbean
  * Description: A little post meta framework.
- * Version:     1.0.0
+ * Version:     1.0.1-dev
  * Author:      Justin Tadlock
  * Author URI:  http://themehybrid.com
  *
@@ -16,19 +16,19 @@
 
 // For each version release, the priority needs to decrement by 1. This is so that
 // we can load newer versions earlier than older versions when there's a conflict.
-add_action( 'init', 'butterbean_loader_100', 9999 );
+add_action( 'init', 'butterbean_loader_101', 9998 );
 
-if ( ! function_exists( 'butterbean_loader_100' ) ) {
+if ( ! function_exists( 'butterbean_loader_101' ) ) {
 
 	/**
 	 * Loader function.  Note to change the name of this function to use the
 	 * current version number of the plugin.  `1.0.0` is `100`, `1.3.4` = `134`.
 	 *
-	 * @since  1.0.0
+	 * @since  1.0.1
 	 * @access public
 	 * @return void
 	 */
-	function butterbean_loader_100() {
+	function butterbean_loader_101() {
 
 		// If not in the admin, bail.
 		if ( ! is_admin() )
