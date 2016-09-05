@@ -82,7 +82,7 @@ class ButterBean_Control_Image extends ButterBean_Control {
 	 */
 	public function enqueue() {
 
-		wp_enqueue_script( 'media-views' );
+		wp_enqueue_media();
 	}
 
 	/**
