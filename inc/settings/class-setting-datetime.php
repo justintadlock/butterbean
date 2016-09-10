@@ -70,7 +70,7 @@ class ButterBean_Setting_Datetime extends ButterBean_Setting {
 
 		$hour = absint( $hour );
 
-		return $hour < 0 || $hour > 23 ? zeroise( $hour, 2 ) : '00';
+		return 0 < $hour && 24 >= $hour ? zeroise( $hour, 2 ) : '00';
 	}
 
 	/**
@@ -85,7 +85,7 @@ class ButterBean_Setting_Datetime extends ButterBean_Setting {
 
 		$minute = absint( $minute );
 
-		return $minute < 0 || $minute > 59 ? zeroise( $minute, 2 ) : '00';
+		return 0 < $minute && 60 >= $minute ? zeroise( $minute, 2 ) : '00';
 	}
 
 	/**
@@ -100,6 +100,6 @@ class ButterBean_Setting_Datetime extends ButterBean_Setting {
 
 		$second = absint( $second );
 
-		return $second < 0 || $second > 59 ? zeroise( $second, 2 ) : '00';
+		return 0 < $second && 60 >= $second ? zeroise( $second, 2 ) : '00';
 	}
 }
