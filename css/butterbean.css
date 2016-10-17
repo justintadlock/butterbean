@@ -32,6 +32,16 @@
 		}
 	}
 
+	.butterbean-manager-default::before,
+	.butterbean-manager-default::after {
+		content: "";
+		display: table;
+	}
+
+	.butterbean-manager-default::after {
+		clear: both;
+	}
+
 	/* Tab nav. */
 
 	.butterbean-manager-default .butterbean-nav {
