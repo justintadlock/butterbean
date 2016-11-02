@@ -198,8 +198,12 @@ class ButterBean_Setting {
 		if ( ! $new_value && $old_value )
 			delete_post_meta( $this->manager->post_id, $this->name );
 
+		// If the new value is not 0 and is empty, bail.
+		if ( '0' !== $new_value && 0 !== $new_value && empty( $new_value ) )
+			return;
+
 		// If the new value doesn't match the old value, set it.
-		else if ( $new_value !== $old_value )
+		if ( $new_value !== $old_value )
 			update_post_meta( $this->manager->post_id, $this->name, $new_value );
 	}
 
