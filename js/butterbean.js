@@ -1079,9 +1079,17 @@ window.butterbean = window.butterbean || {};
 				// Size of image to display.
 				var size = this.model.get( 'size' );
 
+				// Initial Src of image to display
+				var src  = media.url;
+
+				// Set src based on image size selected
+				if ( ! _.isUndefined( media.sizes ) ) {
+					src = media.sizes[ size ] ? media.sizes[ size ]['url'] : media.url;
+				}
+
 				// Updates the model for the view.
 				this.model.set( {
-					src   : media.sizes[ size ] ? media.sizes[ size ]['url'] : media.url,
+					src   : src,
 					alt   : media.alt,
 					value : media.id
 				} );
