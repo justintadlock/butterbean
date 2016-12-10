@@ -183,8 +183,11 @@
 		box-sizing: border-box;
 }
 
-	.butterbean-manager-default .butterbean-section[aria-hidden="true"]  { display: none; }
-	.butterbean-manager-default .butterbean-section[aria-hidden="false"] { display: block; }
+	.butterbean-manager-default .butterbean-section[aria-hidden="true"],
+	.butterbean-manager-default .butterbean-control[aria-hidden="true"] { display: none; }
+
+	.butterbean-manager-default .butterbean-section[aria-hidden="false"],
+	.butterbean-manager-default .butterbean-control[aria-hidden="false"]{ display: block; }
 
 .butterbean-manager-default .butterbean-control {
 	margin-bottom: 20px;

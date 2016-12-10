@@ -27,6 +27,15 @@ window.butterbean = window.butterbean || {};
 		models : { managers : {}, sections : {}, controls : {} },
 
 		/**
+		 * Houses the collections.
+		 *
+		 * @since  1.1.0
+		 * @access public
+		 * @var    object
+		 */
+		collections : { sections : {} },
+
+		/**
 		 * Houses the manager, section, and control views based on the `type`.
 		 *
 		 * @since  1.0.0
@@ -550,6 +559,46 @@ window.butterbean = window.butterbean || {};
 	};
 
 	/**
+	 * Registers the models for managers, sections, and controls.
+	 *
+	 * @since  1.1.0
+	 * @access public
+	 * @return void
+	 */
+	api.setup = function() {
+
+		// Loop through each of the managers and render their api.views.
+		_.each( butterbean_data.managers, function( data ) {
+
+			// Create a new manager model with the JSON data for the manager.
+			api.models.register_manager( data.name, data );
+
+			// Get the manager model.
+			var manager = api.models.get_manager( data.name );
+
+			// Create a new section collection.
+			var collection = api.collections.sections[ data.name ] = new Sections();
+
+			// Loop through each section and add it to the collection.
+			_.each( manager.get( 'sections' ), function( data ) {
+
+				// Create a new section model.
+				api.models.register_section( data.name, data );
+
+				// Add the section model to the collection.
+				collection.add( api.models.get_section( data.name ) );
+			} );
+
+			// Loop through each control for the manager and render its view.
+			_.each( manager.get( 'controls' ), function( data ) {
+
+				// Create a new control model.
+				api.models.register_control( data.name, data );
+			} );
+		} );
+	};
+
+	/**
 	 * Renders our managers, sections, and controls.
 	 *
 	 * @since  1.0.0
@@ -558,14 +607,7 @@ window.butterbean = window.butterbean || {};
 	 */
 	api.render = function() {
 
-		// Loop through each of the managers and render their api.views.
-		_.each( butterbean_data.managers, function( data ) {
-
-			// Create a new manager model with the JSON data for the manager.
-			api.models.register_manager( data.name, data );
-
-			// Get the model.
-			var manager = api.models.get_manager( data.name );
+		_.each( this.models.managers, function( manager, name ) {
 
 			// Get the manager view callback.
 			var callback = api.views.get_manager( manager.get( 'type' ) );
@@ -700,18 +742,7 @@ window.butterbean = window.butterbean || {};
 		// it's not recommended to create custom views for managers right now.
 		subview_render : function() {
 
-			// Create a new section collection.
-			var sections = new Sections();
-
-			// Loop through each section and add it to the collection.
-			_.each( this.model.get( 'sections' ), function( data ) {
-
-				// Create a new section model.
-				api.models.register_section( data.name, data );
-
-				// Add the section model to the collection.
-				sections.add( api.models.get_section( data.name ) );
-			} );
+			var sections = api.collections.sections[ this.model.get( 'name' ) ];
 
 			// Loop through each section in the collection and render its view.
 			sections.forEach( function( section, i ) {
@@ -740,9 +771,6 @@ window.butterbean = window.butterbean || {};
 
 			// Loop through each control for the manager and render its view.
 			_.each( this.model.get( 'controls' ), function( data ) {
-
-				// Create a new control model.
-				api.models.register_control( data.name, data );
 
 				// Get the control model
 				var control = api.models.get_control( data.name );
@@ -786,7 +814,7 @@ window.butterbean = window.butterbean || {};
 			return {
 				'id'          : 'butterbean-' + this.model.get( 'manager' ) + '-section-' + this.model.get( 'name' ),
 				'class'       : 'butterbean-section butterbean-section-' + this.model.get( 'type' ),
-				'aria-hidden' : ! this.model.get( 'selected' )
+				'aria-hidden' : ! this.model.get( 'selected' ) || ! this.model.get( 'active' )
 			};
 		},
 
@@ -821,7 +849,7 @@ window.butterbean = window.butterbean || {};
 		onchange : function() {
 
 			// Set the view's `aria-hidden` attribute based on whether the model is selected.
-			this.el.setAttribute( 'aria-hidden', ! this.model.get( 'selected' ) );
+			this.el.setAttribute( 'aria-hidden', ! this.model.get( 'selected' ) || ! this.model.get( 'active' ) );
 		},
 
 		// Function that is executed *after* the view has been rendered.
@@ -910,13 +938,18 @@ window.butterbean = window.butterbean || {};
 		// Custom attributes for the control wrapper.
 		attributes : function() {
 			return {
-				'id'    : 'butterbean-control-' + this.model.get( 'name' ),
-				'class' : 'butterbean-control butterbean-control-' + this.model.get( 'type' )
+				'id'          : 'butterbean-control-' + this.model.get( 'name' ),
+				'class'       : 'butterbean-control butterbean-control-' + this.model.get( 'type' ),
+				'aria-hidden' : ! this.model.get( 'active' )
 			};
 		},
 
 		// Initiazlies the control view.
 		initialize : function() {
+
+			// Add an event for when the model changes.
+			this.model.on( 'change', this.onchange, this );
+
 			var type = this.model.get( 'type' );
 
 			// Only add a new control template if we have a different control type.
@@ -939,6 +972,13 @@ window.butterbean = window.butterbean || {};
 				this.el.innerHTML = this.template( this.model.toJSON() );
 
 			return this;
+		},
+
+		// Executed when the model changes.
+		onchange : function() {
+
+			// Set the view's `aria-hidden` attribute based on whether the model is active.
+			this.el.setAttribute( 'aria-hidden', ! this.model.get( 'active' ) );
 		},
 
 		// Function that is executed *after* the view has been rendered.
@@ -1058,5 +1098,9 @@ window.butterbean = window.butterbean || {};
 			this.model.set( { src : '', alt : '', value : '' } );
 		}
 	} );
+
+	// Let's register all of the models at this point.
+	// They won't be rendered until later in the page load.
+	api.setup();
 
 }() );
